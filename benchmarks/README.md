@@ -1,39 +1,40 @@
-# Нагрузочные тесты
+# Load tests
 
-Оба генератора сначала отправляют человеческую нагрузку 5 запросов/с
-в течение 10 секунд, затем одновременно человеческую 5 запросов/с
-и агентную 120 запросов/с ещё 10 секунд. Они дожидаются завершения задач
-и выводят число успешных запросов, ошибок и p95 успешных задач.
+Both generators first send human traffic at 5 requests/s
+for 10 seconds, then send human traffic at 5 requests/s
+and agent traffic at 120 requests/s concurrently for another 10 seconds.
+They wait for all tasks to finish and report successful requests, errors,
+and the p95 latency of successful tasks.
 
-Сначала запустите каталог и сервер по [инструкции](../README.md#запуск).
-Из корня репозитория запускайте генераторы по очереди:
+First, start the catalog and server using the [setup instructions](../README.md#getting-started).
+Run the generators one at a time from the repository root:
 
 ```sh
 cargo run --locked --release --bin load
 cargo run --locked --release --bin load_plain
 ```
 
-- `load` получает политику v2, ограничивает агентный параллелизм по
-  `max_in_flight` и делает не более пяти попыток при `429`, учитывая `Retry-After`.
-- `load_plain` отправляет запросы без клиентского ограничителя и повторов.
+- `load` fetches the v2 policy, limits agent concurrency according to
+  `max_in_flight`, and makes at most five attempts on `429`, respecting `Retry-After`.
+- `load_plain` sends requests without a client-side concurrency limiter or retries.
 
-Оба клиента отправляют `POST /search` с `{"query":""}`. Время задачи
-включает клиентское ожидание и повторы, но не задержку запуска относительно
-плана. p95 считается только для успешных задач: сравнивайте его вместе
-с числом ошибок.
+Both clients send `POST /search` with `{"query":""}`. Task duration
+includes client-side waiting and retries, but excludes delays in starting
+relative to the schedule. The p95 value covers only successful tasks:
+compare it alongside the error count.
 
-## Сохранённые результаты
+## Saved results
 
-- `results/shared/run-1.txt` … `run-5.txt` — прежний стенд с общей очередью.
-- `results/priority/run-1.txt` … `run-5.txt` — прежний стенд с приоритетом людей.
+- `results/shared/run-1.txt` … `run-5.txt` — the previous setup with a shared queue.
+- `results/priority/run-1.txt` … `run-5.txt` — the previous setup with human priority.
 
-Эти файлы перенесены из локального эксперимента без изменения содержимого.
-Они относятся к старой синтетической операции `/work` с задержкой около
-100 мс, а не к текущему каталогу. Текущие клиенты и сервер не воспроизводят
-этот стенд; точные условия и сведения об оборудовании в файлах не записаны.
-Не смешивайте исторические результаты с новыми замерами `/search`.
+These files were moved from the local experiment without changing their contents.
+They describe the old synthetic `/work` operation with a delay of approximately
+100 ms, not the current catalog. The current clients and server do not reproduce
+that setup; the files do not record the exact conditions or hardware details.
+Keep historical results separate from new `/search` measurements.
 
-Пример сохранения нового запуска из корня репозитория:
+To save a new run from the repository root:
 
 ```sh
 mkdir -p benchmarks/results/catalog

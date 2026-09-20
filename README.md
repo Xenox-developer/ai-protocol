@@ -1,14 +1,14 @@
 # AI Protocol
 
-Экспериментальный HTTP-протокол взаимодействия сервисов и AI-агентов.
-Rust-сервер публикует доступные операции и лимит параллелизма,
-приоритетно обслуживает запросы людей и передаёт операции Python-каталогу.
-Агентные клиенты получают описание операций через `/agent-policy`,
-проверяют параметры по JSON Schema и обрабатывают `429` с `Retry-After`.
+An experimental HTTP protocol for communication between services and AI agents.
+The Rust server publishes available operations and a concurrency limit,
+prioritizes human requests, and forwards operations to a Python catalog service.
+Agent clients discover operations through `/agent-policy`,
+validate parameters against JSON Schema, and handle `429` responses with `Retry-After`.
 
-Это локальный MVP, а не готовый публичный стандарт.
+This is a local MVP, not an established public standard.
 
-## Структура
+## Structure
 
 ```text
 ai-protocol/
@@ -34,10 +34,10 @@ ai-protocol/
     └── results/
 ```
 
-## Запуск
+## Getting started
 
-Нужны Rust/Cargo с поддержкой edition 2024 и Python 3.10+.
-Все команды выполняются из корня репозитория.
+You need Rust/Cargo with edition 2024 support and Python 3.10+.
+Run all commands from the repository root.
 
 ```sh
 python3 -m venv .venv
@@ -46,46 +46,46 @@ python -m pip install -r requirements.txt
 cargo build --locked --bins
 ```
 
-В первом терминале запустите каталог:
+Start the catalog service in the first terminal:
 
 ```sh
 .venv/bin/python examples/catalog_service.py
 ```
 
-Во втором терминале запустите сервер:
+Start the server in a second terminal:
 
 ```sh
 cargo run --locked --bin ai-protocol
 ```
 
-Каталог слушает `127.0.0.1:4000`, сервер — `127.0.0.1:3000`.
-В третьем терминале можно запустить интерактивное обнаружение операций:
+The catalog listens on `127.0.0.1:4000`, and the server on `127.0.0.1:3000`.
+In a third terminal, run the interactive operation discovery client:
 
 ```sh
 .venv/bin/python examples/discover_client.py
 ```
 
-Выберите операцию `1` и введите `{"query":"boots"}` либо операцию `2`
-и `{"id":1}`. Клиент покажет JSON-ответ каталога.
+Choose operation `1` and enter `{"query":"boots"}`, or operation `2`
+and `{"id":1}`. The client displays the catalog's JSON response.
 
-Для выбора операции языковой моделью:
+To let a language model choose an operation:
 
 ```sh
 .venv/bin/python examples/llm_client.py
 ```
 
-Клиент использует `OPENAI_API_KEY`, если переменная задана, иначе запрашивает
-ключ скрытым вводом. Пример задачи: `Найди все ботинки`.
-В текущем коде используется `gpt-4.1-mini`; клиент выполняет не более одной
-операции и печатает её JSON-результат. Вызов модели требует доступа к OpenAI API.
+The client uses `OPENAI_API_KEY` if the environment variable is set; otherwise,
+it prompts for the key without displaying the input. Example task: `Find all boots`.
+The current code uses `gpt-4.1-mini`; the client executes at most one
+operation and prints its JSON result. Calling the model requires OpenAI API access.
 
 ## HTTP API
 
-| Метод | Путь | Назначение |
+| Method | Path | Purpose |
 | --- | --- | --- |
-| GET | `/agent-policy` | Версия `2`, `max_in_flight`, описания операций |
-| POST | `/search` | Поиск по подстроке: `{"query":"boots"}` |
-| POST | `/product` | Получение товара: `{"id":1}` |
+| GET | `/agent-policy` | Version `2`, `max_in_flight`, and operation descriptions |
+| POST | `/search` | Substring search: `{"query":"boots"}` |
+| POST | `/product` | Retrieve a product: `{"id":1}` |
 
 ```sh
 curl http://127.0.0.1:3000/agent-policy
@@ -95,25 +95,25 @@ curl -X POST http://127.0.0.1:3000/search \
   -d '{"query":"boots"}'
 ```
 
-Для проверки повтора запустите сервер с `TEST_429=1`:
+To test retries, start the server with `TEST_429=1`:
 
 ```sh
 TEST_429=1 cargo run --locked --bin ai-protocol
 ```
 
-Первый агентный запрос получит `429` и `Retry-After: 2` до выполнения операции.
-Уже запущенный сервер нужно остановить перед запуском второго на том же порту.
+The first agent request receives `429` and `Retry-After: 2` before the operation runs.
+Stop any existing server before starting another one on the same port.
 
-Подробности: [контракт протокола](docs/protocol.md).
-Нагрузочные клиенты и сохранённые замеры: [benchmarks](benchmarks/README.md).
+See the [protocol contract](docs/protocol.md) for details.
+Load generators and saved measurements are described in [benchmarks](benchmarks/README.md).
 
-## Ограничения
+## Limitations
 
-Очереди хранятся в памяти. `X-Client-Type` — добровольная метка клиента,
-а не аутентификация. Человеческая очередь не ограничена; строгий приоритет
-может задерживать агентов при постоянной человеческой нагрузке.
-Лимит клиента не является глобальной квотой сервера.
+Queues are stored in memory. `X-Client-Type` is a voluntary client label,
+not authentication. The human queue is unbounded; strict priority
+may delay agents under sustained human traffic.
+The client limit is not a global server quota.
 
-## Права
+## License
 
-Copyright (c) 2026 Nikita Chindin. Лицензия [Apache-2.0](LICENSE).
+Copyright (c) 2026 Nikita Chindin. Licensed under [Apache-2.0](LICENSE).

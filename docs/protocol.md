@@ -1,114 +1,115 @@
-# AI Protocol — текущая реализация v2
+# AI Protocol — current v2 implementation
 
-Экспериментальный HTTP-контракт локального сервера из `src/main.rs`.
+An experimental HTTP contract for the local server in `src/main.rs`.
 
-## Операции
+## Operations
 
-| Метод и путь | Запрос | Успешный ответ |
+| Method and path | Request | Successful response |
 | --- | --- | --- |
-| `GET /agent-policy` | Без тела | `version: 2`, `max_in_flight: 10`, `operations` |
+| `GET /agent-policy` | No body | `version: 2`, `max_in_flight: 10`, `operations` |
 | `POST /search` | `{"query":"boots"}` | `{"products":[...]}` |
-| `POST /product` | `{"id":1}` | `{"product":{...}}` либо `{"product":null}` |
+| `POST /product` | `{"id":1}` | `{"product":{...}}` or `{"product":null}` |
 
-Политика описывает каждую операцию полями `name`, `description`, `method`,
-`path` и `input_schema`. Параметры передаются JSON-телом с
-`Content-Type: application/json`. Поиск проверяет подстроку английского
-названия без учёта регистра; пустая строка возвращает весь каталог.
-`id` — неотрицательное целое число в диапазоне Rust `u64`.
+The policy describes each operation using the fields `name`, `description`, `method`,
+`path`, and `input_schema`. Parameters are sent as a JSON body with
+`Content-Type: application/json`. Search performs a case-insensitive substring
+match against English product names; an empty string returns the entire catalog.
+`id` is a non-negative integer within the Rust `u64` range.
 
-Агент отправляет `X-Client-Type: agent`. Отсутствие этой метки или другое
-значение направляет запрос в человеческую очередь. Это не аутентификация.
-Сервер сначала выбирает задачи людей; уже начатые задачи не прерывает.
-Общий предел исполнения — 10 задач, предел ожидающей агентной очереди — 32.
-Клиентский лимит не является общей квотой для всех клиентов.
+Agents send `X-Client-Type: agent`. A missing header or a different value
+routes the request to the human queue. This is not authentication.
+The server selects human tasks first and does not interrupt tasks already running.
+The total execution limit is 10 tasks; the waiting agent queue is limited to 32.
+The client limit is not a shared quota across all clients.
 
-При заполненной агентной очереди сервер возвращает `429` и `Retry-After: 1`
-до принятия задачи. `TEST_429=1` включает однократный тестовый отказ с
-`Retry-After: 2`. Клиент может повторить такую попытку после указанной паузы,
-но должен ограничивать число попыток. Примеры используют максимум 5 попыток.
-Другие ошибки автоматически не повторяются.
+When the agent queue is full, the server returns `429` and `Retry-After: 1`
+before accepting the task. `TEST_429=1` enables a single test rejection with
+`Retry-After: 2`. The client may retry after the specified delay,
+but must limit the number of attempts. The examples allow at most 5 attempts.
+Other errors are not retried automatically.
 
-Сервер передаёт операции локальному каталогу на `127.0.0.1:4000`:
-`GET /products/search?query=...` или `GET /products/get?id=...`.
-Таймаут обращения — 5 секунд. Недоступность каталога, ошибка ответа или
-чтения тела приводят к `502`; таймаут отправки запроса — к `504`.
-При потере канала результата сервер может вернуть `500`.
+The server forwards operations to the local catalog at `127.0.0.1:4000`:
+`GET /products/search?query=...` or `GET /products/get?id=...`.
+The request timeout is 5 seconds. Catalog unavailability, an error response,
+or a failure to read the response body results in `502`; a timeout while
+sending the request results in `504`.
+If the result channel is lost, the server may return `500`.
 
-Python-клиенты проверяют параметры по опубликованной JSON Schema и работают
-последовательно, поэтому не превышают положительный лимит параллелизма.
-Rust-клиент `load` использует общий семафор и поддерживает версию `2`.
-`load_plain` предназначен для сравнения без клиентской политики.
-Путь `/work` в текущем сервере отсутствует.
+The Python clients validate parameters against the published JSON Schema and
+run sequentially, so they stay within any positive concurrency limit.
+The Rust `load` client uses a shared semaphore and supports version `2`.
+`load_plain` provides a comparison without a client-side policy.
+The current server does not expose `/work`.
 
-Команды запуска находятся в [README](../README.md), описание замеров —
-в [benchmarks/README.md](../benchmarks/README.md).
+Startup commands are in the [README](../README.md); measurements are described
+in [benchmarks/README.md](../benchmarks/README.md).
 
 ---
 
-## Архив описания предыдущего эксперимента
+## Archived description of the previous experiment
 
-Ниже сохранён исходный документ без исправления его исторических утверждений.
-Несмотря на отметку версии `2` в его заголовке, разделы описывают прежний
-контракт v1 с `/work` и синтетической задержкой. Для текущих операций и
-версии используйте описание выше. Указанные ниже результаты проверок
-относятся к прежнему эксперименту.
+The original document is translated below without correcting its historical claims.
+Although its heading identifies version `2`, its sections describe the earlier
+v1 contract with `/work` and a synthetic delay. For current operations and
+the current version, use the description above. The verification results below
+refer to the previous experiment.
 
-# AI Protocol — контракт экспериментального MVP
+# AI Protocol — experimental MVP contract
 
-Редакция документа: 0.1. Версия в сообщениях: `2`.
+Document revision: 0.1. Message version: `2`.
 
-Статус: локальный эксперимент, не публичный стандарт и не готовая к промышленной эксплуатации реализация.
+Status: a local experiment, not a public standard or a production-ready implementation.
 
-Документ описывает код сервера и клиента, разработанный в диалоге. Он не предполагает доступ к последующим локальным изменениям исходников.
+This document describes the server and client code developed during the conversation. It does not assume access to subsequent local source changes.
 
-## 1. Назначение
+## 1. Purpose
 
-Сервис сообщает агентному клиенту допустимый параллелизм. Клиент ограничивает число незавершённых запросов и обрабатывает временный отказ до принятия задачи. Сервер приоритетно обслуживает интерактивные запросы.
+The service tells an agent client how much concurrency is allowed. The client limits the number of in-flight requests and handles temporary rejection before a task is accepted. The server prioritizes interactive requests.
 
-Слова «должен» и «не должен» обозначают требования этого экспериментального контракта. Конкретные настройки текущей реализации перечислены отдельно в разделе 7.
+The words “must” and “must not” indicate requirements of this experimental contract. Specific settings for the current implementation are listed separately in section 7.
 
-## 2. Транспорт и адрес сервиса
+## 2. Transport and service address
 
-Клиенту заранее передают базовый URL, например `http://127.0.0.1:3000`.
+The client is given a base URL in advance, such as `http://127.0.0.1:3000`.
 
-Локальный MVP использует HTTP. HTTPS в текущем эксперименте не настроен; TLS не меняет описанные пути и поля. Автоматический поиск сервисов отсутствует.
+The local MVP uses HTTP. HTTPS is not configured in the current experiment; TLS does not change the paths and fields described here. Automatic service discovery is not available.
 
-| Метод и путь | Назначение |
+| Method and path | Purpose |
 | --- | --- |
-| `GET /agent-policy` | Получить правила сервиса |
-| `POST /work` | Выполнить тестовую операцию |
+| `GET /agent-policy` | Retrieve the service policy |
+| `POST /work` | Execute the test operation |
 
-## 3. Получение правил
+## 3. Retrieving the policy
 
-Перед запуском агентных задач клиент должен успешно получить правила:
+Before starting agent tasks, the client must successfully retrieve the policy:
 
 ```http
 GET /agent-policy HTTP/1.1
 Host: 127.0.0.1:3000
 ```
 
-Успешный ответ имеет статус `200`, тип `application/json` и тело:
+A successful response has status `200`, content type `application/json`, and the following body:
 
 ```json
 {"version":1,"max_in_flight":10}
 ```
 
-| Поле | Тип | Значение |
+| Field | Type | Meaning |
 | --- | --- | --- |
-| `version` | Целое число | Версия контракта; этот клиент поддерживает только `1` |
-| `max_in_flight` | Положительное целое число | Максимальное число одновременно незавершённых агентных HTTP-попыток от одного экземпляра клиента к этому сервису |
+| `version` | Integer | Contract version; this client supports only `1` |
+| `max_in_flight` | Positive integer | Maximum number of concurrent in-flight agent HTTP attempts from one client instance to this service |
 
-Клиент должен проверить наличие и тип обязательных полей, поддерживаемую версию и положительность лимита. Неизвестные дополнительные поля следует игнорировать, если версия поддерживается. При ошибке получения или проверки правил агентную нагрузку запускать нельзя; ошибку нужно сообщить вызывающему коду.
+The client must validate the presence and types of required fields, confirm that the version is supported, and ensure that the limit is positive. Unknown additional fields should be ignored if the version is supported. If policy retrieval or validation fails, agent traffic must not start; the error must be reported to the calling code.
 
-Лимит должен быть общим для всех задач одного экземпляра клиента, обращающихся к этому сервису. Создавать отдельный семафор на каждый запрос нельзя. Запросы, ожидающие клиентского разрешения, ещё не являются HTTP-попытками.
+The limit must be shared by all tasks from one client instance that access this service. A separate semaphore must not be created for each request. Requests waiting for a client-side permit are not yet HTTP attempts.
 
-Это договорённость с клиентом, а не выделенная ему мощность сервера. Лимит не является глобальной квотой всех клиентов. В текущей реализации нет идентичности клиента и принудительного учёта его отдельной квоты на сервере.
+This is an agreement with the client, not server capacity reserved for it. The limit is not a global quota across all clients. The current implementation has no client identity or server-side enforcement of individual client quotas.
 
-Правила читаются при запуске. Периодическое обновление, срок действия и изменение лимита во время работы пока не определены. Изменение значения `max_in_flight` не требует смены версии. Несовместимое изменение смысла полей требует новой версии.
+The policy is read at startup. Periodic refresh, expiration, and changes to the limit during execution are not yet defined. Changing the value of `max_in_flight` does not require a version change. An incompatible change to the meaning of fields requires a new version.
 
-## 4. Выполнение операции
+## 4. Executing an operation
 
-Агентный клиент должен отправлять:
+The agent client must send:
 
 ```http
 POST /work HTTP/1.1
@@ -117,13 +118,13 @@ X-Client-Type: agent
 Content-Length: 0
 ```
 
-Генератор интерактивной нагрузки использует `X-Client-Type: human`.
+The interactive load generator uses `X-Client-Type: human`.
 
-Названия HTTP-заголовков регистронезависимы. Значение `agent` в реализации сравнивается точно; отсутствие заголовка или иное значение направляет запрос в человеческую очередь. Это поведение демонстрационного сервера, а не способ надёжно определить человека.
+HTTP header names are case-insensitive. The implementation compares the value `agent` exactly; a missing header or any other value routes the request to the human queue. This is demo server behavior, not a reliable way to identify a human.
 
-Тело запроса для тестовой операции пустое. Параметры бизнес-операций, их схемы и автоматическое обнаружение операций пока отсутствуют.
+The test operation has an empty request body. Business operation parameters, their schemas, and automatic operation discovery are not yet available.
 
-Успешный ответ:
+Successful response:
 
 ```http
 HTTP/1.1 200 OK
@@ -132,13 +133,13 @@ Content-Type: text/plain; charset=utf-8
 Done
 ```
 
-Успех означает, что сервер завершил тестовую операцию. Для измерения полного времени HTTP-попытки клиент должен дочитать тело ответа.
+Success means that the server has completed the test operation. To measure the full duration of an HTTP attempt, the client must read the entire response body.
 
-Тестовая операция — асинхронное ожидание примерно 100 мс. Она не моделирует реальные вычисления или изменение данных.
+The test operation is an asynchronous wait of approximately 100 ms. It does not model actual computation or data modification.
 
-## 5. Перегрузка и повторы
+## 5. Overload and retries
 
-Если агентная очередь заполнена, сервер отклоняет запрос до его постановки в очередь и до выполнения:
+If the agent queue is full, the server rejects the request before enqueueing or executing it:
 
 ```http
 HTTP/1.1 429 Too Many Requests
@@ -148,101 +149,101 @@ Content-Type: text/plain; charset=utf-8
 Agent queue is full
 ```
 
-В рамках этого контракта `429` от `/work` гарантирует, что данная попытка не была принята к выполнению. Это требование нашего сервиса, а не универсальная гарантия любого HTTP API. Повтор такой попытки разрешён.
+Under this contract, a `429` response from `/work` guarantees that the attempt was not accepted for execution. This is a requirement of this service, not a universal guarantee of HTTP APIs. Retrying such an attempt is allowed.
 
-Сервер должен передавать `Retry-After` как неотрицательное целое число секунд. HTTP-даты в этом экспериментальном профиле не используются. Клиент должен ждать не меньше указанного времени перед повтором. Текст тела диагностический: решения принимаются по статусу и заголовку, а не по строке `Agent queue is full`.
+The server must provide `Retry-After` as a non-negative integer number of seconds. HTTP dates are not used in this experimental profile. The client must wait at least the specified duration before retrying. The response body is diagnostic: decisions are based on the status and header, not the string `Agent queue is full`.
 
-Клиент должен иметь конечный бюджет попыток и соблюдать лимит параллелизма при повторах. Если бюджет исчерпан, задача считается неуспешной; `429` нельзя считать успешным выполнением.
+The client must have a finite attempt budget and respect the concurrency limit during retries. Once the budget is exhausted, the task is considered unsuccessful; `429` must not be treated as successful completion.
 
-Текущий Rust-клиент:
+The current Rust client:
 
-- делает максимум 5 попыток, включая первую;
-- при отсутствующем или неразбираемом `Retry-After` использует 1 секунду;
-- удерживает клиентское разрешение во время ожидания повтора; это более строгое ограничение, чем только число активных HTTP-попыток;
-- не добавляет случайный разброс задержек;
-- повторяет автоматически только агентные запросы с ответом `429`.
+- Makes at most 5 attempts, including the initial attempt.
+- Uses 1 second if `Retry-After` is missing or cannot be parsed.
+- Holds the client-side permit while waiting to retry; this is stricter than limiting only active HTTP attempts.
+- Does not add random jitter to retry delays.
+- Automatically retries only agent requests that receive `429`.
 
-Сетевая ошибка, таймаут или другой HTTP-статус ошибки автоматически не повторяются. При потерянном ответе результат операции может быть неизвестен. Ключи идемпотентности, дедупликация и гарантия выполнения ровно один раз не реализованы.
+Network errors, timeouts, and other HTTP error statuses are not retried automatically. If a response is lost, the operation's outcome may be unknown. Idempotency keys, deduplication, and exactly-once execution guarantees are not implemented.
 
-При недоступности канала результата обработчик может вернуть `500`. Это не даёт гарантии, что операция не выполнялась, и не разрешает безопасный автоматический повтор.
+If the result channel is unavailable, the handler may return `500`. This does not guarantee that the operation was never executed and does not justify a safe automatic retry.
 
-## 6. Приоритетное обслуживание
+## 6. Priority scheduling
 
-Сервер хранит две FIFO-очереди. При выборе следующей задачи он сначала проверяет человеческую очередь, затем агентную. Уже начатые задачи не прерываются.
+The server maintains two FIFO queues. When selecting the next task, it checks the human queue first, then the agent queue. Tasks already running are not interrupted.
 
-Все задачи используют общий бюджет исполнения. Агенты могут использовать все свободные места, когда людей в очереди нет. Приоритет не гарантирует человеку нулевое ожидание: все места могут быть заняты выполняющимися задачами.
+All tasks share the same execution capacity. Agents can use all available slots when there are no humans waiting in the queue. Priority does not guarantee zero wait time for humans: all slots may be occupied by running tasks.
 
-Очереди, планировщик, семафоры и язык программирования — детали реализации. Совместимый клиент не должен зависеть от их типов или устройства.
+Queues, the scheduler, semaphores, and the programming language are implementation details. A compatible client must not depend on their types or internal structure.
 
-## 7. Настройки текущего стенда
+## 7. Current test setup
 
-| Настройка | Значение |
+| Setting | Value |
 | --- | --- |
-| Общий предел выполняющихся задач | 10 |
-| Предел ожидающей агентной очереди | 32; выполняющиеся задачи не включены |
-| Объявляемый лимит клиента | 10; также проверялось значение 5 |
-| Допустимый диапазон лимита в Rust-клиенте | 1–1000; локальное защитное ограничение клиента |
-| Таймаут одной HTTP-попытки | 30 секунд |
-| Общий дедлайн задачи с ожиданием на клиенте и повторами | Не задан |
-| Хранение очередей | В памяти; при перезапуске состояние теряется |
-| Человеческая очередь | Без ограничения размера |
+| Total limit on running tasks | 10 |
+| Waiting agent queue limit | 32; running tasks are excluded |
+| Advertised client limit | 10; a value of 5 was also tested |
+| Valid limit range in the Rust client | 1–1000; a local client safety bound |
+| Timeout for one HTTP attempt | 30 seconds |
+| Overall task deadline, including client-side waiting and retries | Not set |
+| Queue storage | In memory; state is lost on restart |
+| Human queue | Unbounded |
 
-Флаг запуска `TEST_429` включает однократный искусственный отказ для первого агентного запроса: `429` с `Retry-After: 2`. Этот флаг — инструмент тестирования, не часть сетевого контракта. Без флага очередь всё равно может выдавать обычные `429` при переполнении.
+The `TEST_429` startup flag enables a single artificial rejection of the first agent request: `429` with `Retry-After: 2`. This flag is a testing tool, not part of the network contract. Without the flag, a full queue can still produce normal `429` responses.
 
-## 8. Алгоритм независимого клиента
+## 8. Independent client algorithm
 
-1. Получить базовый URL из настройки.
-2. Запросить `/agent-policy`, проверить версию и лимит.
-3. Создать общий ограничитель параллелизма агентных запросов к этому сервису.
-4. При появлении логической задачи сохранить время её создания и дождаться разрешения.
-5. Отправить `POST /work` с `X-Client-Type: agent`.
-6. При `200` дочитать ответ и завершить задачу успешно.
-7. При `429`, пока бюджет попыток не исчерпан, прочитать `Retry-After`, выждать задержку и повторить.
-8. При другой ошибке или исчерпании бюджета завершить задачу с ошибкой.
-9. Освободить клиентское разрешение при любом завершении задачи.
+1. Read the base URL from configuration.
+2. Request `/agent-policy` and validate the version and limit.
+3. Create a shared concurrency limiter for agent requests to this service.
+4. When a logical task is created, record its creation time and wait for a permit.
+5. Send `POST /work` with `X-Client-Type: agent`.
+6. On `200`, read the entire response and complete the task successfully.
+7. On `429`, while attempts remain, read `Retry-After`, wait for the specified delay, and retry.
+8. On another error or when the attempt budget is exhausted, fail the task.
+9. Release the client-side permit whenever the task finishes, regardless of the outcome.
 
-Этот алгоритм можно реализовать на Python, TypeScript или другом языке, не импортируя код Rust-сервера.
+This algorithm can be implemented in Python, TypeScript, or another language without importing the Rust server code.
 
-## 9. Проверки совместимости
+## 9. Compatibility checks
 
-| Проверка | Ожидаемый результат |
+| Check | Expected result |
 | --- | --- |
-| Сервер сообщает лимит 10 | Клиент допускает не более 10 незавершённых агентных попыток |
-| Сервер сообщает лимит 5; клиент запускают заново без правки кода | Клиент применяет 5 |
-| Неизвестная версия, например 2 | Клиент не начинает агентную нагрузку и сообщает ошибку |
-| Лимит 0 | Клиент сообщает ошибку, не зависает на семафоре |
-| Новое необязательное поле при версии 1 | Клиент продолжает работу |
-| Однократный `429` с `Retry-After: 2` | Повтор начинается не раньше чем через 2 секунды после получения ответа; задача затем завершается |
-| Повторяющийся `429` | Клиент прекращает попытки после достижения своего конечного бюджета |
-| Таймаут или разрыв соединения | Клиент сообщает ошибку, не делает автоматический повтор |
+| The server advertises a limit of 10 | The client allows at most 10 in-flight agent attempts |
+| The server advertises a limit of 5; the client is restarted without code changes | The client applies 5 |
+| An unsupported version, such as 2 | The client does not start agent traffic and reports an error |
+| A limit of 0 | The client reports an error instead of waiting indefinitely on a semaphore |
+| A new optional field with version 1 | The client continues to work |
+| A single `429` with `Retry-After: 2` | The retry starts no sooner than 2 seconds after the response is received; the task then completes |
+| Repeated `429` responses | The client stops retrying when its finite attempt budget is exhausted |
+| A timeout or connection failure | The client reports an error and does not retry automatically |
 
-В диалоге проверены успешные запросы, применение лимитов 10 и 5, приоритетная обработка, отказы при переполнении и однократный повтор после двухсекундного ожидания. Остальные строки — план проверок, а не уже полученные результаты. Точное соблюдение числа одновременных попыток отдельно не инструментировалось.
+Successful requests, limits of 10 and 5, priority scheduling, rejection on queue overflow, and a single retry after a two-second wait were checked during the conversation. The remaining rows are planned checks, not completed results. Exact compliance with the concurrent attempt limit was not instrumented separately.
 
-## 10. Измерение эффекта
+## 10. Measuring the effect
 
-Для сравнения использовать одинаковый сервер, одинаковые моменты создания логических задач и одинаковый их объём. Учитывать успешные и неуспешные задачи отдельно.
+Comparisons should use the same server, the same logical task creation times, and the same task counts. Track successful and unsuccessful tasks separately.
 
-Полное время задачи включает ожидание на клиенте, запросы, серверное ожидание и паузы повторов. Дополнительно полезно измерять число HTTP-попыток, число ответов `429`, максимум серверной очереди и время завершения всего набора задач.
+The full task duration includes client-side waiting, requests, server-side waiting, and retry delays. It is also useful to measure the number of HTTP attempts, the number of `429` responses, the maximum server queue length, and the time needed to complete the entire set of tasks.
 
-Текущий генератор считает задержку от начала асинхронной задачи перед `send_request` до её завершения. Клиентский семафор и повторы в неё включены; возможное опоздание запуска относительно запланированного момента — нет. Его p95 рассчитывается только по успешным задачам. Поэтому сравнивать p95 без числа ошибок некорректно.
+The current generator measures latency from the start of the asynchronous task, before `send_request`, until that task completes. This includes the client-side semaphore wait and retries, but excludes any delay in starting relative to the planned time. Its p95 is calculated only for successful tasks. Comparing p95 without the error count is therefore invalid.
 
-## 11. Границы MVP
+## 11. MVP limitations
 
-- `X-Client-Type` можно подделать; это метка, не аутентификация и не авторизация.
-- Нет выделения идентичности клиента, делегированных прав и глобального бюджета нескольких клиентов.
-- Нет резервирования мощности по опубликованному лимиту и обновления политики во время работы.
-- Нет устойчивого хранения задач, идентификаторов для запроса статуса и восстановления после сбоя.
-- Нет гарантированной отмены работы при отключении клиента.
-- Строгий приоритет может привести к голоданию агентов при постоянной человеческой нагрузке.
-- Очередь ожидающих задач клиента и человеческая очередь сервера пока не ограничены.
-- Поведение с огромным `Retry-After`, общие дедлайны и защита от массовых синхронных повторов не доработаны.
-- Настоящие операции, HTTPS, независимые реализации и промышленная безопасность требуют отдельной работы.
+- `X-Client-Type` can be spoofed; it is a label, not authentication or authorization.
+- There is no client identity, delegated permissions, or global budget across multiple clients.
+- There is no capacity reservation based on the advertised limit or policy refresh during execution.
+- There is no durable task storage, task identifiers for status queries, or crash recovery.
+- Work is not guaranteed to be canceled when a client disconnects.
+- Strict priority can starve agents under sustained human traffic.
+- The client's waiting task queue and the server's human queue remain unbounded.
+- Handling of extremely large `Retry-After` values, overall deadlines, and protection against synchronized retry bursts is incomplete.
+- Real operations, HTTPS, independent implementations, and production security require further work.
 
-## 12. Используемые существующие механизмы
+## 12. Existing mechanisms used
 
-Это экспериментальный контракт поверх HTTP. Он переиспользует стандартные HTTP-методы, статусы и заголовок `Retry-After`; собственными являются путь `/agent-policy`, схема политики и договорённость `X-Client-Type`.
+This is an experimental contract over HTTP. It reuses standard HTTP methods, statuses, and the `Retry-After` header. The `/agent-policy` path, policy schema, and `X-Client-Type` convention are specific to this contract.
 
 - [HTTP Semantics — RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html)
 - [429 Too Many Requests — RFC 6585](https://www.rfc-editor.org/rfc/rfc6585.html)
 
-Наличие документа не означает новизны всех механизмов или признания протокола стандартом. Его назначение — дать другой реализации однозначные правила взаимодействия с текущим стендом.
+The existence of this document does not imply that all mechanisms are novel or that the protocol is recognized as a standard. Its purpose is to give other implementations unambiguous rules for interacting with the current test setup.
