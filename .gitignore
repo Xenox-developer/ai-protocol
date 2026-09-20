@@ -8,17 +8,17 @@ __pycache__/
 venv/
 .pytest_cache/
 
-# Секреты и локальные настройки
+# Secrets and local settings
 .env
 .env.*
 !.env.example
 *.pem
 *.key
 
-# Система и редакторы
+# System and editors
 .DS_Store
 .idea/
 .vscode/
 
-# Логи
+# Logs
 *.log

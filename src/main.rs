@@ -296,7 +296,7 @@ async fn call_catalog(
 
     match result {
         Ok(response) => {
-            // Ошибка каталога — ошибка обращения к нижележащему сервису.
+            // Treat a catalog error as a failure of the upstream service.
             if response.status() != reqwest::StatusCode::OK {
                 return (
                     StatusCode::BAD_GATEWAY,

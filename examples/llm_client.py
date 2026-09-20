@@ -11,7 +11,7 @@ from getpass import getpass
 
 from openai import OpenAI
 
-# Клиенту заранее известны адрес сервиса и точка получения описания.
+# The client knows the service URL and discovery endpoint in advance.
 BASE_URL = "http://127.0.0.1:3000"
 
 with httpx.Client(
@@ -36,7 +36,7 @@ with httpx.Client(
 
     task = input("Что сделать: ")
 
-    # Превращаем описания сервиса в инструменты для LLM.
+    # Convert the service's operation descriptions into tools for the LLM.
     tools = []
 
     for item in operations:
@@ -86,7 +86,7 @@ with httpx.Client(
         if item.type == "function_call"
     ]
 
-    # Модель может ответить текстом вместо вызова.
+    # The model may respond with text instead of a tool call.
     if not calls:
         print(decision.output_text or "Модель не выбрала опера операцию.")
         sys.exit(0)
@@ -96,7 +96,7 @@ with httpx.Client(
 
     call = calls[0]
 
-    # Разрешаем только операцию из опубликованного списка списка.
+    # Allow only an operation from the published list.
     operation = next(
         (item for item in operations if item["name"] == call.name),
         None,
@@ -113,7 +113,7 @@ with httpx.Client(
         json.dumps(params, ensure_ascii=False),
     )
 
-    # Проверяем параметры до отправки запроса.
+    # Validate the parameters before sending the request.
     jsonschema.validate(
         instance=params,
         schema=operation["input_schema"],
@@ -122,11 +122,11 @@ with httpx.Client(
     method = operation["method"]
     path = operation["path"]
 
-    # Этот прототип поддерживает операции POST с JSON-телом.
+    # This prototype supports POST operations with a JSON body.
     if method != "POST":
         sys.exit("Этот клиент пока поддерживает только POST")
 
-    # Для демо разрешаем простые пути внутри того же сервиса.
+    # For this demo, allow only simple paths within the same service.
     if not re.fullmatch(r"/[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*", path):
         sys.exit("Неподдерживаемый путь операции")
 
