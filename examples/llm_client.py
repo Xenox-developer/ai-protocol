@@ -24,17 +24,17 @@ with httpx.Client(
     policy = response.json()
 
     if type(policy.get("version")) is not int or policy["version"] != 2:
-        sys.exit("Неподдерживаемая версия протокола")
+        sys.exit("Unsupported protocol version")
 
     limit = policy.get("max_in_flight")
     if type(limit) is not int or limit < 1:
-        sys.exit("Некорректный лимит")
+        sys.exit("Invalid concurrency limit")
 
     operations = policy.get("operations")
     if not isinstance(operations, list) or not operations:
-        sys.exit("Сервис не предоставил список операций")
+        sys.exit("The service did not provide a list of operations")
 
-    task = input("Что сделать: ")
+    task = input("What would you like to do: ")
 
     # Convert the service's operation descriptions into tools for the LLM.
     tools = []
@@ -53,7 +53,7 @@ with httpx.Client(
 
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
-        api_key = getpass("API-ключ OpenAI: ")
+        api_key = getpass("OpenAI API key: ")
 
     with OpenAI(
         api_key=api_key,
@@ -63,16 +63,16 @@ with httpx.Client(
             decision = llm.responses.create(
                 model="gpt-4.1-mini",
                 instructions=(
-                    "Выполняй задачу пользователя через доступные инструменты. "
-                    "Выбери не более одного инструмента. "
-                    "Если можешь заполнить обязательные параметры по запросу "
-                    "пользователя, вызови подходящий инструмент. "
-                    "Не запрашивай дополнительные предпочтения, "
-                    "которые не требуются для вызова операции. "
-                    "Учитывай описание операции и схему параметров. "
-                    "Уточняй только тогда, когда обязательный параметр "
-                    "невозможно определить без выдумывания. "
-                    "Если подходящего инструмента нет, сообщи об этом."
+                    "Complete the user's task using the available tools. "
+                    "Choose at most one tool. "
+                    "If you can fill in the required parameters from the user's "
+                    "request, call the appropriate tool. "
+                    "Do not ask for additional preferences "
+                    "that are not required to call the operation. "
+                    "Consider the operation description and parameter schema. "
+                    "Ask for clarification only when a required parameter "
+                    "cannot be determined without inventing it. "
+                    "If no suitable tool is available, say so."
                 ),
                 input=task,
                 tools=tools,
@@ -88,11 +88,11 @@ with httpx.Client(
 
     # The model may respond with text instead of a tool call.
     if not calls:
-        print(decision.output_text or "Модель не выбрала опера операцию.")
+        print(decision.output_text or "The model did not select an operation.")
         sys.exit(0)
 
     if len(calls) != 1:
-        sys.exit("Ожидался один вызов операции")
+        sys.exit("Expected a single operation call")
 
     call = calls[0]
 
@@ -103,13 +103,13 @@ with httpx.Client(
     )
 
     if operation is None:
-        sys.exit("Модель выбрала неизвестную операцию")
+        sys.exit("The model selected an unknown operation")
 
     params = json.loads(call.arguments)
 
-    print("Модель выбрала:", operation["name"])
+    print("The model selected:", operation["name"])
     print(
-        "Параметры:",
+        "Parameters:",
         json.dumps(params, ensure_ascii=False),
     )
 
@@ -124,14 +124,14 @@ with httpx.Client(
 
     # This prototype supports POST operations with a JSON body.
     if method != "POST":
-        sys.exit("Этот клиент пока поддерживает только POST")
+        sys.exit("This client currently supports only POST")
 
     # For this demo, allow only simple paths within the same service.
     if not re.fullmatch(r"/[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*", path):
-        sys.exit("Неподдерживаемый путь операции")
+        sys.exit("Unsupported operation path")
 
     for attempt in range(1, 6):
-        print(f"Отправляем {method} {path}, попытка {attempt}")
+        print(f"Sending {method} {path}, attempt {attempt}")
 
         response = client.request(
             method,
@@ -144,7 +144,7 @@ with httpx.Client(
             raw = response.headers.get("Retry-After", "1").strip()
             seconds = int(raw) if raw.isascii() and raw.isdigit() else 1
 
-            print(f"Сервис просит подождать {seconds} сек.")
+            print(f"The service asks to wait {seconds} seconds.")
             time.sleep(seconds)
             continue
 

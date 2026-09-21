@@ -20,17 +20,17 @@ with httpx.Client(
     policy = response.json()
 
     if type(policy.get("version")) is not int or policy["version"] != 2:
-        sys.exit("Неподдерживаемая версия протокола")
+        sys.exit("Unsupported protocol version")
 
     limit = policy.get("max_in_flight")
     if type(limit) is not int or limit < 1:
-        sys.exit("Некорректный лимит")
+        sys.exit("Invalid concurrency limit")
 
     operations = policy.get("operations")
     if not isinstance(operations, list) or not operations:
-        sys.exit("Сервис не предоставил список операций")
+        sys.exit("The service did not provide a list of operations")
 
-    print("Доступные операции:")
+    print("Available operations:")
 
     for number, operation in enumerate(operations, start=1):
         print(
@@ -38,16 +38,16 @@ with httpx.Client(
             f"{operation['description']}"
         )
 
-    number = int(input("Номер операции: "))
+    number = int(input("Operation number: "))
     if not 1 <= number <= len(operations):
-        sys.exit("Нет такой операции")
+        sys.exit("No such operation")
 
     operation = operations[number - 1]
 
-    print("Схема параметров:")
+    print("Parameter schema:")
     print(json.dumps(operation["input_schema"], ensure_ascii=False, indent=2))
 
-    params = json.loads(input("Параметры в формате JSON: "))
+    params = json.loads(input("Parameters as JSON: "))
 
     # Validate the parameters before sending the request.
     jsonschema.validate(
@@ -60,14 +60,14 @@ with httpx.Client(
 
     # This prototype supports POST operations with a JSON body.
     if method != "POST":
-        sys.exit("Этот клиент пока поддерживает только POST")
+        sys.exit("This client currently supports only POST")
 
     # For this demo, allow only simple paths within the same service.
     if not re.fullmatch(r"/[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*", path):
-        sys.exit("Неподдерживаемый путь операции")
+        sys.exit("Unsupported operation path")
 
     for attempt in range(1, 6):
-        print(f"Отправляем {method} {path}, попытка {attempt}")
+        print(f"Sending {method} {path}, attempt {attempt}")
 
         response = client.request(
             method,
@@ -80,7 +80,7 @@ with httpx.Client(
             raw = response.headers.get("Retry-After", "1").strip()
             seconds = int(raw) if raw.isascii() and raw.isdigit() else 1
 
-            print(f"Сервис просит подождать {seconds} сек.")
+            print(f"The service asks to wait {seconds} seconds.")
             time.sleep(seconds)
             continue
 

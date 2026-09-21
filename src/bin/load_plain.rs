@@ -11,10 +11,10 @@ async fn main() {
         .build()
         .unwrap();
 
-    println!("Тест 1: только люди");
+    println!("Test 1: humans only");
     generate(client.clone(), "human", 5).await;
 
-    println!("\nТест 2: люди и агенты одновременно");
+    println!("\nTest 2: humans and agents concurrently");
     tokio::join!(
         generate(client.clone(), "human", 5),
         generate(client.clone(), "agent", 120),
@@ -56,14 +56,14 @@ async fn generate(client: Client, kind: &'static str, rate: u64) {
             Ok(()) => times.push(elapsed),
             Err(error) => {
                 if errors == 0 {
-                    eprintln!("Причина: {error:?}");
+                    eprintln!("Reason: {error:?}");
                 }
                 errors += 1;
             }
         }
     }
 
-    println!("{kind}: успешно {}, ошибок {errors}", times.len());
+    println!("{kind}: successful {}, errors {errors}", times.len());
 
     if !times.is_empty() {
         times.sort_by(|a, b| a.partial_cmp(b).unwrap());
@@ -71,7 +71,7 @@ async fn generate(client: Client, kind: &'static str, rate: u64) {
         // Compute the 95th percentile position by rounding up.
         let index = (times.len() as f64 * 0.95).ceil() as usize - 1;
 
-        println!("{kind}: p95 = {:.1} мс", times[index]);
+        println!("{kind}: p95 = {:.1} ms", times[index]);
     }
 }
 

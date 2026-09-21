@@ -66,12 +66,12 @@ async fn agent_policy() -> Json<AgentPolicy> {
                 operations: vec![
             Operation {
                 name: "search_products",
-                description: "Поиск товаров по подстроке в английском названии. \
-                              Для кроссовок передай query=\"sneakers\", \
-                              для ботинок — query=\"boots\". \
-                              Чтобы получить все товары, передай query=\"\". \
-                              Каталог содержит только обувь, поэтому запрос \
-                              всей доступной обуви означает получение всех товаров.",
+                description: "Search products by a substring in their English name. \
+                              For sneakers, pass query=\"sneakers\"; \
+                              for boots, pass query=\"boots\". \
+                              To retrieve all products, pass query=\"\". \
+                              The catalog contains only footwear, so a request \
+                              for all available footwear means retrieving all products.",
                 method: "POST",
                 path: "/search",
                 input_schema: serde_json::json!({
@@ -80,7 +80,7 @@ async fn agent_policy() -> Json<AgentPolicy> {
                     "properties": {
                         "query": {
                             "type": "string",
-                            "description": "Строка для поиска товаров"
+                            "description": "Product search string"
                         }
                     },
                     "required": ["query"],
@@ -89,8 +89,8 @@ async fn agent_policy() -> Json<AgentPolicy> {
             },
             Operation {
                 name: "get_product",
-                description: "Получить один товар по известному числовому ID. \
-                              Используй, когда пользователь указал ID товара.",
+                description: "Retrieve a single product by its known numeric ID. \
+                              Use this when the user provides a product ID.",
                 method: "POST",
                 path: "/product",
                 input_schema: serde_json::json!({
@@ -100,7 +100,7 @@ async fn agent_policy() -> Json<AgentPolicy> {
                         "id": {
                             "type": "integer",
                             "minimum": 0,
-                            "description": "Идентификатор товара"
+                            "description": "Product ID"
                         }
                     },
                     "required": ["id"],
@@ -137,7 +137,7 @@ async fn main() {
         .await
         .unwrap();
 
-    println!("Сервер запущен на порту 3000");
+    println!("Server started on port 3000");
 
     axum::serve(listener, app).await.unwrap();
 }
@@ -153,7 +153,7 @@ async fn enqueue(
     };
 
     if is_agent && state.reject_once.swap(false, Ordering::Relaxed) {
-        println!("Тест: отклоняем один агентный запрос до выполнения");
+        println!("Test: rejecting one agent request before execution");
 
         return (
             StatusCode::TOO_MANY_REQUESTS,

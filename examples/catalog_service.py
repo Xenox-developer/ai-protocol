@@ -59,7 +59,7 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
 
-print("Каталог запущен на порту 4000", flush=True)
+print("Catalog service started on port 4000", flush=True)
 
 server = ThreadingHTTPServer(("127.0.0.1", 4000), Handler)
 server.serve_forever()
