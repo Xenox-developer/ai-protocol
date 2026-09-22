@@ -1,249 +1,335 @@
-# AI Protocol — current v2 implementation
+# AI Protocol — experimental v3 contract
 
-An experimental HTTP contract for the local server in `src/main.rs`.
+Status: a local, single-process prototype over HTTP, not a public standard.
+This document describes `src/main.rs` and the current example clients.
 
-## Operations
+## Authentication and permissions
 
-| Method and path | Request | Successful response |
+All service routes require `Authorization: Bearer <token>`:
+
+| Method | Path | Purpose |
 | --- | --- | --- |
-| `GET /agent-policy` | No body | `version: 2`, `max_in_flight: 10`, `operations` |
-| `POST /search` | `{"query":"boots"}` | `{"products":[...]}` |
-| `POST /product` | `{"id":1}` | `{"product":{...}}` or `{"product":null}` |
+| GET | `/agent-policy` | Discover the authenticated caller's policy |
+| POST | `/search` | `search_products`, JSON body `{"query":"boots"}` |
+| POST | `/product` | `get_product`, JSON body `{"id":2}` |
 
-The policy describes each operation using the fields `name`, `description`, `method`,
-`path`, and `input_schema`. Parameters are sent as a JSON body with
-`Content-Type: application/json`. Search performs a case-insensitive substring
-match against English product names; an empty string returns the entire catalog.
-`id` is a non-negative integer within the Rust `u64` range.
+Tokens are opaque server-configured credentials. Missing, unknown, malformed,
+or duplicate Authorization headers return `401` with `WWW-Authenticate: Bearer`.
+Bearer scheme matching is case-insensitive. Credentials never come from JSON
+or query parameters. `X-Client-Type` is ignored, including when absent.
 
-Agents send `X-Client-Type: agent`. A missing header or a different value
-routes the request to the human queue. This is not authentication.
-The server selects human tasks first and does not interrupt tasks already running.
-The total execution limit is 10 tasks; the waiting agent queue is limited to 32.
-The client limit is not a shared quota across all clients.
+Each token maps to a `principal_id`, an `agent` or `interactive` class, allowed
+operation names, and a shared budget. The server assigns the class; an
+interactive credential does not prove the caller is human. A disallowed operation
+returns `403` before body parsing or admission. Discovery filtering alone is
+not authorization: direct operation calls are checked again.
 
-When the agent queue is full, the server returns `429` and `Retry-After: 1`
-before accepting the task. `TEST_429=1` enables a single test rejection with
-`Retry-After: 2`. The client may retry after the specified delay,
-but must limit the number of attempts. The examples allow at most 5 attempts.
-Other errors are not retried automatically.
+The demo configuration uses environment variables:
 
-The server forwards operations to the local catalog at `127.0.0.1:4000`:
-`GET /products/search?query=...` or `GET /products/get?id=...`.
-The request timeout is 5 seconds. Catalog unavailability, an error response,
-or a failure to read the response body results in `502`; a timeout while
-sending the request results in `504`.
-If the result channel is lost, the server may return `500`.
+| Variable | Required | Principal | Class | Allowed operations | Shared budget |
+| --- | --- | --- | --- | --- | --- |
+| `AGENT_TOKEN_1` | Yes | demo-owner | agent | Both | 5 |
+| `AGENT_TOKEN_2` | Yes | demo-owner | agent | Both | Same 5 |
+| `PRODUCT_ONLY_TOKEN` | No | demo-owner | agent | get_product | Same 5 |
+| `INTERACTIVE_TOKEN` | Yes | demo-owner | interactive | Both | Separate 10 |
+| `OTHER_AGENT_TOKEN` | No | other-owner | agent | Both | Separate 5 |
 
-The Python clients validate parameters against the published JSON Schema and
-run sequentially, so they stay within any positive concurrency limit.
-The Rust `load` client uses a shared semaphore and supports version `2`.
-`load_plain` provides a comparison without a client-side policy.
-The current server does not expose `/work`.
+Startup fails on missing required, empty, invalid, or duplicate token values.
+There are no default credentials. A separate optional `ADMIN_TOKEN` enables
+administrative updates and must differ from every service token. This fixed demo mapping is separate from the
+scheduler; registration, rotation, revocation, and external identity adapters
+are outside this version.
 
-Startup commands are in the [README](../README.md); measurements are described
-in [benchmarks/README.md](../benchmarks/README.md).
+## Discovery
 
----
-
-## Archived description of the previous experiment
-
-The original document is translated below without correcting its historical claims.
-Although its heading identifies version `2`, its sections describe the earlier
-v1 contract with `/work` and a synthetic delay. For current operations and
-the current version, use the description above. The verification results below
-refer to the previous experiment.
-
-# AI Protocol — experimental MVP contract
-
-Document revision: 0.1. Message version: `2`.
-
-Status: a local experiment, not a public standard or a production-ready implementation.
-
-This document describes the server and client code developed during the conversation. It does not assume access to subsequent local source changes.
-
-## 1. Purpose
-
-The service tells an agent client how much concurrency is allowed. The client limits the number of in-flight requests and handles temporary rejection before a task is accepted. The server prioritizes interactive requests.
-
-The words “must” and “must not” indicate requirements of this experimental contract. Specific settings for the current implementation are listed separately in section 7.
-
-## 2. Transport and service address
-
-The client is given a base URL in advance, such as `http://127.0.0.1:3000`.
-
-The local MVP uses HTTP. HTTPS is not configured in the current experiment; TLS does not change the paths and fields described here. Automatic service discovery is not available.
-
-| Method and path | Purpose |
-| --- | --- |
-| `GET /agent-policy` | Retrieve the service policy |
-| `POST /work` | Execute the test operation |
-
-## 3. Retrieving the policy
-
-Before starting agent tasks, the client must successfully retrieve the policy:
-
-```http
-GET /agent-policy HTTP/1.1
-Host: 127.0.0.1:3000
-```
-
-A successful response has status `200`, content type `application/json`, and the following body:
+An authenticated `GET /agent-policy` returns JSON such as:
 
 ```json
-{"version":1,"max_in_flight":10}
+{
+  "version": 3,
+  "policy_revision": 1,
+  "refresh_after_ms": 1000,
+  "outstanding": 0,
+  "principal_id": "demo-owner",
+  "client_class": "agent",
+  "limits": {"scope": "principal", "max_outstanding": 5},
+  "queue": {"max_wait_ms": 10000},
+  "operations": [
+    {
+      "name": "get_product",
+      "description": "Retrieve a single product by its known numeric ID.",
+      "method": "POST",
+      "path": "/product",
+      "input_schema": {
+        "type": "object",
+        "properties": {"id": {"type": "integer", "minimum": 0}},
+        "required": ["id"],
+        "additionalProperties": false
+      }
+    }
+  ]
+}
 ```
 
-| Field | Type | Meaning |
-| --- | --- | --- |
-| `version` | Integer | Contract version; this client supports only `1` |
-| `max_in_flight` | Positive integer | Maximum number of concurrent in-flight agent HTTP attempts from one client instance to this service |
+This example is for the product-only credential. Other credentials receive both
+operations. `operations` contains only permitted descriptors. Each descriptor
+includes `name`, `description`, `method`, `path`, and `input_schema`.
+All responses passing through authentication, including policy and error
+responses, carry `Cache-Control: no-store`. Tokens are never returned.
 
-The client must validate the presence and types of required fields, confirm that the version is supported, and ensure that the limit is positive. Unknown additional fields should be ignored if the version is supported. If policy retrieval or validation fails, agent traffic must not start; the error must be reported to the calling code.
+The exact budget scope is **one gateway process + principal_id + client_class**.
+Read `scope: "principal"` together with `client_class` and this single-process
+restriction. Connections, client processes, operations, and token count do not
+multiply this budget. Discovery does not enqueue catalog work or consume it.
+The policy reports a configured ceiling, not currently available slots or a
+reservation. `policy_revision` starts at 1 per principal/class and increments
+only on an actual limit change. `refresh_after_ms` is 1000 in this demo.
+`outstanding` is an advisory snapshot of accepted work, not a reservation.
+Revision, limit, and outstanding are read together under one budget lock.
+`queue.max_wait_ms` is the maximum accepted waiting time for this caller's class,
+not an upstream timeout or estimated latency. It is fixed at process startup,
+independent of dynamic budget revisions, and does not change through the admin API.
 
-The limit must be shared by all tasks from one client instance that access this service. A separate semaphore must not be created for each request. Requests waiting for a client-side permit are not yet HTTP attempts.
+## Administrative limit updates
 
-This is an agreement with the client, not server capacity reserved for it. The limit is not a global quota across all clients. The current implementation has no client identity or server-side enforcement of individual client quotas.
+`PATCH /admin/principals/{principal_id}/limits` requires a distinct Bearer
+`ADMIN_TOKEN`. The environment is read at startup. With no admin token configured,
+this route returns 404 and no updates are possible. Missing/unknown credentials
+return 401 with `WWW-Authenticate: Bearer`; valid agent/interactive credentials
+return 403. An admin token cannot call the ordinary service routes. Duplicate
+authorization headers are rejected. Administrative responses also use `no-store`.
 
-The policy is read at startup. Periodic refresh, expiration, and changes to the limit during execution are not yet defined. Changing the value of `max_in_flight` does not require a version change. An incompatible change to the meaning of fields requires a new version.
+Body: `{"max_outstanding":2}`. Only integer values from 1 to 1000 are supported.
+Invalid values, types, missing/extra fields return 422; malformed JSON returns
+400. Unknown principals return 404, without creating an identity or budget.
+Only the existing **agent** budget of the named owner is changed. Its tokens
+continue sharing the same counter. Interactive and other owners are unaffected.
 
-## 4. Executing an operation
+A successful response is a coherent snapshot at the update's linearization point:
 
-The agent client must send:
-
-```http
-POST /work HTTP/1.1
-Host: 127.0.0.1:3000
-X-Client-Type: agent
-Content-Length: 0
+```json
+{
+  "principal_id": "demo-owner",
+  "client_class": "agent",
+  "policy_revision": 2,
+  "limits": {"scope":"principal", "max_outstanding":2},
+  "outstanding": 5
+}
 ```
 
-The interactive load generator uses `X-Client-Type: human`.
+Outstanding may legitimately exceed a reduced maximum. Existing accepted jobs
+are preserved. Admission rejects new work while outstanding is at or above the
+current maximum, so lowering 5 to 2 at outstanding 5 admits nothing new until
+outstanding is 1 or 0. Increasing 2 to 5 immediately allows new admissions
+subject to queue capacity. Resizing, admission, completion, and snapshots use
+the same mutex-protected state; no independent replacement semaphore is created.
+An identical PATCH is a no-op for revision. Revisions and limits reset to their
+configured defaults on process restart; persistence and a process epoch are not
+part of this stage. The wire version remains 3 for every limit change.
 
-HTTP header names are case-insensitive. The implementation compares the value `agent` exactly; a missing header or any other value routes the request to the human queue. This is demo server behavior, not a reliable way to identify a human.
+## Admission, execution, and cancellation
 
-The test operation has an empty request body. Business operation parameters, their schemas, and automatic operation discovery are not yet available.
+The outstanding count includes every accepted queued or running operation.
+Admission checks and increments the counter without waiting for capacity before
+enqueueing, and gives the job an owning guard. Concurrent
+requests cannot admit more than the owner/class maximum. Agent budgets start at 5 and are administratively adjustable;
+interactive budgets remain 10. Both waiting queues are bounded to 32 jobs; at most
+10 jobs execute across both classes and all principals.
 
-Successful response:
+If the owner budget is exhausted or the applicable queue is full, the gateway
+returns `429` with `Retry-After: 1` before admission. The rejected attempt never
+reaches the catalog. Having free owner budget does not guarantee queue space.
+`TEST_429=1` produces one artificial rejection of an authorized agent operation
+with `Retry-After: 2`; it consumes neither queue space nor owner budget.
 
-```http
-HTTP/1.1 200 OK
-Content-Type: text/plain; charset=utf-8
+The job owns its budget guard. Outstanding is decremented after the upstream attempt
+finishes, including reading its response body, or fails. If the HTTP handler
+is cancelled while upstream is running, the independent job continues holding
+its permit. Dropping the result receiver does not release a running job's slot.
 
-Done
+Queued jobs whose result receiver is closed are removed when another request
+attempts admission or when the scheduler wakes for selection or a queue deadline. Removing a job releases
+its permit. Immediate detection and cleanup of every TCP disconnect is not
+promised; HTTP stacks may not cancel a handler immediately. Cancellation after
+a job has been selected may still allow it to run. The gateway does not claim
+to cancel or track downstream execution after an upstream timeout.
+
+## Weighted selection and maximum queue waiting
+
+The default startup mode is `SCHEDULER_MODE=weighted`, with the rule below.
+Explicit `SCHEDULER_MODE=fifo` is available for controlled comparison: select the
+oldest accepted job across classes by a unique sequence assigned under the queue
+lock. Both separate per-class queue caps, owner budgets, permissions, deadlines,
+and the total execution cap remain identical. Invalid mode values fail startup.
+Mode is fixed for the process lifetime; the v3 wire contract does not change.
+
+While both classes have ready queued work, select at most three interactive jobs
+consecutively before one agent job. The initial cycle starts with interactive.
+Within each class, surviving jobs keep FIFO order across all principals. If one
+class is empty, the other uses every available executor; such selections reset
+the bounded streak rather than accumulating credits. Completed executors are
+refilled while any ready work remains. Running work is never preempted and total
+execution remains capped at ten.
+
+In weighted mode, the 3:1 rule is a guarantee about **selection order**, not completion order,
+upstream HTTP arrival order, CPU shares, or exact response time. Concurrent jobs
+can start executing and finish in a different order. Operation durations affect
+throughput; there is no per-owner fairness or resource isolation. A job may expire
+before its turn, and there is no guarantee of completing every accepted job.
+
+Startup settings `INTERACTIVE_MAX_WAIT_MS` (default 2000) and `AGENT_MAX_WAIT_MS`
+(default 10000) accept integers from 1 through 3600000 milliseconds. Invalid
+settings fail startup. These are initial demo values, not production advice.
+
+Each job records monotonic time at admission. Its waiting interval ends when the
+scheduler removes it for handoff to an executor. At `now >= accepted_at + max_wait`,
+a still-waiting job expires. This interval excludes client-side waiting, request
+parsing before admission, and execution after handoff. It is independent of the
+five-second upstream timeout. Already selected work never receives queue_timeout,
+even if it finishes after its former queue deadline.
+
+Removal for expiry and selection share the queue lock and a final deadline check
+at handoff. Exactly one path owns the job's budget guard. Expiry removes the job,
+releases the guard before notifying its caller, and cannot call the catalog.
+Cancellation and expiry cannot release the same slot twice. Lowering the dynamic
+budget preserves accepted jobs and their deadlines; expiry releases their slots
+against the same counter, even if outstanding temporarily exceeds the new limit.
+
+One scheduler timer targets the nearest waiting deadline and is re-armed on new
+admissions. It runs even when every executor is busy and no other event occurs;
+there is no busy polling or per-job background loop. Runtime scheduling can delay
+the delivery of an expiry response; this is not a real-time response guarantee.
+
+Expiry returns HTTP **503** with integer `Retry-After: 1` and JSON:
+
+```json
+{"error":{"code":"queue_timeout","execution":"not_started"}}
 ```
 
-Success means that the server has completed the test operation. To measure the full duration of an HTTP attempt, the client must read the entire response body.
+429 means rejected **before admission**. queue_timeout means accepted, then removed
+**before execution**. `execution: "not_started"` is used only for this documented
+queue failure, never for an already sent upstream request's network error or timeout.
 
-The test operation is an asynchronous wait of approximately 100 ms. It does not model actual computation or data modification.
+## Catalog behavior and errors
 
-## 5. Overload and retries
+The gateway calls the local catalog at `127.0.0.1:4000` by default (configurable
+with `CATALOG_PORT`; `GATEWAY_PORT` changes the default gateway port 3000), with a five-second
+request timeout and without forwarding service credentials:
 
-If the agent queue is full, the server rejects the request before enqueueing or executing it:
+- `/search` calls `GET /products/search?query=...`. Search is a case-insensitive
+  substring match on English names. An empty query returns all three products.
+- `/product` calls `GET /products/get?id=...`. IDs are non-negative `u64` values.
+  An unknown ID returns `200` with `{"product":null}`.
+- JSON requests must match the operation fields; unknown fields are rejected.
+- Connection failures, non-200 upstream statuses (including upstream 429), and
+  response-body read failures become `502`. A timeout while sending/waiting for
+  response headers becomes `504`. A lost result channel can produce `500`.
 
-```http
-HTTP/1.1 429 Too Many Requests
-Retry-After: 1
-Content-Type: text/plain; charset=utf-8
+A gateway admission `429` guarantees that this attempt was not accepted; the
+documented queue_timeout response guarantees an accepted attempt never started.
+A timeout, network error, `500`, `502`, or `504` does not prove absence of
+upstream execution and does not authorize an automatic retry. The catalog
+currently performs reads only; idempotency for writes is not defined.
 
-Agent queue is full
-```
+## Clients and retry rules
 
-Under this contract, a `429` response from `/work` guarantees that the attempt was not accepted for execution. This is a requirement of this service, not a universal guarantee of HTTP APIs. Retrying such an attempt is allowed.
+The current profile uses non-negative integer seconds for `Retry-After`, not
+HTTP dates. Wait at least that duration before retrying. If the header is missing
+or malformed, the example clients wait one second. Retries have at most five
+attempts including the first request, shared across both retryable cases:
 
-The server must provide `Retry-After` as a non-negative integer number of seconds. HTTP dates are not used in this experimental profile. The client must wait at least the specified duration before retrying. The response body is diagnostic: decisions are based on the status and header, not the string `Agent queue is full`.
+- HTTP 429 (rejected before admission).
+- HTTP 503 whose JSON `error.code` equals `queue_timeout` **and**
+  `error.execution` equals `not_started` (removed before execution).
 
-The client must have a finite attempt budget and respect the concurrency limit during retries. Once the budget is exhausted, the task is considered unsuccessful; `429` must not be treated as successful completion.
+Missing/wrong markers, malformed bodies, and all other 503 responses are terminal.
+Network errors and upstream failures are not retried. Exhaustion is failure.
+Retry-After does not reserve capacity. Each retry is a new attempt of the same
+logical task, acquires current budget again, and gets a fresh server queue deadline.
+No jitter is implemented. The retry rule applies to both classes in cooperative
+`load` and to the shared Python execution helper; `load_plain` intentionally has
+no retries as a non-cooperative baseline.
 
-The current Rust client:
+Rust retains its overall workload deadline across policy waiting, execution, and
+retry delays. The synchronous Python helper has a 120-second logical operation
+budget (`execute(..., task_timeout=...)`), checked before and after each HTTP
+attempt and before retry sleeps. Each HTTP I/O timeout is capped at the smaller
+of 30 seconds and remaining budget. HTTPX timeouts apply per I/O phase, so Python
+does not promise hard cancellation at the exact overall deadline during an active
+request; it rejects a late result and starts no further attempt. Discovery and
+model decision time precede this operation budget.
 
-- Makes at most 5 attempts, including the initial attempt.
-- Uses 1 second if `Retry-After` is missing or cannot be parsed.
-- Holds the client-side permit while waiting to retry; this is stricter than limiting only active HTTP attempts.
-- Does not add random jitter to retry delays.
-- Automatically retries only agent requests that receive `429`.
+Python clients validate version 3, principal, class, scope, positive limit,
+unique operation names, descriptors, and JSON Schema. Unsupported versions or
+invalid policies fail before catalog traffic. Operations must use POST and
+simple paths on the configured origin. Redirects and external schema references
+are rejected. Service credentials are sent only to that origin; the LLM receives
+only the user task and operation descriptions/schemas. The OpenAI credential is
+separate from the service token.
 
-Network errors, timeouts, and other HTTP error statuses are not retried automatically. If a response is lost, the operation's outcome may be unknown. Idempotency keys, deduplication, and exactly-once execution guarantees are not implemented.
+Each Python invocation executes at most one operation, so it does not implement
+parallel workload control or demonstrate client cooperation under load. Multiple
+invocations still share their server-enforced owner budget. The Rust `load`
+client has one shared adjustable limiter and one policy polling task. It counts
+active HTTP attempts through the full response body, releasing the slot before
+any retry delay. Every retry reacquires capacity using the latest policy.
+A reduction does not cancel sent requests; new sends wait until active is below
+the new maximum. Growth wakes waiting tasks. Policy requests never acquire an
+operation slot, so polling continues even when all slots are occupied.
 
-If the result channel is unavailable, the handler may return `500`. This does not guarantee that the operation was never executed and does not justify a safe automatic retry.
+Polling begins immediately and then waits the advertised `refresh_after_ms`
+after each successful response. The demo advertises 1000 ms; this client accepts
+100..60000 ms and budgets 1..1000. Each policy request times out after two seconds.
+On any network, HTTP, parse, or validation error, new agent attempts pause until
+a valid policy arrives; ongoing requests finish normally. Refresh retries wait
+one second after each failure. A previously learned identity cannot change;
+revision rollback or different limits at the same revision are rejected. Restart
+the client if the gateway restarts with an older revision. The last server
+outstanding shown on a `policy_error` log is stale, retained for diagnostics.
 
-## 6. Priority scheduling
+The default overall workload deadline is 120 seconds (`LOAD_DEADLINE_SECS`, range
+1..86400); Ctrl+C also stops it. Deadline/interruption abort local tasks and stop
+the poller, but do not promise cancellation in the gateway or catalog. A valid
+Retry-After longer than 86400 seconds fails the logical task without retrying
+rather than retrying too soon. Interactive baseline requests do not depend on
+agent policy availability. `LOAD_AGENT_TASKS` (1..10000) selects an agent-only
+batch; otherwise the original baseline/mixed workload is retained.
 
-The server maintains two FIFO queues. When selecting the next task, it checks the human queue first, then the agent queue. Tasks already running are not interrupted.
+`load_plain` authenticates but does not use discovery or retries. These are demo
+generators, not a controlled evaluation of protocol benefits.
 
-All tasks share the same execution capacity. Agents can use all available slots when there are no humans waiting in the queue. Priority does not guarantee zero wait time for humans: all slots may be occupied by running tasks.
+## Compatibility and limitations
 
-Queues, the scheduler, semaphores, and the programming language are implementation details. A compatible client must not depend on their types or internal structure.
+Stage 3 adds optional-to-clients `queue.max_wait_ms` without changing wire version
+or existing v3 field meanings. Existing v3 clients that ignore unknown fields
+remain compatible; they may treat queue expiry as terminal until updated to
+recognize its exact error markers. Neither client requires the new queue field
+to execute against an earlier v3 server.
 
-## 7. Current test setup
+Stage 2 adds `policy_revision`, `refresh_after_ms`, and `outstanding` without
+changing v3 field meanings. Existing v3 Python clients ignore these extra fields
+and still perform one operation at a time; their compatibility tests include the
+new fields. Earlier fixed-limit v3 clients can continue working, but may receive
+429 after a server limit change. They do not gain live adaptation automatically.
+The new adaptive load client requires the added dynamic-policy fields and pauses
+on a stage-1 server that does not supply them. New owners/classes are not created.
 
-| Setting | Value |
-| --- | --- |
-| Total limit on running tasks | 10 |
-| Waiting agent queue limit | 32; running tasks are excluded |
-| Advertised client limit | 10; a value of 5 was also tested |
-| Valid limit range in the Rust client | 1–1000; a local client safety bound |
-| Timeout for one HTTP attempt | 30 seconds |
-| Overall task deadline, including client-side waiting and retries | Not set |
-| Queue storage | In memory; state is lost on restart |
-| Human queue | Unbounded |
+**v3 is incompatible with v1/v2 clients.** Unauthenticated clients receive 401;
+`X-Client-Type` no longer selects a class; `max_in_flight` is replaced by
+`limits.max_outstanding` with a different, server-enforced scope. `/work` is not
+available. Clients must explicitly support v3 and use assigned credentials.
 
-The `TEST_429` startup flag enables a single artificial rejection of the first agent request: `429` with `Retry-After: 2`. This flag is a testing tool, not part of the network contract. Without the flag, a full queue can still produce normal `429` responses.
+Budgets and queues exist only in memory in one process. Multiple replicas would
+have independent counts. AIP, additional scheduling policies, persistent jobs,
+registration, and general protection from abusive HTTP traffic are not included.
+Separate queues do not isolate CPU, database, or network resources. For remote
+use, provide HTTPS and prevent direct access to the catalog that bypasses the
+gateway. Never distribute interactive or other owners' credentials to agents.
 
-## 8. Independent client algorithm
+The optional `BENCHMARK_TRACE_PATH` writes local admission and sampled resource
+metrics to a new file. It adds no HTTP endpoint or policy fields and is disabled
+by default. See the [controlled comparison methodology](../benchmarks/stage4/README.md).
 
-1. Read the base URL from configuration.
-2. Request `/agent-policy` and validate the version and limit.
-3. Create a shared concurrency limiter for agent requests to this service.
-4. When a logical task is created, record its creation time and wait for a permit.
-5. Send `POST /work` with `X-Client-Type: agent`.
-6. On `200`, read the entire response and complete the task successfully.
-7. On `429`, while attempts remain, read `Retry-After`, wait for the specified delay, and retry.
-8. On another error or when the attempt budget is exhausted, fail the task.
-9. Release the client-side permit whenever the task finishes, regardless of the outcome.
-
-This algorithm can be implemented in Python, TypeScript, or another language without importing the Rust server code.
-
-## 9. Compatibility checks
-
-| Check | Expected result |
-| --- | --- |
-| The server advertises a limit of 10 | The client allows at most 10 in-flight agent attempts |
-| The server advertises a limit of 5; the client is restarted without code changes | The client applies 5 |
-| An unsupported version, such as 2 | The client does not start agent traffic and reports an error |
-| A limit of 0 | The client reports an error instead of waiting indefinitely on a semaphore |
-| A new optional field with version 1 | The client continues to work |
-| A single `429` with `Retry-After: 2` | The retry starts no sooner than 2 seconds after the response is received; the task then completes |
-| Repeated `429` responses | The client stops retrying when its finite attempt budget is exhausted |
-| A timeout or connection failure | The client reports an error and does not retry automatically |
-
-Successful requests, limits of 10 and 5, priority scheduling, rejection on queue overflow, and a single retry after a two-second wait were checked during the conversation. The remaining rows are planned checks, not completed results. Exact compliance with the concurrent attempt limit was not instrumented separately.
-
-## 10. Measuring the effect
-
-Comparisons should use the same server, the same logical task creation times, and the same task counts. Track successful and unsuccessful tasks separately.
-
-The full task duration includes client-side waiting, requests, server-side waiting, and retry delays. It is also useful to measure the number of HTTP attempts, the number of `429` responses, the maximum server queue length, and the time needed to complete the entire set of tasks.
-
-The current generator measures latency from the start of the asynchronous task, before `send_request`, until that task completes. This includes the client-side semaphore wait and retries, but excludes any delay in starting relative to the planned time. Its p95 is calculated only for successful tasks. Comparing p95 without the error count is therefore invalid.
-
-## 11. MVP limitations
-
-- `X-Client-Type` can be spoofed; it is a label, not authentication or authorization.
-- There is no client identity, delegated permissions, or global budget across multiple clients.
-- There is no capacity reservation based on the advertised limit or policy refresh during execution.
-- There is no durable task storage, task identifiers for status queries, or crash recovery.
-- Work is not guaranteed to be canceled when a client disconnects.
-- Strict priority can starve agents under sustained human traffic.
-- The client's waiting task queue and the server's human queue remain unbounded.
-- Handling of extremely large `Retry-After` values, overall deadlines, and protection against synchronized retry bursts is incomplete.
-- Real operations, HTTPS, independent implementations, and production security require further work.
-
-## 12. Existing mechanisms used
-
-This is an experimental contract over HTTP. It reuses standard HTTP methods, statuses, and the `Retry-After` header. The `/agent-policy` path, policy schema, and `X-Client-Type` convention are specific to this contract.
-
-- [HTTP Semantics — RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html)
-- [429 Too Many Requests — RFC 6585](https://www.rfc-editor.org/rfc/rfc6585.html)
-
-The existence of this document does not imply that all mechanisms are novel or that the protocol is recognized as a standard. Its purpose is to give other implementations unambiguous rules for interacting with the current test setup.
+See [setup and checks](../README.md) and the
+[archived synthetic v1 experiment](archive/protocol-v1.md). Historical latency
+results are not measurements of this v3 implementation.

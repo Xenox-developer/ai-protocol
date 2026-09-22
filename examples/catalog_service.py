@@ -1,4 +1,5 @@
 import json
+import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
@@ -59,7 +60,12 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
 
-print("Catalog service started on port 4000", flush=True)
+def main():
+    port = int(os.environ.get("CATALOG_PORT", "4000"))
+    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+    print(f"Catalog service started on port {port}", flush=True)
+    server.serve_forever()
 
-server = ThreadingHTTPServer(("127.0.0.1", 4000), Handler)
-server.serve_forever()
+
+if __name__ == "__main__":
+    main()

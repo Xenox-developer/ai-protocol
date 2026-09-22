@@ -1,176 +1,222 @@
-use std::sync::Arc;
 use reqwest::Client;
+use std::sync::Arc;
 use std::time::Duration;
 use tokio::task::JoinSet;
-use tokio::sync::Semaphore;
-use tokio::time::{sleep_until, Instant};
+use tokio::time::{Instant, sleep, sleep_until};
 
-#[derive(serde::Deserialize)]
-struct AgentPolicy {
-    version: u32,
-    max_in_flight: usize,
-}
+#[path = "load/control.rs"]
+mod control;
+use control::{Gate, Policy};
+#[path = "load/retry.rs"]
+mod retry;
 
 #[derive(Clone)]
 struct LoadClient {
     http: Client,
-    agent_slots: Arc<Semaphore>,
+    base_url: String,
+    gate: Arc<Gate>,
+    agent_token: String,
+    interactive_token: Option<String>,
+}
+
+fn number(name: &str, default: u64, maximum: u64) -> u64 {
+    let value = std::env::var(name).unwrap_or_else(|_| default.to_string());
+    value
+        .parse::<u64>()
+        .ok()
+        .filter(|value| (1..=maximum).contains(value))
+        .unwrap_or_else(|| {
+            eprintln!("{name} must be an integer from 1 to {maximum}");
+            std::process::exit(1);
+        })
 }
 
 #[tokio::main]
 async fn main() {
-    let http = Client::builder()
-        .no_proxy()
-        .timeout(Duration::from_secs(30))
-        .build()
-        .unwrap();
-
-    // Fetch the policy before starting the load test.
-    let policy = http
-        .get("http://127.0.0.1:3000/agent-policy")
-        .send()
-        .await
-        .unwrap()
-        .error_for_status()
-        .unwrap()
-        .json::<AgentPolicy>()
-        .await
-        .unwrap();
-
-    assert_eq!(policy.version, 2, "Unknown protocol version");
-    assert!(
-        policy.max_in_flight > 0 && policy.max_in_flight <= 1000,
-        "Invalid concurrency limit"
-    );
-
-    println!("Server concurrency limit: {}", policy.max_in_flight);
-
-    let client = LoadClient {
-        http,
-        agent_slots: Arc::new(Semaphore::new(policy.max_in_flight)),
+    let agent_token = std::env::var("AGENT_TOKEN_1").expect("Set AGENT_TOKEN_1");
+    let batch = std::env::var_os("LOAD_AGENT_TASKS").map(|_| number("LOAD_AGENT_TASKS", 60, 10000));
+    let interactive_token = if batch.is_none() {
+        Some(std::env::var("INTERACTIVE_TOKEN").expect("Set INTERACTIVE_TOKEN"))
+    } else {
+        None
     };
-
-    println!("Test 1: humans only");
-    generate(client.clone(), "human", 5).await;
-
-    println!("\nTest 2: humans and agents concurrently");
-    tokio::join!(
-        generate(client.clone(), "human", 5),
-        generate(client.clone(), "agent", 120),
-    );
+    let port = number("GATEWAY_PORT", 3000, 65535);
+    let deadline = Duration::from_secs(number("LOAD_DEADLINE_SECS", 120, 86400));
+    let client = LoadClient {
+        http: Client::builder()
+            .no_proxy()
+            .redirect(reqwest::redirect::Policy::none())
+            .timeout(Duration::from_secs(30))
+            .build()
+            .unwrap(),
+        base_url: format!("http://127.0.0.1:{port}"),
+        gate: Gate::new(),
+        agent_token,
+        interactive_token,
+    };
+    // One poller per process, independent of all operation permits and retries.
+    let poller = tokio::spawn(poll_policy(client.clone()));
+    let workload = async {
+        if let Some(count) = batch {
+            generate(client.clone(), "agent", count, None).await
+        } else {
+            println!("Test 1: interactive clients only");
+            let baseline = generate(client.clone(), "interactive", 50, Some(5)).await;
+            println!("Test 2: interactive clients and agents concurrently");
+            let (interactive, agent) = tokio::join!(
+                generate(client.clone(), "interactive", 50, Some(5)),
+                generate(client.clone(), "agent", 1200, Some(120)),
+            );
+            baseline + interactive + agent
+        }
+    };
+    let success = tokio::select! {
+        errors = workload => errors == 0,
+        _ = sleep(deadline) => { eprintln!("Workload deadline exceeded"); false },
+        _ = tokio::signal::ctrl_c() => { eprintln!("Client interrupted"); false },
+    };
+    client.gate.stop();
+    poller.abort();
+    let _ = poller.await;
+    if !success {
+        std::process::exit(1);
+    }
 }
 
-async fn generate(client: LoadClient, kind: &'static str, rate: u64) {
+async fn fetch_policy(client: &LoadClient) -> Result<Policy, &'static str> {
+    client
+        .http
+        .get(format!("{}/agent-policy", client.base_url))
+        .bearer_auth(&client.agent_token)
+        .timeout(Duration::from_secs(2))
+        .send()
+        .await
+        .map_err(|_| "Policy transport error")?
+        .error_for_status()
+        .map_err(|_| "Policy HTTP error")?
+        .json()
+        .await
+        .map_err(|_| "Invalid policy JSON")
+}
+
+async fn refresh_policy(client: &LoadClient) -> Duration {
+    let result = match fetch_policy(client).await {
+        Ok(policy) => {
+            let delay = Duration::from_millis(policy.refresh_after_ms);
+            client.gate.apply(policy).map(|_| delay)
+        }
+        Err(error) => Err(error),
+    };
+    let (event, delay) = match result {
+        Ok(delay) => ("policy", delay),
+        Err(_) => {
+            client.gate.pause();
+            ("policy_error", Duration::from_secs(1))
+        }
+    };
+    let state = client.gate.snapshot();
+    println!(
+        "{}",
+        serde_json::json!({
+            "event": event, "policy_revision": state.revision, "limit": state.maximum,
+            "server_outstanding": state.server_outstanding, "client_active": state.active,
+            "paused": !state.ready
+        })
+    );
+    delay
+}
+
+async fn poll_policy(client: LoadClient) {
+    loop {
+        let delay = refresh_policy(&client).await;
+        sleep(delay).await;
+    }
+}
+
+async fn generate(client: LoadClient, kind: &'static str, count: u64, rate: Option<u64>) -> usize {
     let mut tasks = JoinSet::new();
     let start = Instant::now();
-
-    // Send requests for 10 seconds.
-    for i in 0..rate * 10 {
-        // At 5 requests per second: 0, 200, 400, 600... milliseconds.
-        let offset = Duration::from_secs_f64(i as f64 / rate as f64);
-        let scheduled = start + offset;
-
-        sleep_until(scheduled).await;
-
+    for i in 0..count {
+        if let Some(rate) = rate {
+            sleep_until(start + Duration::from_secs_f64(i as f64 / rate as f64)).await;
+        }
         let client = client.clone();
-
-        // Run the request in a separate task and continue sending subsequent requests.
         tasks.spawn(async move {
             let sent = Instant::now();
             let result = send_request(client, kind).await;
-            let elapsed = sent.elapsed().as_secs_f64() * 1000.0;
-
-            (elapsed, result)
+            (sent.elapsed().as_secs_f64() * 1000.0, result)
         });
     }
-
     let mut times = Vec::new();
     let mut errors = 0;
-
-    // Wait for all requests, including those still in the queue.
     while let Some(task) = tasks.join_next().await {
         let (elapsed, result) = task.unwrap();
-
         match result {
             Ok(()) => times.push(elapsed),
             Err(error) => {
                 if errors == 0 {
-                    eprintln!("Reason: {error:?}");
+                    eprintln!("Reason: {error}");
                 }
                 errors += 1;
             }
         }
     }
-
-    println!("{kind}: successful {}, errors {errors}", times.len());
-
+    println!(
+        "{}",
+        serde_json::json!({"event":"completed", "class":kind, "successful":times.len(), "errors":errors})
+    );
     if !times.is_empty() {
-        times.sort_by(|a, b| a.partial_cmp(b).unwrap());
-
-        // Compute the 95th percentile position by rounding up.
+        times.sort_by(f64::total_cmp);
         let index = (times.len() as f64 * 0.95).ceil() as usize - 1;
-
         println!("{kind}: p95 = {:.1} ms", times[index]);
     }
+    errors
 }
 
-async fn send_request(
-    client: LoadClient,
-    kind: &str,
-) -> Result<(), reqwest::Error> {
-    // Human requests proceed immediately. Agent requests wait for a client-side slot.
-    let _permit = if kind == "agent" {
-        Some(client.agent_slots.acquire().await.unwrap())
-    } else {
-        None
-    };
-
-    let mut attempts = 0;
-
-    loop {
-        attempts += 1;
-
+async fn send_request(client: LoadClient, kind: &str) -> Result<(), String> {
+    retry::run(|| async {
+        let permit = if kind == "agent" {
+            Some(client.gate.acquire().await?)
+        } else {
+            None
+        };
+        let token = if kind == "agent" {
+            &client.agent_token
+        } else {
+            client
+                .interactive_token
+                .as_ref()
+                .ok_or("Missing interactive credentials")?
+        };
         let response = client
             .http
-            .post("http://127.0.0.1:3000/search")
-            .header("X-Client-Type", kind)
-            .json(&serde_json::json!({"query": ""}))
+            .post(format!("{}/search", client.base_url))
+            .bearer_auth(token)
+            .json(&serde_json::json!({"query":""}))
             .send()
-            .await?;
-
-        if kind == "agent"
-            && response.status() == reqwest::StatusCode::TOO_MANY_REQUESTS
-            && attempts < 5
-        {
-            // Our protocol specifies Retry-After in whole seconds.
-            let seconds = response
-                .headers()
-                .get("Retry-After")
-                .and_then(|value| value.to_str().ok())
-                .and_then(|value| value.parse::<u64>().ok())
-                .unwrap_or(1);
-
-            // Read the response body so the connection can be reused.
-            response.bytes().await?;
-
-            println!(
-                "Received 429 on attempt {attempts}. Waiting {seconds} seconds."
-            );
-
-            let wait_started = Instant::now();
-
-            tokio::time::sleep(Duration::from_secs(seconds)).await;
-
-            println!(
-                "Waited {:.2} seconds. Starting attempt {}.",
-                wait_started.elapsed().as_secs_f64(),
-                attempts + 1
-            );
-
-            continue;
-        }
-
-        response.error_for_status()?.bytes().await?;
-        return Ok(());
-    }
+            .await
+            .map_err(|_| "Operation transport error")?;
+        let status = response.status();
+        let retry_after = response
+            .headers()
+            .get("Retry-After")
+            .and_then(|header| header.to_str().ok())
+            .map(str::to_owned);
+        let body = response
+            .bytes()
+            .await
+            .map_err(|_| "Cannot read operation response")?
+            .to_vec();
+        drop(permit); // Every retry reacquires current capacity after the delay.
+        Ok(retry::Response {
+            status,
+            retry_after,
+            body,
+        })
+    })
+    .await
 }
+
+#[cfg(test)]
+#[path = "load/tests.rs"]
+mod tests;

@@ -1,0 +1,122 @@
+[
+  {
+    "scenario": "pilot",
+    "comparison": "A -> B",
+    "class": "interactive",
+    "successful_e2e_p95_ms": {
+      "left_median": 11.915231771283743,
+      "right_median": 13.654367430611728,
+      "difference": 1.7391356593279852
+    },
+    "success_fraction": {
+      "left_median": 1.0,
+      "right_median": 1.0,
+      "difference": 0.0
+    },
+    "http_429": {
+      "left_median": 0,
+      "right_median": 0,
+      "difference": 0
+    },
+    "attempts_per_task": {
+      "left_median": 1.0,
+      "right_median": 1.0,
+      "difference": 0.0
+    },
+    "all_success_batch_ms": {
+      "left_median": 1982.135745714136,
+      "right_median": 1979.9193337141362,
+      "difference": -2.216411999999764
+    }
+  },
+  {
+    "scenario": "pilot",
+    "comparison": "A -> B",
+    "class": "agent",
+    "successful_e2e_p95_ms": {
+      "left_median": 11.783271242598289,
+      "right_median": 14.055957097071769,
+      "difference": 2.2726858544734796
+    },
+    "success_fraction": {
+      "left_median": 1.0,
+      "right_median": 1.0,
+      "difference": 0.0
+    },
+    "http_429": {
+      "left_median": 0,
+      "right_median": 0,
+      "difference": 0
+    },
+    "attempts_per_task": {
+      "left_median": 1.0,
+      "right_median": 1.0,
+      "difference": 0.0
+    },
+    "all_success_batch_ms": {
+      "left_median": 1994.7203292617173,
+      "right_median": 1993.7304182617172,
+      "difference": -0.9899110000001201
+    }
+  },
+  {
+    "scenario": "pilot",
+    "comparison": "B -> C",
+    "class": "interactive",
+    "successful_e2e_p95_ms": {
+      "left_median": 13.654367430611728,
+      "right_median": 27.45485449466014,
+      "difference": 13.800487064048411
+    },
+    "success_fraction": {
+      "left_median": 1.0,
+      "right_median": 1.0,
+      "difference": 0.0
+    },
+    "http_429": {
+      "left_median": 0,
+      "right_median": 0,
+      "difference": 0
+    },
+    "attempts_per_task": {
+      "left_median": 1.0,
+      "right_median": 1.0,
+      "difference": 0.0
+    },
+    "all_success_batch_ms": {
+      "left_median": 1979.9193337141362,
+      "right_median": 1979.668499714136,
+      "difference": -0.2508340000001681
+    }
+  },
+  {
+    "scenario": "pilot",
+    "comparison": "B -> C",
+    "class": "agent",
+    "successful_e2e_p95_ms": {
+      "left_median": 14.055957097071769,
+      "right_median": 26.56951956427156,
+      "difference": 12.51356246719979
+    },
+    "success_fraction": {
+      "left_median": 1.0,
+      "right_median": 1.0,
+      "difference": 0.0
+    },
+    "http_429": {
+      "left_median": 0,
+      "right_median": 0,
+      "difference": 0
+    },
+    "attempts_per_task": {
+      "left_median": 1.0,
+      "right_median": 1.0,
+      "difference": 0.0
+    },
+    "all_success_batch_ms": {
+      "left_median": 1993.7304182617172,
+      "right_median": 1991.6996252617173,
+      "difference": -2.0307929999999033
+    }
+  }
+]

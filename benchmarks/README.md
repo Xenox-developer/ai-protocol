@@ -1,7 +1,13 @@
 # Load tests
 
-Both generators first send human traffic at 5 requests/s
-for 10 seconds, then send human traffic at 5 requests/s
+The current controlled experiment is documented in [stage 4 methodology](stage4/README.md).
+See [BENCHMARK_REPORT.md](BENCHMARK_REPORT.md) for actual measurements and limitations,
+and [raw-run summary](results/stage4-main/SUMMARY.md) for all repeated runs.
+It compares compliant A/B clients with the adaptive C client; the older load
+generators below are retained as demonstrations and are not used for that comparison.
+
+Both generators first send interactive traffic at 5 requests/s
+for 10 seconds, then send interactive traffic at 5 requests/s
 and agent traffic at 120 requests/s concurrently for another 10 seconds.
 They wait for all tasks to finish and report successful requests, errors,
 and the p95 latency of successful tasks.
@@ -10,23 +16,66 @@ First, start the catalog and server using the [setup instructions](../README.md#
 Run the generators one at a time from the repository root:
 
 ```sh
+source .env.demo
 cargo run --locked --release --bin load
 cargo run --locked --release --bin load_plain
 ```
 
-- `load` fetches the v2 policy, limits agent concurrency according to
-  `max_in_flight`, and makes at most five attempts on `429`, respecting `Retry-After`.
-- `load_plain` sends requests without a client-side concurrency limiter or retries.
+- `load` authenticates, polls v3 policy using one background task, and adjusts
+  active agent HTTP attempts to `limits.max_outstanding`. It makes at most five
+  attempts total on 429 or the documented 503 queue_timeout/not_started response,
+  respecting Retry-After, and releases capacity during retry waits.
+  Discovery failures pause new agent attempts until a successful refresh.
+- `load_plain` authenticates but sends requests without discovery, a client-side concurrency limiter, or retries.
+
+Both default workloads require `AGENT_TOKEN_1` and `INTERACTIVE_TOKEN`; the server assigns
+classes from those credentials. They reject redirects to avoid forwarding credentials.
+The owner budget is shared with any other clients using that owner. This is not
+a controlled A/B/C protocol comparison, and `load_plain` does not honor Retry-After.
 
 Both clients send `POST /search` with `{"query":""}`. Task duration
 includes client-side waiting and retries, but excludes delays in starting
 relative to the schedule. The p95 value covers only successful tasks:
 compare it alongside the error count.
 
+## Dynamic-budget demonstration
+
+```sh
+cargo build --locked --bins
+.venv/bin/python examples/dynamic_demo.py
+```
+
+This separate scenario starts private servers on free ports and an agent-only
+60-task batch, changes the owner budget 5 -> 2 -> 5 using a separate admin token,
+and verifies client adaptation and completion. Catalog requests are deliberately
+gated/paced, not representative production operations. No paid API is used.
+It displays revision, limit, sampled server outstanding, and current active
+client HTTP requests. The two counts are sampled at different points in time.
+
+For your own instance, `LOAD_AGENT_TASKS=60 cargo run --locked --bin load` runs
+an agent-only batch requiring only `AGENT_TOKEN_1`. The client has a default
+120-second overall deadline (`LOAD_DEADLINE_SECS`) and handles Ctrl+C. Failure
+to recover policy, incomplete work at the deadline, or failed tasks produce a
+nonzero exit. The plain client is unchanged and is not this adaptive demo.
+
+## Queue correctness demonstration
+
+```sh
+cargo build --locked --bins
+.venv/bin/python examples/queue_demo.py
+```
+
+The current scheduler uses weighted 3:1 selection, not the historical strict
+priority. The demo completes 80 interactive and 120 agent tasks, expires a
+separate queued task without invoking upstream, and checks final outstanding zero.
+It uses private instances, free ports, and temporary credentials. Virtual-clock
+Rust tests establish selection order and deadline races; the demo does not measure
+CPU shares or prove a performance advantage.
+
 ## Saved results
 
 - `results/shared/run-1.txt` … `run-5.txt` — the previous setup with a shared queue.
-- `results/priority/run-1.txt` … `run-5.txt` — the previous setup with human priority.
+- `results/priority/run-1.txt` … `run-5.txt` — the previous setup with interactive priority.
 
 These files were moved from the local experiment without changing their contents.
 They describe the old synthetic `/work` operation with a delay of approximately

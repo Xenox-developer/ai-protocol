@@ -1,65 +1,43 @@
 import json
-import re
-import sys
-import time
-
-import httpx
-import jsonschema
-
 import os
+import sys
 from getpass import getpass
 
 from openai import OpenAI
+from protocol_client import discover, execute, service_client
 
-# The client knows the service URL and discovery endpoint in advance.
-BASE_URL = "http://127.0.0.1:3000"
 
-with httpx.Client(
-    trust_env=False,
-    timeout=30,
-    follow_redirects=False,
-) as client:
-    response = client.get(BASE_URL + "/agent-policy")
-    response.raise_for_status()
-    policy = response.json()
+def main():
+    with service_client() as client:
+        operations = discover(client)
+        if not operations:
+            sys.exit("No operations are permitted for this token")
+        task = input("What would you like to do: ")
 
-    if type(policy.get("version")) is not int or policy["version"] != 2:
-        sys.exit("Unsupported protocol version")
+        # Convert the service's operation descriptions into tools for the LLM.
+        tools = []
 
-    limit = policy.get("max_in_flight")
-    if type(limit) is not int or limit < 1:
-        sys.exit("Invalid concurrency limit")
+        for item in operations:
+            schema = item["input_schema"].copy()
+            schema.pop("$schema", None)
 
-    operations = policy.get("operations")
-    if not isinstance(operations, list) or not operations:
-        sys.exit("The service did not provide a list of operations")
+            tools.append({
+                "type": "function",
+                "name": item["name"],
+                "description": item["description"],
+                "parameters": schema,
+                "strict": False,
+            })
 
-    task = input("What would you like to do: ")
+        api_key = os.environ.get("OPENAI_API_KEY")
+        if not api_key:
+            api_key = getpass("OpenAI API key: ")
 
-    # Convert the service's operation descriptions into tools for the LLM.
-    tools = []
-
-    for item in operations:
-        schema = item["input_schema"].copy()
-        schema.pop("$schema", None)
-
-        tools.append({
-            "type": "function",
-            "name": item["name"],
-            "description": item["description"],
-            "parameters": schema,
-            "strict": False,
-        })
-
-    api_key = os.environ.get("OPENAI_API_KEY")
-    if not api_key:
-        api_key = getpass("OpenAI API key: ")
-
-    with OpenAI(
-        api_key=api_key,
-        timeout=30,
-        max_retries=0,
-    ) as llm:
+        with OpenAI(
+            api_key=api_key,
+            timeout=30,
+            max_retries=0,
+        ) as llm:
             decision = llm.responses.create(
                 model="gpt-4.1-mini",
                 instructions=(
@@ -80,74 +58,42 @@ with httpx.Client(
                 parallel_tool_calls=False,
             )
 
-    calls = [
-        item
-        for item in decision.output
-        if item.type == "function_call"
-    ]
+        calls = [
+            item
+            for item in decision.output
+            if item.type == "function_call"
+        ]
 
-    # The model may respond with text instead of a tool call.
-    if not calls:
-        print(decision.output_text or "The model did not select an operation.")
-        sys.exit(0)
+        # The model may respond with text instead of a tool call.
+        if not calls:
+            print(decision.output_text or "The model did not select an operation.")
+            sys.exit(0)
 
-    if len(calls) != 1:
-        sys.exit("Expected a single operation call")
+        if len(calls) != 1:
+            sys.exit("Expected a single operation call")
 
-    call = calls[0]
+        call = calls[0]
 
-    # Allow only an operation from the published list.
-    operation = next(
-        (item for item in operations if item["name"] == call.name),
-        None,
-    )
-
-    if operation is None:
-        sys.exit("The model selected an unknown operation")
-
-    params = json.loads(call.arguments)
-
-    print("The model selected:", operation["name"])
-    print(
-        "Parameters:",
-        json.dumps(params, ensure_ascii=False),
-    )
-
-    # Validate the parameters before sending the request.
-    jsonschema.validate(
-        instance=params,
-        schema=operation["input_schema"],
-    )
-
-    method = operation["method"]
-    path = operation["path"]
-
-    # This prototype supports POST operations with a JSON body.
-    if method != "POST":
-        sys.exit("This client currently supports only POST")
-
-    # For this demo, allow only simple paths within the same service.
-    if not re.fullmatch(r"/[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*", path):
-        sys.exit("Unsupported operation path")
-
-    for attempt in range(1, 6):
-        print(f"Sending {method} {path}, attempt {attempt}")
-
-        response = client.request(
-            method,
-            BASE_URL + path,
-            headers={"X-Client-Type": "agent"},
-            json=params,
+        # Allow only an operation from the published list.
+        operation = next(
+            (item for item in operations if item["name"] == call.name),
+            None,
         )
 
-        if response.status_code == 429 and attempt < 5:
-            raw = response.headers.get("Retry-After", "1").strip()
-            seconds = int(raw) if raw.isascii() and raw.isdigit() else 1
+        if operation is None:
+            sys.exit("The model selected an unknown operation")
 
-            print(f"The service asks to wait {seconds} seconds.")
-            time.sleep(seconds)
-            continue
+        params = json.loads(call.arguments)
 
-        response.raise_for_status()
-        print(json.dumps(response.json(), ensure_ascii=False, indent=2))
-        break
+        print("The model selected:", operation["name"])
+        print(
+            "Parameters:",
+            json.dumps(params, ensure_ascii=False),
+        )
+
+        result = execute(client, operation, params)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()

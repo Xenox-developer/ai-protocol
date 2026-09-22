@@ -1,0 +1,4 @@
+{"scheduled_s": 2, "actual_s": 2.0045753652229905, "response": {"client_class": "agent", "limits": {"max_outstanding": 2, "scope": "principal"}, "outstanding": 5, "policy_revision": 2, "principal_id": "demo-owner"}}
+{"scheduled_s": 2, "actual_s": 2.0056732408702374, "response": {"client_class": "agent", "limits": {"max_outstanding": 2, "scope": "principal"}, "outstanding": 5, "policy_revision": 2, "principal_id": "other-owner"}}
+{"scheduled_s": 5, "actual_s": 5.0144034484401345, "response": {"client_class": "agent", "limits": {"max_outstanding": 5, "scope": "principal"}, "outstanding": 2, "policy_revision": 3, "principal_id": "demo-owner"}}
+{"scheduled_s": 5, "actual_s": 5.015335865318775, "response": {"client_class": "agent", "limits": {"max_outstanding": 5, "scope": "principal"}, "outstanding": 2, "policy_revision": 3, "principal_id": "other-owner"}}

@@ -1,0 +1,954 @@
+{
+  "seed": 20260921,
+  "repetitions": 3,
+  "upstream_delay_ms": 200,
+  "interactive_max_wait_ms": 2000,
+  "agent_max_wait_ms": 10000,
+  "task_timeout_s": 10,
+  "run_timeout_s": 22,
+  "cleanup_timeout_s": 12,
+  "max_pending": 256,
+  "sample_ms": 50,
+  "scenarios": [
+    {
+      "name": "interactive_only",
+      "duration_s": 6,
+      "interactive_rps": 15,
+      "agent_rps": 0
+    },
+    {
+      "name": "mixed_low",
+      "duration_s": 6,
+      "interactive_rps": 8,
+      "agent_rps": 20
+    },
+    {
+      "name": "mixed_overload",
+      "duration_s": 6,
+      "interactive_rps": 15,
+      "agent_rps": 80
+    },
+    {
+      "name": "dynamic",
+      "duration_s": 8,
+      "interactive_rps": 10,
+      "agent_rps": 45,
+      "changes": [
+        {
+          "at_s": 2,
+          "limit": 2
+        },
+        {
+          "at_s": 5,
+          "limit": 5
+        }
+      ]
+    }
+  ],
+  "mode": "A",
+  "start_unix_s": 1790018860.515483,
+  "tasks": [
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 0.8707512858639607,
+      "id": "t00000",
+      "operation": "product",
+      "params": {
+        "id": 1000
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 66.70342512073948,
+      "id": "t00001",
+      "operation": "product",
+      "params": {
+        "id": 1001
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 133.41111301253872,
+      "id": "t00002",
+      "operation": "product",
+      "params": {
+        "id": 1002
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 200.04547652503697,
+      "id": "t00003",
+      "operation": "search",
+      "params": {
+        "query": "task-t00003"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 267.38426036753384,
+      "id": "t00004",
+      "operation": "search",
+      "params": {
+        "query": "task-t00004"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 333.7124332935774,
+      "id": "t00005",
+      "operation": "product",
+      "params": {
+        "id": 1005
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 400.1880757117318,
+      "id": "t00006",
+      "operation": "search",
+      "params": {
+        "query": "task-t00006"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 466.9973401029438,
+      "id": "t00007",
+      "operation": "search",
+      "params": {
+        "query": "task-t00007"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 533.4037532957229,
+      "id": "t00008",
+      "operation": "product",
+      "params": {
+        "id": 1008
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 600.9045647106082,
+      "id": "t00009",
+      "operation": "search",
+      "params": {
+        "query": "task-t00009"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 667.3684439018575,
+      "id": "t00010",
+      "operation": "search",
+      "params": {
+        "query": "task-t00010"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 733.738926698668,
+      "id": "t00011",
+      "operation": "search",
+      "params": {
+        "query": "task-t00011"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 800.5652433425084,
+      "id": "t00012",
+      "operation": "search",
+      "params": {
+        "query": "task-t00012"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 867.5349230117004,
+      "id": "t00013",
+      "operation": "search",
+      "params": {
+        "query": "task-t00013"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 933.3611876980605,
+      "id": "t00014",
+      "operation": "search",
+      "params": {
+        "query": "task-t00014"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1000.8452245269125,
+      "id": "t00015",
+      "operation": "product",
+      "params": {
+        "id": 1015
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1067.1690287555116,
+      "id": "t00016",
+      "operation": "search",
+      "params": {
+        "query": "task-t00016"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1133.974317099311,
+      "id": "t00017",
+      "operation": "search",
+      "params": {
+        "query": "task-t00017"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1200.4245065735045,
+      "id": "t00018",
+      "operation": "search",
+      "params": {
+        "query": "task-t00018"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1266.9523331920248,
+      "id": "t00019",
+      "operation": "search",
+      "params": {
+        "query": "task-t00019"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1334.3040540526163,
+      "id": "t00020",
+      "operation": "search",
+      "params": {
+        "query": "task-t00020"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1400.53633858052,
+      "id": "t00021",
+      "operation": "search",
+      "params": {
+        "query": "task-t00021"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1467.2446001117055,
+      "id": "t00022",
+      "operation": "product",
+      "params": {
+        "id": 1022
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1533.842715295552,
+      "id": "t00023",
+      "operation": "product",
+      "params": {
+        "id": 1023
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1600.125443525873,
+      "id": "t00024",
+      "operation": "search",
+      "params": {
+        "query": "task-t00024"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1667.5275333764896,
+      "id": "t00025",
+      "operation": "search",
+      "params": {
+        "query": "task-t00025"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1733.9281513921953,
+      "id": "t00026",
+      "operation": "search",
+      "params": {
+        "query": "task-t00026"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1800.0563079287551,
+      "id": "t00027",
+      "operation": "search",
+      "params": {
+        "query": "task-t00027"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1866.8547292444362,
+      "id": "t00028",
+      "operation": "search",
+      "params": {
+        "query": "task-t00028"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 1933.9168459407304,
+      "id": "t00029",
+      "operation": "search",
+      "params": {
+        "query": "task-t00029"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2000.7429051217405,
+      "id": "t00030",
+      "operation": "search",
+      "params": {
+        "query": "task-t00030"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2067.2362726175784,
+      "id": "t00031",
+      "operation": "search",
+      "params": {
+        "query": "task-t00031"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2133.827114886572,
+      "id": "t00032",
+      "operation": "product",
+      "params": {
+        "id": 1032
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2200.1826885687033,
+      "id": "t00033",
+      "operation": "search",
+      "params": {
+        "query": "task-t00033"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2267.4026334844807,
+      "id": "t00034",
+      "operation": "product",
+      "params": {
+        "id": 1034
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2334.0429375673007,
+      "id": "t00035",
+      "operation": "search",
+      "params": {
+        "query": "task-t00035"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2400.672377736405,
+      "id": "t00036",
+      "operation": "search",
+      "params": {
+        "query": "task-t00036"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2467.197074366063,
+      "id": "t00037",
+      "operation": "product",
+      "params": {
+        "id": 1037
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2533.729563171859,
+      "id": "t00038",
+      "operation": "product",
+      "params": {
+        "id": 1038
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2600.3827069032604,
+      "id": "t00039",
+      "operation": "search",
+      "params": {
+        "query": "task-t00039"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2666.859558158942,
+      "id": "t00040",
+      "operation": "search",
+      "params": {
+        "query": "task-t00040"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2734.2026150439733,
+      "id": "t00041",
+      "operation": "product",
+      "params": {
+        "id": 1041
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2800.7154856774273,
+      "id": "t00042",
+      "operation": "search",
+      "params": {
+        "query": "task-t00042"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2867.110531793919,
+      "id": "t00043",
+      "operation": "search",
+      "params": {
+        "query": "task-t00043"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 2934.06380656205,
+      "id": "t00044",
+      "operation": "search",
+      "params": {
+        "query": "task-t00044"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3000.8074484876374,
+      "id": "t00045",
+      "operation": "search",
+      "params": {
+        "query": "task-t00045"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3067.298426236055,
+      "id": "t00046",
+      "operation": "search",
+      "params": {
+        "query": "task-t00046"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3133.948831626318,
+      "id": "t00047",
+      "operation": "search",
+      "params": {
+        "query": "task-t00047"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3200.2863220324452,
+      "id": "t00048",
+      "operation": "search",
+      "params": {
+        "query": "task-t00048"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3266.854963054839,
+      "id": "t00049",
+      "operation": "search",
+      "params": {
+        "query": "task-t00049"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3333.46699519236,
+      "id": "t00050",
+      "operation": "search",
+      "params": {
+        "query": "task-t00050"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3400.1846170821677,
+      "id": "t00051",
+      "operation": "search",
+      "params": {
+        "query": "task-t00051"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3467.0488182555255,
+      "id": "t00052",
+      "operation": "search",
+      "params": {
+        "query": "task-t00052"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3533.3363319619957,
+      "id": "t00053",
+      "operation": "search",
+      "params": {
+        "query": "task-t00053"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3600.453475652328,
+      "id": "t00054",
+      "operation": "search",
+      "params": {
+        "query": "task-t00054"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3667.449241205084,
+      "id": "t00055",
+      "operation": "search",
+      "params": {
+        "query": "task-t00055"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3733.5656597377697,
+      "id": "t00056",
+      "operation": "search",
+      "params": {
+        "query": "task-t00056"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3800.959287355742,
+      "id": "t00057",
+      "operation": "search",
+      "params": {
+        "query": "task-t00057"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3866.8022668474523,
+      "id": "t00058",
+      "operation": "search",
+      "params": {
+        "query": "task-t00058"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 3934.285703456307,
+      "id": "t00059",
+      "operation": "product",
+      "params": {
+        "id": 1059
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4000.34527150534,
+      "id": "t00060",
+      "operation": "search",
+      "params": {
+        "query": "task-t00060"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4066.8245594639757,
+      "id": "t00061",
+      "operation": "search",
+      "params": {
+        "query": "task-t00061"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4133.71748376831,
+      "id": "t00062",
+      "operation": "search",
+      "params": {
+        "query": "task-t00062"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4200.264646622418,
+      "id": "t00063",
+      "operation": "search",
+      "params": {
+        "query": "task-t00063"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4266.933155248174,
+      "id": "t00064",
+      "operation": "search",
+      "params": {
+        "query": "task-t00064"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4333.485110763552,
+      "id": "t00065",
+      "operation": "search",
+      "params": {
+        "query": "task-t00065"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4400.020276507515,
+      "id": "t00066",
+      "operation": "search",
+      "params": {
+        "query": "task-t00066"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4466.850223456008,
+      "id": "t00067",
+      "operation": "search",
+      "params": {
+        "query": "task-t00067"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4534.330955323164,
+      "id": "t00068",
+      "operation": "search",
+      "params": {
+        "query": "task-t00068"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4600.0102267400325,
+      "id": "t00069",
+      "operation": "search",
+      "params": {
+        "query": "task-t00069"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4667.405702168562,
+      "id": "t00070",
+      "operation": "product",
+      "params": {
+        "id": 1070
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4734.137114184559,
+      "id": "t00071",
+      "operation": "search",
+      "params": {
+        "query": "task-t00071"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4800.581159486201,
+      "id": "t00072",
+      "operation": "product",
+      "params": {
+        "id": 1072
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4867.305972587232,
+      "id": "t00073",
+      "operation": "search",
+      "params": {
+        "query": "task-t00073"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 4933.6814884303385,
+      "id": "t00074",
+      "operation": "search",
+      "params": {
+        "query": "task-t00074"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5000.719887707624,
+      "id": "t00075",
+      "operation": "product",
+      "params": {
+        "id": 1075
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5066.988392394855,
+      "id": "t00076",
+      "operation": "search",
+      "params": {
+        "query": "task-t00076"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5133.786582135696,
+      "id": "t00077",
+      "operation": "search",
+      "params": {
+        "query": "task-t00077"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5200.8242699545945,
+      "id": "t00078",
+      "operation": "search",
+      "params": {
+        "query": "task-t00078"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5267.205848810057,
+      "id": "t00079",
+      "operation": "search",
+      "params": {
+        "query": "task-t00079"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5333.967584071615,
+      "id": "t00080",
+      "operation": "search",
+      "params": {
+        "query": "task-t00080"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5400.827929868581,
+      "id": "t00081",
+      "operation": "search",
+      "params": {
+        "query": "task-t00081"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5466.87314351658,
+      "id": "t00082",
+      "operation": "search",
+      "params": {
+        "query": "task-t00082"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5534.259168876525,
+      "id": "t00083",
+      "operation": "product",
+      "params": {
+        "id": 1083
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5600.446737987453,
+      "id": "t00084",
+      "operation": "search",
+      "params": {
+        "query": "task-t00084"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5667.2452463264535,
+      "id": "t00085",
+      "operation": "product",
+      "params": {
+        "id": 1085
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5733.817714197916,
+      "id": "t00086",
+      "operation": "search",
+      "params": {
+        "query": "task-t00086"
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5800.666119080462,
+      "id": "t00087",
+      "operation": "product",
+      "params": {
+        "id": 1087
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5867.417485569531,
+      "id": "t00088",
+      "operation": "product",
+      "params": {
+        "id": 1088
+      }
+    },
+    {
+      "class": "interactive",
+      "owner": "demo-owner",
+      "arrival_ms": 5934.186665715412,
+      "id": "t00089",
+      "operation": "search",
+      "params": {
+        "query": "task-t00089"
+      }
+    }
+  ],
+  "scenario": "interactive_only",
+  "repetition": 3
+}

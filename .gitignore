@@ -14,6 +14,7 @@ venv/
 !.env.example
 *.pem
 *.key
+AGENTS.md
 
 # System and editors
 .DS_Store

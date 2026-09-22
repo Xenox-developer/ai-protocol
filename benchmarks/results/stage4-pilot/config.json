@@ -1,0 +1,20 @@
+{
+  "seed": 20260921,
+  "repetitions": 1,
+  "upstream_delay_ms": 1,
+  "interactive_max_wait_ms": 2000,
+  "agent_max_wait_ms": 10000,
+  "task_timeout_s": 10,
+  "run_timeout_s": 22,
+  "cleanup_timeout_s": 12,
+  "max_pending": 256,
+  "sample_ms": 50,
+  "scenarios": [
+    {
+      "name": "pilot",
+      "duration_s": 2,
+      "interactive_rps": 40,
+      "agent_rps": 80
+    }
+  ]
+}

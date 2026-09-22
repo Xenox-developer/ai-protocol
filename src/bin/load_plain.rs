@@ -1,27 +1,50 @@
 use reqwest::Client;
 use std::time::Duration;
 use tokio::task::JoinSet;
-use tokio::time::{sleep_until, Instant};
+use tokio::time::{Instant, sleep_until};
+
+#[derive(Clone)]
+struct LoadClient {
+    http: Client,
+    base_url: String,
+    agent_token: String,
+    interactive_token: String,
+}
 
 #[tokio::main]
 async fn main() {
-    let client = Client::builder()
+    let agent_token = std::env::var("AGENT_TOKEN_1").expect("Set AGENT_TOKEN_1");
+    let interactive_token = std::env::var("INTERACTIVE_TOKEN").expect("Set INTERACTIVE_TOKEN");
+    let port: u16 = std::env::var("GATEWAY_PORT")
+        .unwrap_or_else(|_| "3000".into())
+        .parse()
+        .expect("GATEWAY_PORT must be a valid port");
+    let base_url = format!("http://127.0.0.1:{port}");
+    let http = Client::builder()
         .no_proxy()
+        .redirect(reqwest::redirect::Policy::none())
         .timeout(Duration::from_secs(30))
         .build()
         .unwrap();
 
-    println!("Test 1: humans only");
-    generate(client.clone(), "human", 5).await;
+    let client = LoadClient {
+        http,
+        base_url,
+        agent_token,
+        interactive_token,
+    };
 
-    println!("\nTest 2: humans and agents concurrently");
+    println!("Test 1: interactive clients only");
+    generate(client.clone(), "interactive", 5).await;
+
+    println!("\nTest 2: interactive clients and agents concurrently");
     tokio::join!(
-        generate(client.clone(), "human", 5),
+        generate(client.clone(), "interactive", 5),
         generate(client.clone(), "agent", 120),
     );
 }
 
-async fn generate(client: Client, kind: &'static str, rate: u64) {
+async fn generate(client: LoadClient, kind: &'static str, rate: u64) {
     let mut tasks = JoinSet::new();
     let start = Instant::now();
 
@@ -75,10 +98,15 @@ async fn generate(client: Client, kind: &'static str, rate: u64) {
     }
 }
 
-async fn send_request(client: Client, kind: &str) -> Result<(), reqwest::Error> {
+async fn send_request(client: LoadClient, kind: &str) -> Result<(), reqwest::Error> {
     let response = client
-        .post("http://127.0.0.1:3000/search")
-        .header("X-Client-Type", kind)
+        .http
+        .post(format!("{}/search", client.base_url))
+        .bearer_auth(if kind == "agent" {
+            &client.agent_token
+        } else {
+            &client.interactive_token
+        })
         .json(&serde_json::json!({"query": ""}))
         .send()
         .await?

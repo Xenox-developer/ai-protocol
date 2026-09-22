@@ -1,0 +1,64 @@
+{
+  "config": {
+    "seed": 20260921,
+    "repetitions": 1,
+    "upstream_delay_ms": 1,
+    "interactive_max_wait_ms": 2000,
+    "agent_max_wait_ms": 10000,
+    "task_timeout_s": 10,
+    "run_timeout_s": 22,
+    "cleanup_timeout_s": 12,
+    "max_pending": 256,
+    "sample_ms": 50,
+    "scenarios": [
+      {
+        "name": "pilot",
+        "duration_s": 2,
+        "interactive_rps": 40,
+        "agent_rps": 80
+      }
+    ]
+  },
+  "commit": "13fdee82f8a6c9deda5eebd59adb36d4e004653c",
+  "git_status": "M .gitignore\n M Cargo.toml\n M README.md\n M benchmarks/README.md\n M docs/protocol.md\n M examples/catalog_service.py\n M examples/discover_client.py\n M examples/llm_client.py\n M src/bin/load.rs\n M src/bin/load_plain.rs\n M src/main.rs\n?? benchmarks/results/stage4-pilot/\n?? benchmarks/stage4/\n?? docs/archive/\n?? examples/dynamic_demo.py\n?? examples/protocol_client.py\n?? examples/queue_demo.py\n?? examples/setup_demo.py\n?? src/bin/bench_client.rs\n?? src/bin/load/\n?? src/budget.rs\n?? src/dynamic_tests.rs\n?? src/queue.rs\n?? src/queue_tests.rs\n?? src/telemetry.rs\n?? src/tests.rs\n?? tests/",
+  "dirty": true,
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+  "python": "3.12.1 (v3.12.1:2305ca5144, Dec  7 2023, 17:23:38) [Clang 13.0.0 (clang-1300.0.29.30)]",
+  "httpx": "0.28.1",
+  "os": "Darwin",
+  "os_release": "24.6.0",
+  "architecture": "arm64",
+  "logical_cpus": 10,
+  "machine_model": "MacBookPro18,1",
+  "cpu": "Apple M1 Pro",
+  "memory_bytes": "17179869184",
+  "tokio_worker_threads_per_process": 4,
+  "build_profile": "release",
+  "source_sha256": {
+    "Cargo.toml": "85d7d513041208112eabb6c8b8b00f905ae20a946254734053df7919542cf12a",
+    "Cargo.lock": "d6dccf784fa02d3c21f4932cad98f2a3698d33acd5edfec64d214024f933a780",
+    "src/telemetry.rs": "928ff4409a452be55623dbbb224b7f749f4136960c60f7370164b105c6438d7b",
+    "src/budget.rs": "8b409b45973c3d1dd441b603c1ecd2bca18062f0877b97714362ba7fa0c6543f",
+    "src/dynamic_tests.rs": "d650abd9e24715105ce978313974afa5ced56ae967506fde69ab7f109a5f8196",
+    "src/queue_tests.rs": "41d535632673e87918a78d801d6128b80cf0375484db4f820c8c3c1c6f081055",
+    "src/queue.rs": "04c34f2a0c499912bc3a5bf83880efc2f642895412aa359693ca3674bbe53720",
+    "src/main.rs": "0944dc79e91e15f1e4b95d8971f28fd9de2f93351699d63b6bb732c4220456d3",
+    "src/tests.rs": "e3b57c2b78b3680d098239950d9ae80cfb0faa8137df78fe59576e4021651fde",
+    "src/bin/load_plain.rs": "d258c888ac90dc7fc60582bc81c9a512e037de25e2f8e6a03691377511472b93",
+    "src/bin/load.rs": "b070b04efca53e30053fa0a5d55cbcf612e03de898eecb7d2525c639e2a663a3",
+    "src/bin/bench_client.rs": "c79fcfbd20d1b52bf007664a60d3531257b94b5d877e9c585ae1673c738dc882",
+    "src/bin/load/control.rs": "ac97d1bc1a2614fe7b33e4a6d2129ce926b72c5ab8fa34e180a23332f751e677",
+    "src/bin/load/tests.rs": "592a6dc27438748dd44af160162005c9c533da42d29d5a78af9d5b4b5b313092",
+    "src/bin/load/retry.rs": "1cb319e02b30601f8a672d1487ee9f100f549e32d55d71feb3528d3a04fed176",
+    "benchmarks/stage4/run.py": "ddda7f2c792f92687d2752daae3bf52302d3990f92adf92cc206645154e9628a",
+    "benchmarks/stage4/check.py": "8023d299a44c726353a440974c8908e592b25cdd0a3e69384efa4cc9b734ed6f",
+    "benchmarks/stage4/analyze.py": "044155ea691b133c43c43ea660c0b166bee390698fc1bd6fa60562c168ee1def",
+    "benchmarks/stage4/config.json": "3ec8b5e576cfeca3158edded0b1da228d5c5a395a3db7d9725682a166185898b"
+  },
+  "binary_sha256": {
+    "ai-protocol": "57ee4840bb550faa1ee8ef5258f9f646e729535f99d7303400e6c192d8f06f83",
+    "bench_client": "9b239cd6b11d63ed8f01f8427da1eeb971a4bf391f57f5b0042962a874ec2ef8"
+  },
+  "created_utc": "2026-09-21T19:25:17Z"
+}
