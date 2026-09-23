@@ -10,6 +10,7 @@ import secrets
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 
 import httpx
@@ -17,32 +18,59 @@ import httpx
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def redact_logs(text, environment):
+    for key, value in environment.items():
+        if value and any(word in key.upper() for word in ("TOKEN", "SECRET", "KEY", "PASSWORD")):
+            text = text.replace(value, "<redacted>")
+    return text
+
+
 @contextmanager
 def running(command, environment):
-    process = subprocess.Popen(command, cwd=ROOT, env=environment, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    try:
-        yield process
-    finally:
-        process.terminate()
+    # Keep startup diagnostics without filling a pipe or exposing credentials.
+    with tempfile.TemporaryFile(mode="w+") as log:
+        process = subprocess.Popen(
+            command, cwd=ROOT, env=environment, stdout=log, stderr=subprocess.STDOUT,
+        )
+        failed = False
         try:
-            process.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            process.kill()
-            process.wait()
+            yield process
+        except BaseException:
+            failed = True
+            raise
+        finally:
+            exit_before_cleanup = process.poll()
+            process.terminate()
+            try:
+                process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait()
+            if failed:
+                # Read only after the child stops writing to this shared file.
+                log.seek(0)
+                output = redact_logs(log.read(), environment)
+                print(f"Smoke child {Path(command[0]).name}, pid={process.pid}, "
+                      f"exit before cleanup={exit_before_cleanup}:\n"
+                      + (output or "<no child output>"), file=sys.stderr)
 
 
-def ready(process, client, url, expected):
-    deadline = time.monotonic() + 10
-    while time.monotonic() < deadline:
-        if process.poll() is not None:
-            raise RuntimeError("A smoke-test service exited during startup")
+def ready(process, client, url, expected, *, startup_timeout=30):
+    deadline = time.monotonic() + startup_timeout
+    last_result = "no probe completed"
+    while (remaining := deadline - time.monotonic()) > 0:
+        if (exit_code := process.poll()) is not None:
+            raise RuntimeError(f"Smoke-test service exited during startup: exit={exit_code}; {last_result}")
         try:
-            if client.get(url).status_code == expected:
+            # A single slow probe must not consume the whole startup allowance.
+            status = client.get(url, timeout=min(1, remaining)).status_code
+            last_result = f"HTTP {status}, expected {expected}"
+            if status == expected:
                 return
-        except httpx.TransportError:
-            pass
-        time.sleep(0.05)
-    raise RuntimeError("Smoke-test service did not become ready")
+        except httpx.TransportError as error:
+            last_result = type(error).__name__
+        time.sleep(min(0.05, max(0, deadline - time.monotonic())))
+    raise RuntimeError(f"Smoke-test service did not become ready within {startup_timeout}s: {url}; last probe: {last_result}")
 
 
 def main():
@@ -52,6 +80,7 @@ def main():
         gateway_port = gateway_probe.getsockname()[1]
         catalog_port = catalog_probe.getsockname()[1]
     environment = os.environ.copy()
+    environment["PYTHONUNBUFFERED"] = "1"
     environment.pop("OPENAI_API_KEY", None)
     environment.pop("ADMIN_TOKEN", None)
     names = ("AGENT_TOKEN_1", "AGENT_TOKEN_2", "PRODUCT_ONLY_TOKEN", "INTERACTIVE_TOKEN", "OTHER_AGENT_TOKEN")

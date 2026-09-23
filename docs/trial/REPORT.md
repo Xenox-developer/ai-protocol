@@ -6,6 +6,25 @@ changes no gateway/dispatcher production code or dependency requirements. Existi
 uncommitted work and historical experiment results are preserved. No commit,
 push, release, paid API call or full load-series rerun was performed.
 
+## Hosted CI follow-up
+
+The first hosted [run 35886034894](https://github.com/Xenox-developer/ai-protocol/actions/runs/35886034894)
+for `bb819b8` completed after this preparation report. Ubuntu passed the entire
+verification script. macOS passed build/check, 52 Rust tests and 29 Python tests,
+but `tests/smoke.py` timed out waiting for the catalog's readiness response after
+10 seconds. Child output was discarded, so the underlying reason for the delay
+is not established by that log. The Node.js deprecation messages were warnings;
+checkout and Python setup succeeded on both platforms.
+
+A local follow-up makes smoke startup more tolerant and observable: a bounded
+30-second allowance, probes capped at one second, last HTTP status/transport
+error in failures, and child output/exit status with credential values redacted.
+These are test-harness changes, not protocol or task-timeout changes. A controlled
+12-second delay before starting the actual catalog now passes the complete smoke
+scenario; normal smoke and 32 Python tests also pass. No new hosted run of these
+changes has been performed. The original results below remain historical evidence
+for the prepared snapshot, not evidence that this follow-up has passed hosted CI.
+
 ## What was prepared
 
 - [Short Unix quickstart](../QUICKSTART.md): pinned/tested tool versions,
@@ -99,8 +118,9 @@ bash scripts/verify.sh
 
 ## What remains unverified or needs an external person
 
-- **Hosted CI has not run.** The Ubuntu/macOS workflow is prepared, but no push or
-  GitHub action dispatch was performed. Local macOS success is not Linux proof.
+- **At preparation time hosted CI had not run.** See the follow-up above for
+  the subsequent Ubuntu success and macOS startup failure. The local follow-up
+  still needs a hosted run; no claim of a completely green matrix is made.
 - Installation on another person's fresh OS, differing package/network policies,
   native tool setup and the hosted Python 3.12 patch version remain to be checked.
   Transitive Python dependencies are not fully locked; the clean report records
