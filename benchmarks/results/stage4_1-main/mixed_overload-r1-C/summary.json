@@ -1,0 +1,220 @@
+{
+  "interactive": {
+    "tasks": 90,
+    "success": 90,
+    "failed": 0,
+    "unfinished": 0,
+    "success_fraction": 1.0,
+    "failed_fraction": 0.0,
+    "unfinished_fraction": 0.0,
+    "successful_e2e_p50_ms": 237.81685383143758,
+    "successful_e2e_p95_ms": 332.1161930125463,
+    "successful_e2e_p99_ms": 342.29644095602634,
+    "attempts": 90,
+    "attempts_per_task": 1.0,
+    "http_429": 0,
+    "queue_timeout": 0,
+    "network_errors": 0,
+    "upstream_errors": 0,
+    "generator_rejections": 0,
+    "arrival_lag_p99_ms": 7.708692987461262,
+    "all_success_batch_ms": 6154.702762714137
+  },
+  "agent": {
+    "tasks": 480,
+    "success": 472,
+    "failed": 8,
+    "unfinished": 0,
+    "success_fraction": 0.9833333333333333,
+    "failed_fraction": 0.016666666666666666,
+    "unfinished_fraction": 0.0,
+    "successful_e2e_p50_ms": 2938.459764233481,
+    "successful_e2e_p95_ms": 8288.973738384018,
+    "successful_e2e_p99_ms": 9313.520371385745,
+    "attempts": 501,
+    "attempts_per_task": 1.04375,
+    "http_429": 27,
+    "queue_timeout": 0,
+    "network_errors": 0,
+    "upstream_errors": 0,
+    "generator_rejections": 0,
+    "arrival_lag_p99_ms": 7.711086105045524,
+    "all_success_batch_ms": null
+  },
+  "mode": "C",
+  "scenario": "mixed_overload",
+  "repetition": 1,
+  "upstream_started": 564,
+  "upstream_completed": 564,
+  "admission_violations": 0,
+  "incomplete_final_trace_samples": 0,
+  "maximum_active": 10,
+  "maximum_queue_interactive": 2,
+  "maximum_queue_agent": 4,
+  "final_outstanding": 0,
+  "samples_above_reduced_limit": 0,
+  "discovery": {
+    "client_requests": 28,
+    "client_successes": 28,
+    "client_failures": 0,
+    "client_incomplete": 0,
+    "by_owner": {
+      "other-owner": 14,
+      "demo-owner": 14
+    },
+    "harness_requests": {
+      "startup": 6,
+      "cleanup": 3
+    }
+  },
+  "application_delays": [],
+  "gate_final": [
+    {
+      "active": 0,
+      "at_ms": 13265.940473,
+      "event": "gate_final",
+      "limit": 5,
+      "owner": "demo-owner",
+      "ready": true,
+      "revision": 1
+    },
+    {
+      "active": 0,
+      "at_ms": 13266.143555999999,
+      "event": "gate_final",
+      "limit": 5,
+      "owner": "other-owner",
+      "ready": true,
+      "revision": 1
+    }
+  ],
+  "terminal_failure_reasons": {
+    "interactive": {},
+    "agent": {
+      "task_deadline": 8
+    }
+  },
+  "phases": {
+    "before_start": {
+      "arrival_cohort": {
+        "interactive": {
+          "tasks": 0,
+          "success": 0,
+          "failed": 0,
+          "unfinished": 0,
+          "success_fraction": null,
+          "failed_fraction": null,
+          "unfinished_fraction": null,
+          "successful_e2e_p50_ms": null,
+          "successful_e2e_p95_ms": null,
+          "successful_e2e_p99_ms": null,
+          "attempts": 0,
+          "attempts_per_task": null,
+          "http_429": 0,
+          "queue_timeout": 0,
+          "network_errors": 0,
+          "upstream_errors": 0,
+          "generator_rejections": 0,
+          "arrival_lag_p99_ms": null,
+          "all_success_batch_ms": null
+        },
+        "agent": {
+          "tasks": 0,
+          "success": 0,
+          "failed": 0,
+          "unfinished": 0,
+          "success_fraction": null,
+          "failed_fraction": null,
+          "unfinished_fraction": null,
+          "successful_e2e_p50_ms": null,
+          "successful_e2e_p95_ms": null,
+          "successful_e2e_p99_ms": null,
+          "attempts": 0,
+          "attempts_per_task": null,
+          "http_429": 0,
+          "queue_timeout": 0,
+          "network_errors": 0,
+          "upstream_errors": 0,
+          "generator_rejections": 0,
+          "arrival_lag_p99_ms": null,
+          "all_success_batch_ms": null
+        }
+      },
+      "cohort_failure_reasons": {
+        "interactive": {},
+        "agent": {}
+      },
+      "activity": {
+        "operation_starts": 0,
+        "http_429_responses": 0,
+        "queue_timeout_responses": 0,
+        "discovery_starts": 2,
+        "terminal_outcomes": {},
+        "upstream_starts": 0
+      }
+    },
+    "constant": {
+      "arrival_cohort": {
+        "interactive": {
+          "tasks": 90,
+          "success": 90,
+          "failed": 0,
+          "unfinished": 0,
+          "success_fraction": 1.0,
+          "failed_fraction": 0.0,
+          "unfinished_fraction": 0.0,
+          "successful_e2e_p50_ms": 237.81685383143758,
+          "successful_e2e_p95_ms": 332.1161930125463,
+          "successful_e2e_p99_ms": 342.29644095602634,
+          "attempts": 90,
+          "attempts_per_task": 1.0,
+          "http_429": 0,
+          "queue_timeout": 0,
+          "network_errors": 0,
+          "upstream_errors": 0,
+          "generator_rejections": 0,
+          "arrival_lag_p99_ms": 7.708692987461262,
+          "all_success_batch_ms": 6154.702762714137
+        },
+        "agent": {
+          "tasks": 480,
+          "success": 472,
+          "failed": 8,
+          "unfinished": 0,
+          "success_fraction": 0.9833333333333333,
+          "failed_fraction": 0.016666666666666666,
+          "unfinished_fraction": 0.0,
+          "successful_e2e_p50_ms": 2938.459764233481,
+          "successful_e2e_p95_ms": 8288.973738384018,
+          "successful_e2e_p99_ms": 9313.520371385745,
+          "attempts": 501,
+          "attempts_per_task": 1.04375,
+          "http_429": 27,
+          "queue_timeout": 0,
+          "network_errors": 0,
+          "upstream_errors": 0,
+          "generator_rejections": 0,
+          "arrival_lag_p99_ms": 7.711086105045524,
+          "all_success_batch_ms": null
+        }
+      },
+      "cohort_failure_reasons": {
+        "interactive": {},
+        "agent": {
+          "task_deadline": 8
+        }
+      },
+      "activity": {
+        "operation_starts": 591,
+        "http_429_responses": 27,
+        "queue_timeout_responses": 0,
+        "discovery_starts": 26,
+        "terminal_outcomes": {
+          "success": 562,
+          "failed": 8
+        },
+        "upstream_starts": 564
+      }
+    }
+  }
+}

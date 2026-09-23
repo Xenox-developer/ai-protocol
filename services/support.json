@@ -1,0 +1,63 @@
+{
+  "service_id": "support",
+  "operations": [
+    {
+      "name": "search_tickets",
+      "description": "Search support tickets by text in their subject or message. An empty query lists all tickets.",
+      "path": "/tickets/search",
+      "upstream_path": "/api/tickets/search",
+      "parameters": {
+        "query": {
+          "type": "string",
+          "upstream": "text"
+        }
+      }
+    },
+    {
+      "name": "get_ticket",
+      "description": "Retrieve a support ticket by its known numeric ID.",
+      "path": "/tickets/get",
+      "upstream_path": "/api/tickets/get",
+      "parameters": {
+        "id": {
+          "type": "integer",
+          "upstream": "ticket_id"
+        }
+      }
+    }
+  ],
+  "credentials": [
+    {
+      "token_env": "SUPPORT_AGENT_TOKEN",
+      "required": true,
+      "principal_id": "demo-owner",
+      "client_class": "agent",
+      "operations": [
+        "search_tickets",
+        "get_ticket"
+      ],
+      "max_outstanding": 5
+    },
+    {
+      "token_env": "SUPPORT_READ_TOKEN",
+      "required": true,
+      "principal_id": "demo-owner",
+      "client_class": "agent",
+      "operations": [
+        "get_ticket"
+      ],
+      "max_outstanding": 5
+    },
+    {
+      "token_env": "SUPPORT_INTERACTIVE_TOKEN",
+      "required": true,
+      "principal_id": "demo-owner",
+      "client_class": "interactive",
+      "operations": [
+        "search_tickets",
+        "get_ticket"
+      ],
+      "max_outstanding": 10
+    }
+  ]
+}

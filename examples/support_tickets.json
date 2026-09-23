@@ -1,0 +1,5 @@
+[
+  {"id": 101, "subject": "Password reset email missing", "message": "The reset link has not arrived in my inbox.", "status": "open"},
+  {"id": 102, "subject": "Invoice address correction", "message": "Please update the address on the latest invoice.", "status": "pending"},
+  {"id": 103, "subject": "Password reset resolved", "message": "The reset email was found in the spam folder.", "status": "closed"}
+]

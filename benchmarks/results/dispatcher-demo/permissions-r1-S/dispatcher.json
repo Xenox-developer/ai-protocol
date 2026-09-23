@@ -1,0 +1,11 @@
+{
+  "pid": 9003,
+  "capacity": 1024,
+  "token_vars": [
+    "AGENT_TOKEN_1",
+    "AGENT_TOKEN_2",
+    "AGENT_TOKEN_3",
+    "PRODUCT_ONLY_TOKEN"
+  ],
+  "transport": "private_unix_socket"
+}

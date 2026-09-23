@@ -1,0 +1,2 @@
+{"scheduled_s": 2, "request_started_s": 2.001245371066034, "actual_s": 2.0053787464275956, "response": {"client_class": "agent", "limits": {"max_outstanding": 2, "scope": "principal"}, "outstanding": 4, "policy_revision": 2, "principal_id": "demo-owner"}}
+{"scheduled_s": 5, "request_started_s": 5.001107203774154, "actual_s": 5.0023840786889195, "response": {"client_class": "agent", "limits": {"max_outstanding": 5, "scope": "principal"}, "outstanding": 2, "policy_revision": 3, "principal_id": "demo-owner"}}

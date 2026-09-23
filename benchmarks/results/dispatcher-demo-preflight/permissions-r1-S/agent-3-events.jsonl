@@ -1,0 +1,6 @@
+{"at_ms":11.46546,"event":"arrival","id":"agent-3-search","scheduled_ms":10.0}
+{"at_ms":214.140169,"attempts":1,"code":"completed","event":"dispatch_reply","execution":"completed","id":"agent-3-search","status":200}
+{"at_ms":214.38612700000002,"event":"terminal","id":"agent-3-search","outcome":"success","reason":"completed"}
+{"active":0,"at_ms":214.529835,"event":"gate_final","limit":0,"owner":"demo-owner","ready":false,"revision":0}
+{"active":0,"at_ms":214.810544,"event":"gate_final","limit":0,"owner":"other-owner","ready":false,"revision":0}
+{"at_ms":214.925002,"deadline_reached":false,"event":"run_end"}

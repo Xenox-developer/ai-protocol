@@ -1,0 +1,820 @@
+{
+  "interactive": {
+    "tasks": 90,
+    "success": 90,
+    "failed": 0,
+    "unfinished": 0,
+    "success_fraction": 1.0,
+    "failed_fraction": 0.0,
+    "unfinished_fraction": 0.0,
+    "successful_e2e_p50_ms": 206.89296487825914,
+    "successful_e2e_p95_ms": 223.8520698792605,
+    "successful_e2e_p99_ms": 230.96410388829463,
+    "attempts": 90,
+    "attempts_per_task": 1.0,
+    "http_429": 0,
+    "queue_timeout": 0,
+    "network_errors": 0,
+    "upstream_errors": 0,
+    "generator_rejections": 0,
+    "arrival_lag_p99_ms": 21.71869363246617,
+    "all_success_batch_ms": 6139.903410714136
+  },
+  "agent": {
+    "tasks": 240,
+    "success": 207,
+    "failed": 33,
+    "unfinished": 0,
+    "success_fraction": 0.8625,
+    "failed_fraction": 0.1375,
+    "unfinished_fraction": 0.0,
+    "successful_e2e_p50_ms": 1213.77094377732,
+    "successful_e2e_p95_ms": 4225.754003771003,
+    "successful_e2e_p99_ms": 4236.8044942149045,
+    "attempts": 663,
+    "attempts_per_task": 2.7625,
+    "http_429": 456,
+    "queue_timeout": 0,
+    "network_errors": 0,
+    "upstream_errors": 0,
+    "generator_rejections": 0,
+    "arrival_lag_p99_ms": 13.965144449875993,
+    "all_success_batch_ms": null
+  },
+  "mode": "C",
+  "scenario": "mixed_overload",
+  "repetition": 2,
+  "upstream_started": 297,
+  "upstream_completed": 297,
+  "admission_violations": 0,
+  "incomplete_final_trace_samples": 0,
+  "maximum_active": 9,
+  "maximum_queue_interactive": 0,
+  "maximum_queue_agent": 0,
+  "final_outstanding": 0,
+  "samples_above_reduced_limit": 0,
+  "process_count": 4,
+  "clients": [
+    {
+      "id": "agent-1",
+      "pid": 6983,
+      "class": "agent",
+      "tasks": 60,
+      "success": 51,
+      "failed": 9,
+      "unfinished": 0,
+      "success_fraction": 0.85,
+      "failed_fraction": 0.15,
+      "unfinished_fraction": 0.0,
+      "successful_e2e_p50_ms": 1211.6313463075148,
+      "successful_e2e_p95_ms": 4227.789960795562,
+      "successful_e2e_p99_ms": 4237.3821449062925,
+      "attempts": 166,
+      "attempts_per_task": 2.7666666666666666,
+      "http_429": 115,
+      "queue_timeout": 0,
+      "network_errors": 0,
+      "upstream_errors": 0,
+      "generator_rejections": 0,
+      "arrival_lag_p99_ms": 7.546032986969294,
+      "all_success_batch_ms": null,
+      "failure_reasons": {
+        "Operation HTTP status 429": 9
+      },
+      "completion_share": 0.2463768115942029,
+      "discovery": {
+        "requests": 11,
+        "successes": 11,
+        "failures": 0,
+        "incomplete": 0,
+        "policies": [
+          {
+            "active": 0,
+            "at_ms": -480.186203,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-1"
+          },
+          {
+            "active": 1,
+            "at_ms": 523.897922,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-1"
+          },
+          {
+            "active": 1,
+            "at_ms": 1527.636255,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-1"
+          },
+          {
+            "active": 1,
+            "at_ms": 2530.83188,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-1"
+          },
+          {
+            "active": 1,
+            "at_ms": 3536.64438,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-1"
+          },
+          {
+            "active": 3,
+            "at_ms": 4540.872297,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-1"
+          },
+          {
+            "active": 1,
+            "at_ms": 5546.93213,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-1"
+          },
+          {
+            "active": 0,
+            "at_ms": 6550.840588999999,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-1"
+          },
+          {
+            "active": 1,
+            "at_ms": 7556.185922,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-1"
+          },
+          {
+            "active": 2,
+            "at_ms": 8559.831339,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-1"
+          },
+          {
+            "active": 0,
+            "at_ms": 9562.267505,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-1"
+          }
+        ],
+        "application_delays": [],
+        "final": {
+          "active": 0,
+          "at_ms": 9939.195921999999,
+          "event": "gate_final",
+          "limit": 5,
+          "owner": "demo-owner",
+          "ready": true,
+          "revision": 1,
+          "client_id": "agent-1"
+        }
+      }
+    },
+    {
+      "id": "agent-2",
+      "pid": 6984,
+      "class": "agent",
+      "tasks": 60,
+      "success": 53,
+      "failed": 7,
+      "unfinished": 0,
+      "success_fraction": 0.8833333333333333,
+      "failed_fraction": 0.11666666666666667,
+      "unfinished_fraction": 0.0,
+      "successful_e2e_p50_ms": 1214.4429248113406,
+      "successful_e2e_p95_ms": 4227.368531447911,
+      "successful_e2e_p99_ms": 4244.597281406878,
+      "attempts": 162,
+      "attempts_per_task": 2.7,
+      "http_429": 109,
+      "queue_timeout": 0,
+      "network_errors": 0,
+      "upstream_errors": 0,
+      "generator_rejections": 0,
+      "arrival_lag_p99_ms": 17.82326864926472,
+      "all_success_batch_ms": null,
+      "failure_reasons": {
+        "Operation HTTP status 429": 7
+      },
+      "completion_share": 0.2560386473429952,
+      "discovery": {
+        "requests": 10,
+        "successes": 10,
+        "failures": 0,
+        "incomplete": 0,
+        "policies": [
+          {
+            "active": 0,
+            "at_ms": -475.120221,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-2"
+          },
+          {
+            "active": 2,
+            "at_ms": 528.0219870000001,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-2"
+          },
+          {
+            "active": 2,
+            "at_ms": 1529.361279,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-2"
+          },
+          {
+            "active": 2,
+            "at_ms": 2531.688529,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-2"
+          },
+          {
+            "active": 2,
+            "at_ms": 3537.093404,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-2"
+          },
+          {
+            "active": 1,
+            "at_ms": 4540.666029000001,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-2"
+          },
+          {
+            "active": 0,
+            "at_ms": 5547.64807,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-2"
+          },
+          {
+            "active": 3,
+            "at_ms": 6550.845987,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-2"
+          },
+          {
+            "active": 0,
+            "at_ms": 7556.121612,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-2"
+          },
+          {
+            "active": 2,
+            "at_ms": 8559.621278999999,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-2"
+          }
+        ],
+        "application_delays": [],
+        "final": {
+          "active": 0,
+          "at_ms": 9139.890529,
+          "event": "gate_final",
+          "limit": 5,
+          "owner": "demo-owner",
+          "ready": true,
+          "revision": 1,
+          "client_id": "agent-2"
+        }
+      }
+    },
+    {
+      "id": "agent-3",
+      "pid": 6985,
+      "class": "agent",
+      "tasks": 60,
+      "success": 52,
+      "failed": 8,
+      "unfinished": 0,
+      "success_fraction": 0.8666666666666667,
+      "failed_fraction": 0.13333333333333333,
+      "unfinished_fraction": 0.0,
+      "successful_e2e_p50_ms": 1210.6913772924834,
+      "successful_e2e_p95_ms": 4223.818064470348,
+      "successful_e2e_p99_ms": 4227.972295647569,
+      "attempts": 165,
+      "attempts_per_task": 2.75,
+      "http_429": 113,
+      "queue_timeout": 0,
+      "network_errors": 0,
+      "upstream_errors": 0,
+      "generator_rejections": 0,
+      "arrival_lag_p99_ms": 13.704259350697612,
+      "all_success_batch_ms": null,
+      "failure_reasons": {
+        "Operation HTTP status 429": 8
+      },
+      "completion_share": 0.25120772946859904,
+      "discovery": {
+        "requests": 10,
+        "successes": 10,
+        "failures": 0,
+        "incomplete": 0,
+        "policies": [
+          {
+            "active": 0,
+            "at_ms": -469.596791,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-3"
+          },
+          {
+            "active": 1,
+            "at_ms": 533.314584,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-3"
+          },
+          {
+            "active": 0,
+            "at_ms": 1535.250584,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-3"
+          },
+          {
+            "active": 1,
+            "at_ms": 2547.964418,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-3"
+          },
+          {
+            "active": 2,
+            "at_ms": 3550.596168,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-3"
+          },
+          {
+            "active": 2,
+            "at_ms": 4556.844584,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-3"
+          },
+          {
+            "active": 2,
+            "at_ms": 5559.243668,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-3"
+          },
+          {
+            "active": 1,
+            "at_ms": 6562.216418,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-3"
+          },
+          {
+            "active": 2,
+            "at_ms": 7565.264875999999,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-3"
+          },
+          {
+            "active": 2,
+            "at_ms": 8568.685959,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-3"
+          }
+        ],
+        "application_delays": [],
+        "final": {
+          "active": 0,
+          "at_ms": 9172.604917999999,
+          "event": "gate_final",
+          "limit": 5,
+          "owner": "demo-owner",
+          "ready": true,
+          "revision": 1,
+          "client_id": "agent-3"
+        }
+      }
+    },
+    {
+      "id": "agent-4",
+      "pid": 6986,
+      "class": "agent",
+      "tasks": 60,
+      "success": 51,
+      "failed": 9,
+      "unfinished": 0,
+      "success_fraction": 0.85,
+      "failed_fraction": 0.15,
+      "unfinished_fraction": 0.0,
+      "successful_e2e_p50_ms": 1213.77094377732,
+      "successful_e2e_p95_ms": 4218.9453188232455,
+      "successful_e2e_p99_ms": 4226.672727679041,
+      "attempts": 170,
+      "attempts_per_task": 2.8333333333333335,
+      "http_429": 119,
+      "queue_timeout": 0,
+      "network_errors": 0,
+      "upstream_errors": 0,
+      "generator_rejections": 0,
+      "arrival_lag_p99_ms": 16.88779202304454,
+      "all_success_batch_ms": null,
+      "failure_reasons": {
+        "Operation HTTP status 429": 9
+      },
+      "completion_share": 0.2463768115942029,
+      "discovery": {
+        "requests": 10,
+        "successes": 10,
+        "failures": 0,
+        "incomplete": 0,
+        "policies": [
+          {
+            "active": 0,
+            "at_ms": -464.96315599999997,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-4"
+          },
+          {
+            "active": 0,
+            "at_ms": 537.213344,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-4"
+          },
+          {
+            "active": 2,
+            "at_ms": 1539.015136,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-4"
+          },
+          {
+            "active": 2,
+            "at_ms": 2547.9358859999998,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-4"
+          },
+          {
+            "active": 0,
+            "at_ms": 3550.908761,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-4"
+          },
+          {
+            "active": 1,
+            "at_ms": 4556.834677999999,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-4"
+          },
+          {
+            "active": 2,
+            "at_ms": 5558.962803,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-4"
+          },
+          {
+            "active": 1,
+            "at_ms": 6562.091469,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-4"
+          },
+          {
+            "active": 2,
+            "at_ms": 7565.092011,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-4"
+          },
+          {
+            "active": 0,
+            "at_ms": 8568.591344,
+            "event": "policy",
+            "limit": 5,
+            "owner": "demo-owner",
+            "ready": true,
+            "revision": 1,
+            "client_id": "agent-4"
+          }
+        ],
+        "application_delays": [],
+        "final": {
+          "active": 0,
+          "at_ms": 8993.048928,
+          "event": "gate_final",
+          "limit": 5,
+          "owner": "demo-owner",
+          "ready": true,
+          "revision": 1,
+          "client_id": "agent-4"
+        }
+      }
+    },
+    {
+      "id": "interactive",
+      "pid": 6987,
+      "class": "interactive",
+      "tasks": 90,
+      "success": 90,
+      "failed": 0,
+      "unfinished": 0,
+      "success_fraction": 1.0,
+      "failed_fraction": 0.0,
+      "unfinished_fraction": 0.0,
+      "successful_e2e_p50_ms": 206.89296487825914,
+      "successful_e2e_p95_ms": 223.8520698792605,
+      "successful_e2e_p99_ms": 230.96410388829463,
+      "attempts": 90,
+      "attempts_per_task": 1.0,
+      "http_429": 0,
+      "queue_timeout": 0,
+      "network_errors": 0,
+      "upstream_errors": 0,
+      "generator_rejections": 0,
+      "arrival_lag_p99_ms": 21.71869363246617,
+      "all_success_batch_ms": 6139.903410714136,
+      "failure_reasons": {},
+      "completion_share": 1.0,
+      "discovery": {
+        "requests": 0
+      }
+    }
+  ],
+  "discovery_requests": 41,
+  "harness_discovery": {
+    "startup": 1,
+    "cleanup": 2
+  },
+  "terminal_failure_reasons": {
+    "interactive": {},
+    "agent": {
+      "Operation HTTP status 429": 33
+    }
+  },
+  "phases": {
+    "before_start": {
+      "arrival_cohort": {
+        "interactive": {
+          "tasks": 0,
+          "success": 0,
+          "failed": 0,
+          "unfinished": 0,
+          "success_fraction": null,
+          "failed_fraction": null,
+          "unfinished_fraction": null,
+          "successful_e2e_p50_ms": null,
+          "successful_e2e_p95_ms": null,
+          "successful_e2e_p99_ms": null,
+          "attempts": 0,
+          "attempts_per_task": null,
+          "http_429": 0,
+          "queue_timeout": 0,
+          "network_errors": 0,
+          "upstream_errors": 0,
+          "generator_rejections": 0,
+          "arrival_lag_p99_ms": null,
+          "all_success_batch_ms": null
+        },
+        "agent": {
+          "tasks": 0,
+          "success": 0,
+          "failed": 0,
+          "unfinished": 0,
+          "success_fraction": null,
+          "failed_fraction": null,
+          "unfinished_fraction": null,
+          "successful_e2e_p50_ms": null,
+          "successful_e2e_p95_ms": null,
+          "successful_e2e_p99_ms": null,
+          "attempts": 0,
+          "attempts_per_task": null,
+          "http_429": 0,
+          "queue_timeout": 0,
+          "network_errors": 0,
+          "upstream_errors": 0,
+          "generator_rejections": 0,
+          "arrival_lag_p99_ms": null,
+          "all_success_batch_ms": null
+        }
+      },
+      "cohort_failure_reasons": {
+        "interactive": {},
+        "agent": {}
+      },
+      "activity": {
+        "operation_starts": 0,
+        "http_429_responses": 0,
+        "queue_timeout_responses": 0,
+        "discovery_starts": 4,
+        "terminal_outcomes": {},
+        "upstream_starts": 0
+      }
+    },
+    "constant": {
+      "arrival_cohort": {
+        "interactive": {
+          "tasks": 90,
+          "success": 90,
+          "failed": 0,
+          "unfinished": 0,
+          "success_fraction": 1.0,
+          "failed_fraction": 0.0,
+          "unfinished_fraction": 0.0,
+          "successful_e2e_p50_ms": 206.89296487825914,
+          "successful_e2e_p95_ms": 223.8520698792605,
+          "successful_e2e_p99_ms": 230.96410388829463,
+          "attempts": 90,
+          "attempts_per_task": 1.0,
+          "http_429": 0,
+          "queue_timeout": 0,
+          "network_errors": 0,
+          "upstream_errors": 0,
+          "generator_rejections": 0,
+          "arrival_lag_p99_ms": 21.71869363246617,
+          "all_success_batch_ms": 6139.903410714136
+        },
+        "agent": {
+          "tasks": 240,
+          "success": 207,
+          "failed": 33,
+          "unfinished": 0,
+          "success_fraction": 0.8625,
+          "failed_fraction": 0.1375,
+          "unfinished_fraction": 0.0,
+          "successful_e2e_p50_ms": 1213.77094377732,
+          "successful_e2e_p95_ms": 4225.754003771003,
+          "successful_e2e_p99_ms": 4236.8044942149045,
+          "attempts": 663,
+          "attempts_per_task": 2.7625,
+          "http_429": 456,
+          "queue_timeout": 0,
+          "network_errors": 0,
+          "upstream_errors": 0,
+          "generator_rejections": 0,
+          "arrival_lag_p99_ms": 13.965144449875993,
+          "all_success_batch_ms": null
+        }
+      },
+      "cohort_failure_reasons": {
+        "interactive": {},
+        "agent": {
+          "Operation HTTP status 429": 33
+        }
+      },
+      "activity": {
+        "operation_starts": 753,
+        "http_429_responses": 456,
+        "queue_timeout_responses": 0,
+        "discovery_starts": 37,
+        "terminal_outcomes": {
+          "success": 297,
+          "failed": 33
+        },
+        "upstream_starts": 297
+      }
+    }
+  }
+}

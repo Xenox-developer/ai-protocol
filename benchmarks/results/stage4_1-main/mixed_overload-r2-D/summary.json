@@ -1,0 +1,220 @@
+{
+  "interactive": {
+    "tasks": 90,
+    "success": 90,
+    "failed": 0,
+    "unfinished": 0,
+    "success_fraction": 1.0,
+    "failed_fraction": 0.0,
+    "unfinished_fraction": 0.0,
+    "successful_e2e_p50_ms": 228.84227828458734,
+    "successful_e2e_p95_ms": 335.4528203736818,
+    "successful_e2e_p99_ms": 344.62744854369294,
+    "attempts": 90,
+    "attempts_per_task": 1.0,
+    "http_429": 0,
+    "queue_timeout": 0,
+    "network_errors": 0,
+    "upstream_errors": 0,
+    "generator_rejections": 0,
+    "arrival_lag_p99_ms": 3.669870956026898,
+    "all_success_batch_ms": 6162.158192714136
+  },
+  "agent": {
+    "tasks": 480,
+    "success": 474,
+    "failed": 6,
+    "unfinished": 0,
+    "success_fraction": 0.9875,
+    "failed_fraction": 0.0125,
+    "unfinished_fraction": 0.0,
+    "successful_e2e_p50_ms": 2984.276877427358,
+    "successful_e2e_p95_ms": 7762.1650409945605,
+    "successful_e2e_p99_ms": 8934.964544018665,
+    "attempts": 501,
+    "attempts_per_task": 1.04375,
+    "http_429": 26,
+    "queue_timeout": 0,
+    "network_errors": 0,
+    "upstream_errors": 0,
+    "generator_rejections": 0,
+    "arrival_lag_p99_ms": 8.712887448587026,
+    "all_success_batch_ms": null
+  },
+  "mode": "D",
+  "scenario": "mixed_overload",
+  "repetition": 2,
+  "upstream_started": 565,
+  "upstream_completed": 565,
+  "admission_violations": 0,
+  "incomplete_final_trace_samples": 0,
+  "maximum_active": 10,
+  "maximum_queue_interactive": 2,
+  "maximum_queue_agent": 4,
+  "final_outstanding": 0,
+  "samples_above_reduced_limit": 0,
+  "discovery": {
+    "client_requests": 2,
+    "client_successes": 2,
+    "client_failures": 0,
+    "client_incomplete": 0,
+    "by_owner": {
+      "demo-owner": 1,
+      "other-owner": 1
+    },
+    "harness_requests": {
+      "startup": 1,
+      "cleanup": 3
+    }
+  },
+  "application_delays": [],
+  "gate_final": [
+    {
+      "active": 0,
+      "at_ms": 12622.981736,
+      "event": "gate_final",
+      "limit": 5,
+      "owner": "demo-owner",
+      "ready": true,
+      "revision": 1
+    },
+    {
+      "active": 0,
+      "at_ms": 12623.250693999998,
+      "event": "gate_final",
+      "limit": 5,
+      "owner": "other-owner",
+      "ready": true,
+      "revision": 1
+    }
+  ],
+  "terminal_failure_reasons": {
+    "interactive": {},
+    "agent": {
+      "task_deadline": 6
+    }
+  },
+  "phases": {
+    "before_start": {
+      "arrival_cohort": {
+        "interactive": {
+          "tasks": 0,
+          "success": 0,
+          "failed": 0,
+          "unfinished": 0,
+          "success_fraction": null,
+          "failed_fraction": null,
+          "unfinished_fraction": null,
+          "successful_e2e_p50_ms": null,
+          "successful_e2e_p95_ms": null,
+          "successful_e2e_p99_ms": null,
+          "attempts": 0,
+          "attempts_per_task": null,
+          "http_429": 0,
+          "queue_timeout": 0,
+          "network_errors": 0,
+          "upstream_errors": 0,
+          "generator_rejections": 0,
+          "arrival_lag_p99_ms": null,
+          "all_success_batch_ms": null
+        },
+        "agent": {
+          "tasks": 0,
+          "success": 0,
+          "failed": 0,
+          "unfinished": 0,
+          "success_fraction": null,
+          "failed_fraction": null,
+          "unfinished_fraction": null,
+          "successful_e2e_p50_ms": null,
+          "successful_e2e_p95_ms": null,
+          "successful_e2e_p99_ms": null,
+          "attempts": 0,
+          "attempts_per_task": null,
+          "http_429": 0,
+          "queue_timeout": 0,
+          "network_errors": 0,
+          "upstream_errors": 0,
+          "generator_rejections": 0,
+          "arrival_lag_p99_ms": null,
+          "all_success_batch_ms": null
+        }
+      },
+      "cohort_failure_reasons": {
+        "interactive": {},
+        "agent": {}
+      },
+      "activity": {
+        "operation_starts": 0,
+        "http_429_responses": 0,
+        "queue_timeout_responses": 0,
+        "discovery_starts": 2,
+        "terminal_outcomes": {},
+        "upstream_starts": 0
+      }
+    },
+    "constant": {
+      "arrival_cohort": {
+        "interactive": {
+          "tasks": 90,
+          "success": 90,
+          "failed": 0,
+          "unfinished": 0,
+          "success_fraction": 1.0,
+          "failed_fraction": 0.0,
+          "unfinished_fraction": 0.0,
+          "successful_e2e_p50_ms": 228.84227828458734,
+          "successful_e2e_p95_ms": 335.4528203736818,
+          "successful_e2e_p99_ms": 344.62744854369294,
+          "attempts": 90,
+          "attempts_per_task": 1.0,
+          "http_429": 0,
+          "queue_timeout": 0,
+          "network_errors": 0,
+          "upstream_errors": 0,
+          "generator_rejections": 0,
+          "arrival_lag_p99_ms": 3.669870956026898,
+          "all_success_batch_ms": 6162.158192714136
+        },
+        "agent": {
+          "tasks": 480,
+          "success": 474,
+          "failed": 6,
+          "unfinished": 0,
+          "success_fraction": 0.9875,
+          "failed_fraction": 0.0125,
+          "unfinished_fraction": 0.0,
+          "successful_e2e_p50_ms": 2984.276877427358,
+          "successful_e2e_p95_ms": 7762.1650409945605,
+          "successful_e2e_p99_ms": 8934.964544018665,
+          "attempts": 501,
+          "attempts_per_task": 1.04375,
+          "http_429": 26,
+          "queue_timeout": 0,
+          "network_errors": 0,
+          "upstream_errors": 0,
+          "generator_rejections": 0,
+          "arrival_lag_p99_ms": 8.712887448587026,
+          "all_success_batch_ms": null
+        }
+      },
+      "cohort_failure_reasons": {
+        "interactive": {},
+        "agent": {
+          "task_deadline": 6
+        }
+      },
+      "activity": {
+        "operation_starts": 591,
+        "http_429_responses": 26,
+        "queue_timeout_responses": 0,
+        "discovery_starts": 0,
+        "terminal_outcomes": {
+          "success": 564,
+          "failed": 6
+        },
+        "upstream_starts": 565
+      }
+    }
+  }
+}

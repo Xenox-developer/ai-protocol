@@ -1,4 +1,6 @@
+import asyncio
 import json
+import os
 import sys
 
 from protocol_client import discover, execute, service_client
@@ -19,7 +21,11 @@ def main():
         print("Parameter schema:")
         print(json.dumps(operation["input_schema"], ensure_ascii=False, indent=2))
         params = json.loads(input("Parameters as JSON: "))
-        result = execute(client, operation, params)
+        if os.environ.get("DISPATCH_SOCKET"):
+            from dispatch_client import DispatcherClient
+            result = asyncio.run(DispatcherClient().call(operation, params, timeout_s=120))
+        else:
+            result = execute(client, operation, params)
         print(json.dumps(result, ensure_ascii=False, indent=2))
 
 

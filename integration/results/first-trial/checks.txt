@@ -1,0 +1,703 @@
+info: syncing channel updates for 1.98.1-aarch64-apple-darwin
+info: latest update on 2026-09-03 for version 1.98.1 (48a229cea 2026-09-01)
+info: downloading 4 components
+warn: the missing active toolchain `1.98.1-aarch64-apple-darwin` has been auto-installed
+warn: this might cause rustup commands to take longer time to finish than expected
+info: you may opt out with `RUSTUP_AUTO_INSTALL=0` or `rustup set auto-install disable`
+Running clean step: python3 -m venv
+Running clean step: python -m pip
+Collecting httpx==0.28.1 (from -r requirements.txt (line 1))
+  Obtaining dependency information for httpx==0.28.1 from https://files.pythonhosted.org/packages/2a/39/e50c7c3a983047577ee07d2a9e53faf5a69493943ec3f6a384bdc792deb2/httpx-0.28.1-py3-none-any.whl.metadata
+  Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Collecting jsonschema==4.24.0 (from -r requirements.txt (line 2))
+  Obtaining dependency information for jsonschema==4.24.0 from https://files.pythonhosted.org/packages/a2/3d/023389198f69c722d039351050738d6755376c8fd343e91dc493ea485905/jsonschema-4.24.0-py3-none-any.whl.metadata
+  Downloading jsonschema-4.24.0-py3-none-any.whl.metadata (7.8 kB)
+Collecting openai==1.109.1 (from -r requirements.txt (line 3))
+  Obtaining dependency information for openai==1.109.1 from https://files.pythonhosted.org/packages/1d/2a/7dd3d207ec669cacc1f186fd856a0f61dbc255d24f6fdc1a6715d6051b0f/openai-1.109.1-py3-none-any.whl.metadata
+  Downloading openai-1.109.1-py3-none-any.whl.metadata (29 kB)
+Collecting anyio (from httpx==0.28.1->-r requirements.txt (line 1))
+  Obtaining dependency information for anyio from https://files.pythonhosted.org/packages/12/b8/4bd346e22b28902df4d651910f5242c28d84e4a5c2435ca5c3f797ed7e2e/anyio-4.15.1-py3-none-any.whl.metadata
+  Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+Collecting certifi (from httpx==0.28.1->-r requirements.txt (line 1))
+  Obtaining dependency information for certifi from https://files.pythonhosted.org/packages/0b/a7/71ac2cff56fec219ed242bb11b8efb69fcc4bec75db06fb7bfe35de520e6/certifi-2026.7.22-py3-none-any.whl.metadata
+  Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+Collecting httpcore==1.* (from httpx==0.28.1->-r requirements.txt (line 1))
+  Obtaining dependency information for httpcore==1.* from https://files.pythonhosted.org/packages/7e/f5/f66802a942d491edb555dd61e3a9961140fd64c90bce1eafd741609d334d/httpcore-1.0.9-py3-none-any.whl.metadata
+  Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+Collecting idna (from httpx==0.28.1->-r requirements.txt (line 1))
+  Obtaining dependency information for idna from https://files.pythonhosted.org/packages/58/a2/bb081bab032533a855d44de1d56f8e8426114ff1ba5d1f07a438a0a654f8/idna-3.20-py3-none-any.whl.metadata
+  Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+Collecting attrs>=22.2.0 (from jsonschema==4.24.0->-r requirements.txt (line 2))
+  Obtaining dependency information for attrs>=22.2.0 from https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl.metadata
+  Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+Collecting jsonschema-specifications>=2023.03.6 (from jsonschema==4.24.0->-r requirements.txt (line 2))
+  Obtaining dependency information for jsonschema-specifications>=2023.03.6 from https://files.pythonhosted.org/packages/41/45/1a4ed80516f02155c51f51e8cedb3c1902296743db0bbc66608a0db2814f/jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata
+  Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+Collecting referencing>=0.28.4 (from jsonschema==4.24.0->-r requirements.txt (line 2))
+  Obtaining dependency information for referencing>=0.28.4 from https://files.pythonhosted.org/packages/2c/58/ca301544e1fa93ed4f80d724bf5b194f6e4b945841c5bfd555878eea9fcb/referencing-0.37.0-py3-none-any.whl.metadata
+  Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+Collecting rpds-py>=0.7.1 (from jsonschema==4.24.0->-r requirements.txt (line 2))
+  Obtaining dependency information for rpds-py>=0.7.1 from https://files.pythonhosted.org/packages/a4/73/319dfa745dd668efe89309141ded489126461fcecd2b8f3a3cda185129b6/rpds_py-2026.6.3-cp312-cp312-macosx_11_0_arm64.whl.metadata
+  Downloading rpds_py-2026.6.3-cp312-cp312-macosx_11_0_arm64.whl.metadata (4.1 kB)
+Collecting distro<2,>=1.7.0 (from openai==1.109.1->-r requirements.txt (line 3))
+  Obtaining dependency information for distro<2,>=1.7.0 from https://files.pythonhosted.org/packages/12/b3/231ffd4ab1fc9d679809f356cebee130ac7daa00d6d6f3206dd4fd137e9e/distro-1.9.0-py3-none-any.whl.metadata
+  Downloading distro-1.9.0-py3-none-any.whl.metadata (6.8 kB)
+Collecting jiter<1,>=0.4.0 (from openai==1.109.1->-r requirements.txt (line 3))
+  Obtaining dependency information for jiter<1,>=0.4.0 from https://files.pythonhosted.org/packages/0e/5e/0de4c6f84ffefa6809ffc2d550b9a314365acf7e7ec9b6c7375d49047900/jiter-0.17.0-cp312-cp312-macosx_11_0_arm64.whl.metadata
+  Downloading jiter-0.17.0-cp312-cp312-macosx_11_0_arm64.whl.metadata (5.2 kB)
+Collecting pydantic<3,>=1.9.0 (from openai==1.109.1->-r requirements.txt (line 3))
+  Obtaining dependency information for pydantic<3,>=1.9.0 from https://files.pythonhosted.org/packages/eb/47/c95ffc2009878c7aac0c5e08528022dcb885933252a88b5f170058014464/pydantic-2.13.5-py3-none-any.whl.metadata
+  Downloading pydantic-2.13.5-py3-none-any.whl.metadata (110 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 110.2/110.2 kB 209.7 MB/s eta 0:00:00
+Collecting sniffio (from openai==1.109.1->-r requirements.txt (line 3))
+  Obtaining dependency information for sniffio from https://files.pythonhosted.org/packages/e9/44/75a9c9421471a6c4805dbf2356f7c181a29c1879239abab1ea2cc8f38b40/sniffio-1.3.1-py3-none-any.whl.metadata
+  Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+Collecting tqdm>4 (from openai==1.109.1->-r requirements.txt (line 3))
+  Obtaining dependency information for tqdm>4 from https://files.pythonhosted.org/packages/a7/03/921a3d3c75785aca9ebfbfcabfbc3a1be12e2ab5265deb026d55a5a3f83e/tqdm-4.70.1-py3-none-any.whl.metadata
+  Downloading tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 57.4/57.4 kB 10.2 MB/s eta 0:00:00
+Collecting typing-extensions<5,>=4.11 (from openai==1.109.1->-r requirements.txt (line 3))
+  Obtaining dependency information for typing-extensions<5,>=4.11 from https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl.metadata
+  Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting h11>=0.16 (from httpcore==1.*->httpx==0.28.1->-r requirements.txt (line 1))
+  Obtaining dependency information for h11>=0.16 from https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl.metadata
+  Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Collecting annotated-types>=0.6.0 (from pydantic<3,>=1.9.0->openai==1.109.1->-r requirements.txt (line 3))
+  Obtaining dependency information for annotated-types>=0.6.0 from https://files.pythonhosted.org/packages/99/91/8acff4f5e50511b911bbccb72b8628a49c68ce14148cd9f6431094859a90/annotated_types-0.8.0-py3-none-any.whl.metadata
+  Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+Collecting pydantic-core==2.46.5 (from pydantic<3,>=1.9.0->openai==1.109.1->-r requirements.txt (line 3))
+  Obtaining dependency information for pydantic-core==2.46.5 from https://files.pythonhosted.org/packages/db/50/26b091836076ce4cb2fac264186936acc069e0595772cfd02a563bc4761a/pydantic_core-2.46.5-cp312-cp312-macosx_11_0_arm64.whl.metadata
+  Downloading pydantic_core-2.46.5-cp312-cp312-macosx_11_0_arm64.whl.metadata (6.6 kB)
+Collecting typing-inspection>=0.4.2 (from pydantic<3,>=1.9.0->openai==1.109.1->-r requirements.txt (line 3))
+  Obtaining dependency information for typing-inspection>=0.4.2 from https://files.pythonhosted.org/packages/67/81/4add07e5172b7ac40d8ed5ff580409a7801a4fe26d529bdd915401dabfbe/typing_inspection-0.4.4-py3-none-any.whl.metadata
+  Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 17.5 MB/s eta 0:00:00
+Downloading jsonschema-4.24.0-py3-none-any.whl (88 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 88.7/88.7 kB 20.1 MB/s eta 0:00:00
+Downloading openai-1.109.1-py3-none-any.whl (948 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 948.6/948.6 kB 4.0 MB/s eta 0:00:00
+Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 5.0 MB/s eta 0:00:00
+Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 132.1/132.1 kB 19.9 MB/s eta 0:00:00
+Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 14.3 MB/s eta 0:00:00
+Downloading distro-1.9.0-py3-none-any.whl (20 kB)
+Downloading idna-3.20-py3-none-any.whl (69 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.6/69.6 kB 67.0 MB/s eta 0:00:00
+Downloading jiter-0.17.0-cp312-cp312-macosx_11_0_arm64.whl (321 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 321.7/321.7 kB 11.9 MB/s eta 0:00:00
+Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+Downloading pydantic-2.13.5-py3-none-any.whl (472 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 472.6/472.6 kB 11.7 MB/s eta 0:00:00
+Downloading pydantic_core-2.46.5-cp312-cp312-macosx_11_0_arm64.whl (1.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.9/1.9 MB 10.0 MB/s eta 0:00:00
+Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+Downloading rpds_py-2026.6.3-cp312-cp312-macosx_11_0_arm64.whl (338 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 338.5/338.5 kB 12.0 MB/s eta 0:00:00
+Downloading tqdm-4.70.1-py3-none-any.whl (80 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.2/80.2 kB 145.0 MB/s eta 0:00:00
+Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.6/45.6 kB 94.2 MB/s eta 0:00:00
+Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 137.0/137.0 kB 10.5 MB/s eta 0:00:00
+Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+Installing collected packages: typing-extensions, tqdm, sniffio, rpds-py, jiter, idna, h11, distro, certifi, attrs, annotated-types, typing-inspection, referencing, pydantic-core, httpcore, anyio, pydantic, jsonschema-specifications, httpx, openai, jsonschema
+Successfully installed annotated-types-0.8.0 anyio-4.15.1 attrs-26.1.0 certifi-2026.7.22 distro-1.9.0 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.20 jiter-0.17.0 jsonschema-4.24.0 jsonschema-specifications-2025.9.1 openai-1.109.1 pydantic-2.13.5 pydantic-core-2.46.5 referencing-0.37.0 rpds-py-2026.6.3 sniffio-1.3.1 tqdm-4.70.1 typing-extensions-4.16.0 typing-inspection-0.4.4
+Running clean step: bash scripts/verify.sh
+    Updating crates.io index
+ Downloading crates ...
+  Downloaded atomic-waker v1.1.2
+  Downloaded core-foundation v0.10.1
+  Downloaded axum-core v0.5.6
+  Downloaded matchit v0.8.4
+  Downloaded cfg-if v1.0.5
+  Downloaded lru-slab v0.1.3
+  Downloaded parking_lot v0.12.5
+  Downloaded ipnet v2.12.2
+  Downloaded chacha20 v0.10.2
+  Downloaded indexmap v2.14.2
+  Downloaded potential_utf v0.1.6
+  Downloaded getrandom v0.4.3
+  Downloaded scopeguard v1.2.0
+  Downloaded multiversion_no_op v1.0.0
+  Downloaded errno v0.3.14
+  Downloaded equivalent v1.0.2
+  Downloaded futures-core v0.3.34
+  Downloaded futures-sink v0.3.34
+  Downloaded percent-encoding v2.3.2
+  Downloaded fnv v1.0.7
+  Downloaded httpdate v1.0.3
+  Downloaded cfg_aliases v0.2.2
+  Downloaded dunce v1.0.5
+  Downloaded idna_adapter v1.2.2
+  Downloaded http-body v1.1.0
+  Downloaded jobserver v0.1.35
+  Downloaded pin-project-lite v0.2.17
+  Downloaded pkg-config v0.3.34
+  Downloaded rand_pcg v0.10.2
+  Downloaded itoa v1.0.18
+  Downloaded mime v0.3.17
+  Downloaded rand_core v0.10.1
+  Downloaded displaydoc v0.2.7
+  Downloaded serde_path_to_error v0.1.20
+  Downloaded http-body-util v0.1.5
+  Downloaded quote v1.0.47
+  Downloaded find-msvc-tools v0.1.13
+  Downloaded form_urlencoded v1.2.2
+  Downloaded cmake v0.1.58
+  Downloaded fs_extra v1.3.0
+  Downloaded rustc-hash v2.1.3
+  Downloaded rustversion v1.0.23
+  Downloaded core-foundation-sys v0.8.7
+  Downloaded getrandom v0.2.17
+  Downloaded hyper-rustls v0.27.9
+  Downloaded log v0.4.34
+  Downloaded once_cell v1.21.4
+  Downloaded shlex v2.0.1
+  Downloaded parking_lot_core v0.9.12
+  Downloaded futures-task v0.3.34
+  Downloaded serde_urlencoded v0.7.1
+  Downloaded rustls-pki-types v1.15.1
+  Downloaded icu_provider v2.3.1
+  Downloaded quinn-udp v0.5.15
+  Downloaded security-framework-sys v2.17.0
+  Downloaded core-foundation v0.9.4
+  Downloaded serde_core v1.0.229
+  Downloaded rustls-platform-verifier v0.7.0
+  Downloaded litemap v0.8.3
+  Downloaded bitflags v2.13.2
+  Downloaded bytes v1.12.1
+  Downloaded httparse v1.10.1
+  Downloaded lock_api v0.4.14
+  Downloaded proc-macro2 v1.0.107
+  Downloaded rustls-webpki v0.103.15
+  Downloaded serde_derive v1.0.229
+  Downloaded base64 v0.22.1
+  Downloaded cc v1.4.7
+  Downloaded icu_locale_core v2.3.0
+  Downloaded icu_normalizer_data v2.3.0
+  Downloaded quinn v0.11.12
+  Downloaded security-framework v3.7.0
+  Downloaded serde v1.0.229
+  Downloaded base64 v0.23.1
+  Downloaded hyper-util v0.1.20
+  Downloaded icu_collections v2.3.0
+  Downloaded mio v1.2.3
+  Downloaded futures-channel v0.3.34
+  Downloaded memchr v2.8.3
+  Downloaded rand v0.10.3
+  Downloaded idna v1.1.0
+  Downloaded http v1.5.0
+  Downloaded icu_properties v2.3.0
+  Downloaded ryu v1.0.23
+  Downloaded hashbrown v0.17.1
+  Downloaded reqwest v0.13.5
+  Downloaded icu_properties_data v2.3.0
+  Downloaded axum v0.8.9
+  Downloaded futures-util v0.3.34
+  Downloaded hyper v1.11.1
+  Downloaded h2 v0.4.19
+  Downloaded aws-lc-rs v1.18.1
+  Downloaded serde_json v1.0.151
+  Downloaded quinn-proto v0.11.18
+  Downloaded writeable v0.6.4
+  Downloaded rustls v0.23.45
+  Downloaded url v2.5.8
+  Downloaded tokio-macros v2.7.2
+  Downloaded utf8_iter v1.0.4
+  Downloaded sync_wrapper v1.0.2
+  Downloaded yoke-derive v0.8.3
+  Downloaded system-configuration-sys v0.6.0
+  Downloaded tower-layer v0.3.3
+  Downloaded untrusted v0.9.0
+  Downloaded zerofrom v0.1.8
+  Downloaded tower-service v0.3.3
+  Downloaded want v0.3.1
+  Downloaded stable_deref_trait v1.2.1
+  Downloaded try-lock v0.2.5
+  Downloaded zerofrom-derive v0.1.8
+  Downloaded thiserror-impl v2.0.20
+  Downloaded tinystr v0.8.4
+  Downloaded zmij v1.0.23
+  Downloaded signal-hook-registry v1.4.8
+  Downloaded subtle v2.6.1
+  Downloaded thiserror v2.0.20
+  Downloaded slab v0.4.12
+  Downloaded smallvec v1.16.1
+  Downloaded icu_normalizer v2.3.0
+  Downloaded zeroize v1.9.0
+  Downloaded zerovec-derive v0.11.6
+  Downloaded synstructure v0.14.0
+  Downloaded system-configuration v0.7.0
+  Downloaded tokio-rustls v0.26.5
+  Downloaded encoding_rs v0.8.41
+  Downloaded unicode-ident v1.0.26
+  Downloaded yoke v0.8.3
+  Downloaded socket2 v0.6.5
+  Downloaded tinyvec v1.13.3
+  Downloaded libc v0.2.189
+  Downloaded tracing-core v0.1.36
+  Downloaded zerotrie v0.2.5
+  Downloaded tower v0.5.3
+  Downloaded tower-http v0.6.11
+  Downloaded zerovec v0.11.8
+  Downloaded tokio-util v0.7.19
+  Downloaded syn v3.0.6
+  Downloaded tracing v0.1.44
+  Downloaded ring v0.17.14
+  Downloaded tokio v1.53.1
+  Downloaded simdutf8 v0.1.5
+  Downloaded aws-lc-sys v0.45.0
+   Compiling libc v0.2.189
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.26
+    Checking smallvec v1.16.1
+    Checking bytes v1.12.1
+    Checking stable_deref_trait v1.2.1
+    Checking pin-project-lite v0.2.17
+    Checking once_cell v1.21.4
+    Checking itoa v1.0.18
+    Checking futures-core v0.3.34
+    Checking cfg-if v1.0.5
+   Compiling find-msvc-tools v0.1.13
+   Compiling parking_lot_core v0.9.12
+    Checking scopeguard v1.2.0
+   Compiling shlex v2.0.1
+   Compiling pkg-config v0.3.34
+   Compiling fs_extra v1.3.0
+    Checking lock_api v0.4.14
+   Compiling dunce v1.0.5
+    Checking core-foundation-sys v0.8.7
+    Checking log v0.4.34
+    Checking http v1.5.0
+    Checking tracing-core v0.1.36
+    Checking litemap v0.8.3
+    Checking writeable v0.6.4
+   Compiling aws-lc-rs v1.18.1
+    Checking slab v0.4.12
+   Compiling icu_properties_data v2.3.0
+    Checking percent-encoding v2.3.2
+    Checking zeroize v1.9.0
+    Checking tracing v0.1.44
+    Checking bitflags v2.13.2
+    Checking utf8_iter v1.0.4
+   Compiling serde_core v1.0.229
+   Compiling icu_normalizer_data v2.3.0
+    Checking hashbrown v0.17.1
+    Checking http-body v1.1.0
+   Compiling httparse v1.10.1
+    Checking futures-sink v0.3.34
+   Compiling system-configuration-sys v0.6.0
+    Checking equivalent v1.0.2
+    Checking tower-service v0.3.3
+    Checking futures-task v0.3.34
+    Checking indexmap v2.14.2
+    Checking futures-util v0.3.34
+    Checking rustls-pki-types v1.15.1
+    Checking atomic-waker v1.1.2
+   Compiling rustversion v1.0.23
+   Compiling rustls v0.23.45
+    Checking try-lock v0.2.5
+    Checking untrusted v0.9.0
+    Checking fnv v1.0.7
+    Checking want v0.3.1
+    Checking form_urlencoded v1.2.2
+    Checking futures-channel v0.3.34
+    Checking sync_wrapper v1.0.2
+   Compiling serde v1.0.229
+    Checking subtle v2.6.1
+    Checking httpdate v1.0.3
+    Checking tower-layer v0.3.3
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.151
+    Checking base64 v0.22.1
+    Checking errno v0.3.14
+   Compiling jobserver v0.1.35
+    Checking mio v1.2.3
+   Compiling syn v3.0.6
+    Checking signal-hook-registry v1.4.8
+    Checking parking_lot v0.12.5
+    Checking socket2 v0.6.5
+    Checking core-foundation v0.9.4
+   Compiling cc v1.4.7
+    Checking ipnet v2.12.2
+    Checking security-framework-sys v2.17.0
+    Checking core-foundation v0.10.1
+    Checking http-body-util v0.1.5
+    Checking system-configuration v0.7.0
+    Checking ryu v1.0.23
+    Checking mime v0.3.17
+    Checking memchr v2.8.3
+    Checking simdutf8 v0.1.5
+   Compiling multiversion_no_op v1.0.0
+    Checking security-framework v3.7.0
+    Checking serde_path_to_error v0.1.20
+    Checking axum-core v0.5.6
+    Checking base64 v0.23.1
+   Compiling encoding_rs v0.8.41
+    Checking matchit v0.8.4
+   Compiling cmake v0.1.58
+   Compiling aws-lc-sys v0.45.0
+   Compiling synstructure v0.14.0
+   Compiling zerofrom-derive v0.1.8
+   Compiling yoke-derive v0.8.3
+   Compiling zerovec-derive v0.11.6
+   Compiling displaydoc v0.2.7
+   Compiling tokio-macros v2.7.2
+   Compiling serde_derive v1.0.229
+    Checking tokio v1.53.1
+    Checking zerofrom v0.1.8
+    Checking yoke v0.8.3
+    Checking zerovec v0.11.8
+    Checking zerotrie v0.2.5
+    Checking tinystr v0.8.4
+    Checking potential_utf v0.1.6
+    Checking icu_collections v2.3.0
+    Checking icu_locale_core v2.3.0
+    Checking serde_urlencoded v0.7.1
+    Checking icu_provider v2.3.1
+    Checking icu_properties v2.3.0
+    Checking icu_normalizer v2.3.0
+    Checking tokio-util v0.7.19
+    Checking tower v0.5.3
+    Checking idna_adapter v1.2.2
+    Checking idna v1.1.0
+    Checking h2 v0.4.19
+    Checking url v2.5.8
+    Checking tower-http v0.6.11
+    Checking hyper v1.11.1
+    Checking hyper-util v0.1.20
+    Checking axum v0.8.9
+    Checking rustls-webpki v0.103.15
+    Checking tokio-rustls v0.26.5
+    Checking rustls-platform-verifier v0.7.0
+    Checking hyper-rustls v0.27.9
+    Checking reqwest v0.13.5
+    Checking ai-protocol v0.1.0 (/private/tmp/ai-clean-m5g2w7f1/checkout)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 37.73s
+   Compiling smallvec v1.16.1
+   Compiling bytes v1.12.1
+   Compiling stable_deref_trait v1.2.1
+   Compiling pin-project-lite v0.2.17
+   Compiling once_cell v1.21.4
+   Compiling cfg-if v1.0.5
+   Compiling scopeguard v1.2.0
+   Compiling libc v0.2.189
+   Compiling itoa v1.0.18
+   Compiling zerofrom v0.1.8
+   Compiling futures-core v0.3.34
+   Compiling log v0.4.34
+   Compiling core-foundation-sys v0.8.7
+   Compiling lock_api v0.4.14
+   Compiling yoke v0.8.3
+   Compiling tracing-core v0.1.36
+   Compiling slab v0.4.12
+   Compiling writeable v0.6.4
+   Compiling litemap v0.8.3
+   Compiling bitflags v2.13.2
+   Compiling zerovec v0.11.8
+   Compiling zerotrie v0.2.5
+   Compiling zeroize v1.9.0
+   Compiling utf8_iter v1.0.4
+   Compiling percent-encoding v2.3.2
+   Compiling hashbrown v0.17.1
+   Compiling futures-task v0.3.34
+   Compiling equivalent v1.0.2
+   Compiling tower-service v0.3.3
+   Compiling futures-sink v0.3.34
+   Compiling jobserver v0.1.35
+   Compiling errno v0.3.14
+   Compiling parking_lot_core v0.9.12
+   Compiling socket2 v0.6.5
+   Compiling mio v1.2.3
+   Compiling http v1.5.0
+   Compiling signal-hook-registry v1.4.8
+   Compiling cc v1.4.7
+   Compiling parking_lot v0.12.5
+   Compiling tinystr v0.8.4
+   Compiling tracing v0.1.44
+   Compiling potential_utf v0.1.6
+   Compiling indexmap v2.14.2
+   Compiling icu_collections v2.3.0
+   Compiling futures-util v0.3.34
+   Compiling icu_locale_core v2.3.0
+   Compiling tokio v1.53.1
+   Compiling rustls-pki-types v1.15.1
+   Compiling serde_core v1.0.229
+   Compiling icu_normalizer_data v2.3.0
+   Compiling icu_properties_data v2.3.0
+   Compiling http-body v1.1.0
+   Compiling try-lock v0.2.5
+   Compiling atomic-waker v1.1.2
+   Compiling untrusted v0.9.0
+   Compiling fnv v1.0.7
+   Compiling want v0.3.1
+   Compiling httparse v1.10.1
+   Compiling system-configuration-sys v0.6.0
+   Compiling core-foundation v0.9.4
+   Compiling form_urlencoded v1.2.2
+   Compiling sync_wrapper v1.0.2
+   Compiling futures-channel v0.3.34
+   Compiling subtle v2.6.1
+   Compiling cmake v0.1.58
+   Compiling icu_provider v2.3.1
+   Compiling tower-layer v0.3.3
+   Compiling httpdate v1.0.3
+   Compiling system-configuration v0.7.0
+   Compiling ipnet v2.12.2
+   Compiling icu_properties v2.3.0
+   Compiling icu_normalizer v2.3.0
+   Compiling base64 v0.22.1
+   Compiling zmij v1.0.23
+   Compiling http-body-util v0.1.5
+   Compiling aws-lc-sys v0.45.0
+   Compiling security-framework-sys v2.17.0
+   Compiling core-foundation v0.10.1
+   Compiling ryu v1.0.23
+   Compiling memchr v2.8.3
+   Compiling mime v0.3.17
+   Compiling simdutf8 v0.1.5
+   Compiling matchit v0.8.4
+   Compiling base64 v0.23.1
+   Compiling security-framework v3.7.0
+   Compiling encoding_rs v0.8.41
+   Compiling axum-core v0.5.6
+   Compiling idna_adapter v1.2.2
+   Compiling idna v1.1.0
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.151
+   Compiling serde_path_to_error v0.1.20
+   Compiling url v2.5.8
+   Compiling serde_urlencoded v0.7.1
+   Compiling tokio-util v0.7.19
+   Compiling tower v0.5.3
+   Compiling tower-http v0.6.11
+   Compiling h2 v0.4.19
+   Compiling hyper v1.11.1
+   Compiling hyper-util v0.1.20
+   Compiling axum v0.8.9
+   Compiling aws-lc-rs v1.18.1
+   Compiling rustls v0.23.45
+   Compiling rustls-webpki v0.103.15
+   Compiling tokio-rustls v0.26.5
+   Compiling rustls-platform-verifier v0.7.0
+   Compiling hyper-rustls v0.27.9
+   Compiling reqwest v0.13.5
+   Compiling ai-protocol v0.1.0 (/private/tmp/ai-clean-m5g2w7f1/checkout)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 30.57s
+   Compiling tokio v1.53.1
+   Compiling tokio-util v0.7.19
+   Compiling tower v0.5.3
+   Compiling tokio-rustls v0.26.5
+   Compiling tower-http v0.6.11
+   Compiling h2 v0.4.19
+   Compiling hyper v1.11.1
+   Compiling hyper-util v0.1.20
+   Compiling hyper-rustls v0.27.9
+   Compiling axum v0.8.9
+   Compiling reqwest v0.13.5
+   Compiling ai-protocol v0.1.0 (/private/tmp/ai-clean-m5g2w7f1/checkout)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 14.15s
+     Running unittests src/main.rs (target/debug/deps/ai_protocol-e56e1abb378e6090)
+
+running 28 tests
+test tests::configuration_fails_closed_without_exposing_tokens ... ok
+test tests::concurrent_tokens_share_budget_and_other_scopes_are_independent ... ok
+test tests::four_distinct_agent_credentials_share_the_same_resizable_budget ... ok
+test service_tests::owner_mapping_validates_routes_schemas_permissions_and_shared_budgets ... ok
+test tests::interactive_budget_is_ten_and_shared_within_its_class ... ok
+test tests::queued_cancellation_releases_slot_and_never_runs ... ok
+test tests::queueing::cancellation_expiry_and_dispatch_boundary_release_exactly_once ... ok
+test tests::broken_upstream_body_releases_budget ... ok
+test tests::queueing::continuous_competition_selects_three_to_one_and_keeps_fifo ... ok
+test tests::queueing::fifo_merges_acceptance_order_across_classes_even_at_equal_times ... ok
+test tests::queueing::earlier_new_deadline_rearms_the_single_scheduler_timer ... ok
+test tests::queue_overflow_does_not_leak_either_class_budget ... ok
+test tests::queueing::single_class_uses_every_selection_without_accumulating_credits ... ok
+test tests::queueing::scheduler_fills_ten_slots_and_reuses_each_completion_without_clock_ticks ... ok
+test tests::queueing::timer_expires_waiters_without_events_and_preserves_running_jobs_and_resized_budget ... ok
+test tests::dynamic::running_cancellation_after_shrink_keeps_the_original_accounting ... ok
+test tests::test_rejection_consumes_no_budget ... ok
+test tests::spoofed_headers_cannot_select_interactive_queue ... ok
+test tests::queueing::policy_publishes_class_specific_queue_wait_and_remains_uncacheable ... ok
+test tests::catalog_operations_work_through_authenticated_http ... ok
+test tests::running_cancellation_keeps_permit_until_upstream_finishes ... ok
+test tests::upstream_errors_release_budget_and_429_is_not_forwarded ... ok
+test tests::authentication_permissions_and_discovery ... ok
+test tests::dynamic::shrink_and_grow_preserve_jobs_shared_budget_and_other_scopes ... ok
+test tests::dynamic::administrative_authentication_and_validation_fail_closed ... ok
+test tests::dynamic::resizing_races_with_admission_completion_and_consistent_snapshots ... ok
+test tests::dynamic::http_policy_revision_and_limit_remain_consistent_during_updates ... ok
+test tests::upstream_timeout_releases_budget ... ok
+
+test result: ok. 28 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.03s
+
+     Running unittests src/bin/bench_client.rs (target/debug/deps/bench_client-1f2e3200aacc88c9)
+
+running 3 tests
+test retry::tests::unsafe_errors_never_retry_and_deadline_bounds_safe_retries ... ok
+test retry::tests::only_documented_timeouts_and_429_share_five_attempts_and_wait ... ok
+test tests::fixed_client_keeps_initial_gate_while_adaptive_client_applies_changes ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running unittests src/bin/dispatcher.rs (target/debug/deps/dispatcher-fd24892a4e06b00a)
+
+running 13 tests
+test tests::dispatch_and_cancellation_have_one_linearization_point ... ok
+test tests::discovery_routes_are_generic_explicit_and_cannot_redirect_credentials ... ok
+test retry::tests::unsafe_errors_never_retry_and_deadline_bounds_safe_retries ... ok
+test retry::tests::only_documented_timeouts_and_429_share_five_attempts_and_wait ... ok
+test tests::service_identity_change_pauses_the_existing_gate ... ok
+test tests::permissions_use_the_submitting_token_and_owners_cannot_mix ... ok
+test tests::bounded_queue_and_lost_reply_are_explicit_without_direct_fallback ... ok
+test tests::one_shared_queue_obeys_shrink_and_preserves_started_attempts ... ok
+test tests::equal_owner_ids_on_different_services_have_independent_gates_and_queues ... ok
+test tests::polling_applies_both_revisions_using_one_owner_gate ... ok
+test tests::disconnect_keeps_running_permit_and_expired_waiter_never_sends ... ok
+test tests::running_deadline_is_unknown_and_does_not_retry_or_release_early ... ok
+test tests::retries_release_capacity_and_stop_at_five_on_the_original_deadline ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.04s
+
+     Running unittests src/bin/load.rs (target/debug/deps/load-0bc34252f6b11871)
+
+running 8 tests
+test retry::tests::unsafe_errors_never_retry_and_deadline_bounds_safe_retries ... ok
+test tests::paused_and_stopped_clients_do_not_admit_new_attempts ... ok
+test tests::limiter_shrinks_without_cancelling_and_wakes_on_growth ... ok
+test retry::tests::only_documented_timeouts_and_429_share_five_attempts_and_wait ... ok
+test tests::invalid_or_inconsistent_policy_pauses_until_valid_snapshot_returns ... ok
+test tests::retries_are_bounded_and_attempt_slots_are_released_on_errors ... ok
+test tests::polling_failure_pauses_new_http_attempts_and_recovers ... ok
+test tests::one_poller_adapts_real_http_sending_while_all_operation_slots_are_busy ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.02s
+
+     Running unittests src/bin/load_plain.rs (target/debug/deps/load_plain-52487c467558df8f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+test_cancelled_attempt_is_recorded_without_fabricated_response (test_benchmark.BenchmarkMeasurements.test_cancelled_attempt_is_recorded_without_fabricated_response) ... ok
+test_client_wait_and_retries_belong_to_one_logical_task (test_benchmark.BenchmarkMeasurements.test_client_wait_and_retries_belong_to_one_logical_task) ... ok
+test_empty_percentiles_are_absent_and_nearest_rank_is_explicit (test_benchmark.BenchmarkMeasurements.test_empty_percentiles_are_absent_and_nearest_rank_is_explicit) ... ok
+test_errors_missing_results_and_generator_rejections_remain_in_denominator (test_benchmark.BenchmarkMeasurements.test_errors_missing_results_and_generator_rejections_remain_in_denominator) ... ok
+test_only_incomplete_final_diagnostic_sample_is_tolerated_and_counted (test_benchmark.BenchmarkMeasurements.test_only_incomplete_final_diagnostic_sample_is_tolerated_and_counted) ... ok
+test_application_delay_uses_revision_and_admin_interval (test_benchmark_comparison.PolicyComparison.test_application_delay_uses_revision_and_admin_interval) ... ok
+test_final_error_reasons_do_not_drop_deadlines_or_unfinished_tasks (test_benchmark_comparison.PolicyComparison.test_final_error_reasons_do_not_drop_deadlines_or_unfinished_tasks) ... ok
+test_reduced_arrival_retains_late_result_and_full_latency (test_benchmark_comparison.PolicyComparison.test_reduced_arrival_retains_late_result_and_full_latency) ... ok
+test_demo_credentials_are_private_and_never_overwritten (test_clients.ClientTests.test_demo_credentials_are_private_and_never_overwritten) ... ok
+test_discovery_rejects_incompatible_or_invalid_policy (test_clients.ClientTests.test_discovery_rejects_incompatible_or_invalid_policy) ... ok
+test_external_paths_and_schemas_are_rejected_before_request (test_clients.ClientTests.test_external_paths_and_schemas_are_rejected_before_request) ... ok
+test_llm_receives_tools_without_service_token (test_clients.ClientTests.test_llm_receives_tools_without_service_token) ... ok
+test_only_documented_queue_timeout_is_retryable (test_clients.ClientTests.test_only_documented_queue_timeout_is_retryable) ... ok
+test_operation_deadline_prevents_late_retry (test_clients.ClientTests.test_operation_deadline_prevents_late_retry) ... ok
+test_other_errors_are_not_retried (test_clients.ClientTests.test_other_errors_are_not_retried) ... ok
+test_queue_timeout_retry_shares_attempt_budget_with_429 (test_clients.ClientTests.test_queue_timeout_retry_shares_attempt_budget_with_429) ... ok
+test_redirect_is_not_followed_and_parameters_are_validated (test_clients.ClientTests.test_redirect_is_not_followed_and_parameters_are_validated) ... ok
+test_retry_after_and_attempt_budget (test_clients.ClientTests.test_retry_after_and_attempt_budget) ... ok
+test_retry_then_success_keeps_authorization (test_clients.ClientTests.test_retry_then_success_keeps_authorization) ... ok
+test_service_client_requires_credentials (test_clients.ClientTests.test_service_client_requires_credentials) ... ok
+test_discovered_operation_uses_its_name_without_catalog_specific_code (test_dispatch_client.DispatchConnector.test_discovered_operation_uses_its_name_without_catalog_specific_code) ... ok
+test_original_deadline_and_credential_are_forwarded_without_new_budget (test_dispatch_client.DispatchConnector.test_original_deadline_and_credential_are_forwarded_without_new_budget) ... ok
+test_queue_full_is_returned_without_automatic_resubmission (test_dispatch_client.DispatchConnector.test_queue_full_is_returned_without_automatic_resubmission) ... ok
+test_response_loss_is_unknown_and_never_replayed (test_dispatch_client.DispatchConnector.test_response_loss_is_unknown_and_never_replayed) ... ok
+test_unavailable_expired_and_malformed_reply_are_explicit (test_dispatch_client.DispatchConnector.test_unavailable_expired_and_malformed_reply_are_explicit) ... ok
+test_duplicate_or_migrating_task_is_rejected (test_multiclient.IndependentClients.test_duplicate_or_migrating_task_is_rejected) ... ok
+test_each_client_must_apply_both_changes_independently (test_multiclient.IndependentClients.test_each_client_must_apply_both_changes_independently) ... ok
+test_partition_preserves_aggregate_arrivals_and_operations (test_multiclient.IndependentClients.test_partition_preserves_aggregate_arrivals_and_operations) ... ok
+test_origin_credentials_and_unknown_operation_name_are_not_catalog_bound (test_service_client.GenericClient.test_origin_credentials_and_unknown_operation_name_are_not_catalog_bound) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 0.108s
+
+OK
+Smoke test passed: v3 discovery, real catalog operations, permissions, and a real Retry-After delay
+1. Starting the catalog and gateway on free loopback ports.
+Server started on port 62674 (protocol v3)
+Catalog service started on port 62673
+127.0.0.1 - - [23/Sep/2026 18:56:31] "GET /products/search HTTP/1.1" 200 -
+2. GET /agent-policy (no token values in this output):
+127.0.0.1 - - [23/Sep/2026 18:56:31] "GET /products/get?id=2 HTTP/1.1" 200 -
+{
+  "client_class": "agent",
+  "limits": {
+    "max_outstanding": 5,
+    "scope": "principal"
+  },
+  "operations": [
+    {
+      "description": "Search products by a substring in their English name. For sneakers, pass query=\"sneakers\"; for boots, pass query=\"boots\". To retrieve all products, pass query=\"\". The catalog contains only footwear, so a request for all available footwear means retrieving all products.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object"
+      },
+      "method": "POST",
+      "name": "search_products",
+      "path": "/search"
+    },
+    {
+      "description": "Retrieve a single product by its known numeric ID. Use this when the user provides a product ID.",
+      "input_schema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "method": "POST",
+      "name": "get_product",
+      "path": "/product"
+    }
+  ],
+  "outstanding": 0,
+  "policy_revision": 1,
+  "principal_id": "demo-owner",
+  "queue": {
+    "max_wait_ms": 10000
+  },
+  "refresh_after_ms": 1000,
+  "service_id": "catalog",
+  "version": 3
+}
+3. First successful direct call: {"product": {"id": 2, "name": "Brown boots", "price": 180}}
+Dispatcher ready
+4. Starting three independent client processes through one dispatcher.
+127.0.0.1 - - [23/Sep/2026 18:56:32] "GET /products/get?id=2 HTTP/1.1" 200 -
+127.0.0.1 - - [23/Sep/2026 18:56:32] "GET /products/get?id=2 HTTP/1.1" 200 -
+{"ok": true, "code": "completed", "execution": "completed", "attempts": 1, "status": 200, "body": {"product": {"id": 2, "name": "Brown boots", "price": 180}}}
+127.0.0.1 - - [23/Sep/2026 18:56:32] "GET /products/get?id=2 HTTP/1.1" 200 -
+{"ok": true, "code": "completed", "execution": "completed", "attempts": 1, "status": 200, "body": {"product": {"id": 2, "name": "Brown boots", "price": 180}}}
+{"ok": true, "code": "completed", "execution": "completed", "attempts": 1, "status": 200, "body": {"product": {"id": 2, "name": "Brown boots", "price": 180}}}
+PASS: first call, three dispatched clients, final outstanding=0.
+5. Owned processes stopped; temporary credentials and socket removed.
+Support API listening on 62686
+Server started on port 62687 (protocol v3)
+Server started on port 62687 (protocol v3)
+PASS: unmodified template, new mapped operation, token permissions, outstanding=0; no Rust edits.
+{"passed": true, "output": "/private/tmp/ai-verify.BY40Wu/integration", "final_outstanding": {"catalog": 0, "support": 0}}
+PASS: clean snapshot verified; temporary checkout, tokens and build outputs removed.

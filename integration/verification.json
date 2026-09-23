@@ -1,0 +1,32 @@
+{
+  "date": "2026-09-23",
+  "git_head": "cce8a6394c8df4262b0a48b2ba0a5cd42e41e0ea",
+  "dirty_checkout": true,
+  "build_profile": "debug",
+  "rust_tests": 52,
+  "python_tests": 29,
+  "format_check": "passed",
+  "all_target_check": "passed",
+  "binary_build": "passed",
+  "python_compileall": "passed",
+  "git_diff_check": "passed",
+  "integration_result": "results/second-service-final/result.json",
+  "source_sha256": {
+    "src/main.rs": "0af3fec30cf147451586eb46624ba4257d133168938106c830555b19a2005cc1",
+    "src/service.rs": "68b32748eef1e94fc551056d24306d21b6287b5f373f89b5e63082c3194674ba",
+    "src/bin/dispatcher.rs": "425512fc85bd2d6d8e0e32e45a409bb2c33a69d0417f7abd79e94f9d295b999e",
+    "src/bin/client/transport.rs": "d65fd116e2c2dafc22d0f6b76c2ac1894e748d802f3934a513a0f5fd20ae9cb9",
+    "examples/protocol_client.py": "fe824eff0ea4c723a852ab63261c1a0dbd8d0adf0ebfad898d4a5958870375e9",
+    "examples/dispatch_client.py": "77b523cb9f23f2104bf6c285b46e04b3c9e2dc843f6ee7aa33c25b3b46f3b225",
+    "examples/discover_client.py": "f359b409bec2d24ad9ca8ca2683a22d65be517dfb996f8876851ddf7b72ac04d",
+    "examples/support_service.py": "83b2d28c26d449ea06896dd5b055256e37484b5a0a83ec5e049f7bf198f4c3b1",
+    "examples/support_tickets.json": "a60c205a94dc05de0d635470b31e6eeed75d3a6a881d934b46901e5628bb5353",
+    "examples/service_integration_demo.py": "417d657c0920874f41ed1fef06bf2df94084ae2482afd5836414ce719136dcb7",
+    "services/catalog.json": "192d0b65f5b5c20aab30d25b4066c9bac6db9033de00bb3f22849de6a875ed7d",
+    "services/support.json": "ca7006d75ab70ddfcb179c97f5501825e321e201cb2388a72a40515f78e514cc"
+  },
+  "binary_sha256": {
+    "ai-protocol": "06489328aef00a17699fad7e28c8ffa54c0d27115623a9792179a84283c35920",
+    "dispatcher": "c2babf3aa737ea15854026721f94d2bbdf316f7ef104f4f0a0177fea85e0f9a3"
+  }
+}

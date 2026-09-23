@@ -1,0 +1,116 @@
+{
+  "catalog": {
+    "client_class": "agent",
+    "limits": {
+      "max_outstanding": 5,
+      "scope": "principal"
+    },
+    "operations": [
+      {
+        "description": "Search products by a substring in their English name. For sneakers, pass query=\"sneakers\"; for boots, pass query=\"boots\". To retrieve all products, pass query=\"\". The catalog contains only footwear, so a request for all available footwear means retrieving all products.",
+        "input_schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "additionalProperties": false,
+          "properties": {
+            "query": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "type": "object"
+        },
+        "method": "POST",
+        "name": "search_products",
+        "path": "/search"
+      },
+      {
+        "description": "Retrieve a single product by its known numeric ID. Use this when the user provides a product ID.",
+        "input_schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "type": "object"
+        },
+        "method": "POST",
+        "name": "get_product",
+        "path": "/product"
+      }
+    ],
+    "outstanding": 0,
+    "policy_revision": 1,
+    "principal_id": "demo-owner",
+    "queue": {
+      "max_wait_ms": 10000
+    },
+    "refresh_after_ms": 1000,
+    "service_id": "catalog",
+    "version": 3
+  },
+  "support": {
+    "client_class": "agent",
+    "limits": {
+      "max_outstanding": 5,
+      "scope": "principal"
+    },
+    "operations": [
+      {
+        "description": "Search support tickets by text in their subject or message. An empty query lists all tickets.",
+        "input_schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "additionalProperties": false,
+          "properties": {
+            "query": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "type": "object"
+        },
+        "method": "POST",
+        "name": "search_tickets",
+        "path": "/tickets/search"
+      },
+      {
+        "description": "Retrieve a support ticket by its known numeric ID.",
+        "input_schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "type": "object"
+        },
+        "method": "POST",
+        "name": "get_ticket",
+        "path": "/tickets/get"
+      }
+    ],
+    "outstanding": 0,
+    "policy_revision": 1,
+    "principal_id": "demo-owner",
+    "queue": {
+      "max_wait_ms": 10000
+    },
+    "refresh_after_ms": 1000,
+    "service_id": "support",
+    "version": 3
+  }
+}

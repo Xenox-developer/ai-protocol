@@ -1,0 +1,65 @@
+{
+  "seed": 20260921,
+  "repetitions": 3,
+  "upstream_delay_ms": 200,
+  "interactive_max_wait_ms": 2000,
+  "agent_max_wait_ms": 10000,
+  "task_timeout_s": 10,
+  "run_timeout_s": 22,
+  "cleanup_timeout_s": 12,
+  "max_pending": 1024,
+  "sample_ms": 50,
+  "scenarios": [
+    {
+      "name": "mixed_overload",
+      "duration_s": 6,
+      "interactive_rps": 15,
+      "agent_rps": 80
+    },
+    {
+      "name": "dynamic",
+      "duration_s": 8,
+      "interactive_rps": 10,
+      "agent_rps": 45,
+      "changes": [
+        {
+          "at_s": 2,
+          "limit": 2
+        },
+        {
+          "at_s": 5,
+          "limit": 5
+        }
+      ]
+    }
+  ],
+  "source_results": "benchmarks/results/stage4-main",
+  "mode_orders": [
+    "CD",
+    "DC",
+    "CD",
+    "DC",
+    "CD",
+    "DC",
+    "CD",
+    "DC",
+    "CD",
+    "DC",
+    "CD",
+    "DC",
+    "CD",
+    "DC",
+    "CD",
+    "DC",
+    "CD",
+    "DC"
+  ],
+  "process_counts": [
+    1,
+    2,
+    4
+  ],
+  "agent_owner": "demo-owner",
+  "assignment": "round_robin",
+  "interactive_background_processes": 1
+}

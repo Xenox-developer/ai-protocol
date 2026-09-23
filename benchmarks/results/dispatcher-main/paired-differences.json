@@ -1,0 +1,62 @@
+[
+  {
+    "scenario": "dynamic",
+    "repetition": 1,
+    "difference": "S minus C",
+    "success": 6,
+    "attempts": -189,
+    "http_429": -195,
+    "successful_e2e_p95_ms": -2028.7354449275904,
+    "discovery_requests": -28
+  },
+  {
+    "scenario": "dynamic",
+    "repetition": 2,
+    "difference": "S minus C",
+    "success": 8,
+    "attempts": -189,
+    "http_429": -197,
+    "successful_e2e_p95_ms": -1134.899322602806,
+    "discovery_requests": -29
+  },
+  {
+    "scenario": "dynamic",
+    "repetition": 3,
+    "difference": "S minus C",
+    "success": 10,
+    "attempts": -196,
+    "http_429": -206,
+    "successful_e2e_p95_ms": -1222.60537150368,
+    "discovery_requests": -32
+  },
+  {
+    "scenario": "mixed_overload",
+    "repetition": 1,
+    "difference": "S minus C",
+    "success": 33,
+    "attempts": -413,
+    "http_429": -446,
+    "successful_e2e_p95_ms": -418.2823413160568,
+    "discovery_requests": -25
+  },
+  {
+    "scenario": "mixed_overload",
+    "repetition": 2,
+    "difference": "S minus C",
+    "success": 33,
+    "attempts": -423,
+    "http_429": -456,
+    "successful_e2e_p95_ms": -389.7895911572132,
+    "discovery_requests": -26
+  },
+  {
+    "scenario": "mixed_overload",
+    "repetition": 3,
+    "difference": "S minus C",
+    "success": 35,
+    "attempts": -418,
+    "http_429": -453,
+    "successful_e2e_p95_ms": -395.60551607892194,
+    "discovery_requests": -26
+  }
+]

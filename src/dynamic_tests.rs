@@ -55,7 +55,7 @@ async fn shrink_and_grow_preserve_jobs_shared_budget_and_other_scopes() {
             } else {
                 "AGENT_TOKEN_2"
             },
-            CatalogAction::GetProduct(2),
+            TaskAction::GetProduct(2),
         ));
     }
     slots(&budget, 0).await;
@@ -68,7 +68,7 @@ async fn shrink_and_grow_preserve_jobs_shared_budget_and_other_scopes() {
     for expected in (2..=5).rev() {
         assert_eq!(budget.snapshot().outstanding, expected);
         for name in ["AGENT_TOKEN_1", "AGENT_TOKEN_2"] {
-            let response = finish(submit(&state, name, CatalogAction::Search("".into()))).await;
+            let response = finish(submit(&state, name, TaskAction::Search("".into()))).await;
             assert_eq!(response.status(), 429);
         }
         complete_one(&state).await;
@@ -77,7 +77,7 @@ async fn shrink_and_grow_preserve_jobs_shared_budget_and_other_scopes() {
     tasks.push(submit(
         &state,
         "AGENT_TOKEN_2",
-        CatalogAction::Search("".into()),
+        TaskAction::Search("".into()),
     ));
     slots(&budget, 0).await;
     let same = update(&server, 2).await;
@@ -86,11 +86,7 @@ async fn shrink_and_grow_preserve_jobs_shared_budget_and_other_scopes() {
     assert_eq!(response["policy_revision"], 3);
     assert_eq!(response["outstanding"], 2);
     for _ in 0..3 {
-        tasks.push(submit(
-            &state,
-            "AGENT_TOKEN_1",
-            CatalogAction::GetProduct(2),
-        ));
+        tasks.push(submit(&state, "AGENT_TOKEN_1", TaskAction::GetProduct(2)));
     }
     slots(&budget, 0).await;
     assert_eq!(budget.snapshot().outstanding, 5);
@@ -309,7 +305,7 @@ async fn running_cancellation_after_shrink_keeps_the_original_accounting() {
         tasks.push(submit(
             &state,
             "AGENT_TOKEN_1",
-            CatalogAction::Search("".into()),
+            TaskAction::Search("".into()),
         ));
     }
     for _ in 0..5 {
@@ -324,22 +320,14 @@ async fn running_cancellation_after_shrink_keeps_the_original_accounting() {
     assert!(cancelled.await.unwrap_err().is_cancelled());
     assert_eq!(budget.snapshot().outstanding, 5);
     assert_eq!(
-        finish(submit(
-            &state,
-            "AGENT_TOKEN_2",
-            CatalogAction::GetProduct(2)
-        ))
-        .await
-        .status(),
+        finish(submit(&state, "AGENT_TOKEN_2", TaskAction::GetProduct(2)))
+            .await
+            .status(),
         429
     );
     upstream.release.add_permits(4);
     slots(&budget, 1).await;
-    tasks.push(submit(
-        &state,
-        "AGENT_TOKEN_2",
-        CatalogAction::GetProduct(2),
-    ));
+    tasks.push(submit(&state, "AGENT_TOKEN_2", TaskAction::GetProduct(2)));
     timeout(Duration::from_secs(3), upstream.started.recv())
         .await
         .unwrap()

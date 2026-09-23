@@ -1,0 +1,9 @@
+{"at_ms":15.586929,"event":"arrival","id":"agent-4-search","scheduled_ms":15.0}
+{"at_ms":16.986470999999998,"attempts":1,"code":"Operation HTTP status 403","event":"dispatch_reply","execution":"not_started","id":"agent-4-search","status":403}
+{"at_ms":17.127804,"event":"terminal","id":"agent-4-search","outcome":"failed","reason":"Operation HTTP status 403"}
+{"at_ms":20.625679,"event":"arrival","id":"agent-4-product","scheduled_ms":20.0}
+{"at_ms":224.415388,"attempts":1,"code":"completed","event":"dispatch_reply","execution":"completed","id":"agent-4-product","status":200}
+{"at_ms":224.578304,"event":"terminal","id":"agent-4-product","outcome":"success","reason":"completed"}
+{"active":0,"at_ms":224.761554,"event":"gate_final","limit":0,"owner":"demo-owner","ready":false,"revision":0}
+{"active":0,"at_ms":224.94401299999998,"event":"gate_final","limit":0,"owner":"other-owner","ready":false,"revision":0}
+{"at_ms":225.206763,"deadline_reached":false,"event":"run_end"}

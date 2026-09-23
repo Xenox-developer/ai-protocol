@@ -1,0 +1,657 @@
+{
+  "seed": 20260921,
+  "repetitions": 3,
+  "upstream_delay_ms": 200,
+  "interactive_max_wait_ms": 2000,
+  "agent_max_wait_ms": 10000,
+  "task_timeout_s": 10,
+  "run_timeout_s": 22,
+  "cleanup_timeout_s": 12,
+  "max_pending": 1024,
+  "sample_ms": 50,
+  "scenarios": [
+    {
+      "name": "mixed_overload",
+      "duration_s": 6,
+      "interactive_rps": 15,
+      "agent_rps": 80
+    },
+    {
+      "name": "dynamic",
+      "duration_s": 8,
+      "interactive_rps": 10,
+      "agent_rps": 45,
+      "changes": [
+        {
+          "at_s": 2,
+          "limit": 2
+        },
+        {
+          "at_s": 5,
+          "limit": 5
+        }
+      ]
+    }
+  ],
+  "source_results": "benchmarks/results/stage4-main",
+  "mode_orders": [
+    "CS",
+    "SC",
+    "CS",
+    "SC",
+    "CS",
+    "SC"
+  ],
+  "process_counts": [
+    4
+  ],
+  "agent_owner": "demo-owner",
+  "assignment": "round_robin",
+  "interactive_background_processes": 1,
+  "mode": "S",
+  "start_unix_s": 1790110604.2130182,
+  "tasks": [
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 0.2846519494801568,
+      "id": "t00000",
+      "operation": "product",
+      "params": {
+        "id": 1000
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 100.28441215745018,
+      "id": "t00010",
+      "operation": "search",
+      "params": {
+        "query": "task-t00010"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 200.6728771560922,
+      "id": "t00020",
+      "operation": "search",
+      "params": {
+        "query": "task-t00020"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 300.6451913925794,
+      "id": "t00029",
+      "operation": "product",
+      "params": {
+        "id": 1029
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 400.0266722572696,
+      "id": "t00038",
+      "operation": "product",
+      "params": {
+        "id": 1038
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 500.6270340561001,
+      "id": "t00048",
+      "operation": "search",
+      "params": {
+        "query": "task-t00048"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 600.5535756924853,
+      "id": "t00057",
+      "operation": "search",
+      "params": {
+        "query": "task-t00057"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 700.5807222893994,
+      "id": "t00067",
+      "operation": "search",
+      "params": {
+        "query": "task-t00067"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 800.7964060099819,
+      "id": "t00077",
+      "operation": "product",
+      "params": {
+        "id": 1077
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 900.0669036434203,
+      "id": "t00086",
+      "operation": "search",
+      "params": {
+        "query": "task-t00086"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 1000.4928624072123,
+      "id": "t00095",
+      "operation": "search",
+      "params": {
+        "query": "task-t00095"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 1100.1781531349543,
+      "id": "t00105",
+      "operation": "search",
+      "params": {
+        "query": "task-t00105"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 1200.4187850481962,
+      "id": "t00114",
+      "operation": "product",
+      "params": {
+        "id": 1114
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 1300.0677274256939,
+      "id": "t00124",
+      "operation": "search",
+      "params": {
+        "query": "task-t00124"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 1400.6595282099793,
+      "id": "t00134",
+      "operation": "product",
+      "params": {
+        "id": 1134
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 1500.4079493772967,
+      "id": "t00143",
+      "operation": "search",
+      "params": {
+        "query": "task-t00143"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 1600.7570342704769,
+      "id": "t00153",
+      "operation": "search",
+      "params": {
+        "query": "task-t00153"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 1700.0892464671574,
+      "id": "t00162",
+      "operation": "product",
+      "params": {
+        "id": 1162
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 1800.2513060130307,
+      "id": "t00172",
+      "operation": "search",
+      "params": {
+        "query": "task-t00172"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 1900.0981652390305,
+      "id": "t00181",
+      "operation": "product",
+      "params": {
+        "id": 1181
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 2000.946211024201,
+      "id": "t00191",
+      "operation": "search",
+      "params": {
+        "query": "task-t00191"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 2100.952392404604,
+      "id": "t00200",
+      "operation": "search",
+      "params": {
+        "query": "task-t00200"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 2200.1763324733547,
+      "id": "t00209",
+      "operation": "search",
+      "params": {
+        "query": "task-t00209"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 2300.2492913698893,
+      "id": "t00219",
+      "operation": "search",
+      "params": {
+        "query": "task-t00219"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 2400.7065386411714,
+      "id": "t00229",
+      "operation": "search",
+      "params": {
+        "query": "task-t00229"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 2500.4942310028805,
+      "id": "t00238",
+      "operation": "product",
+      "params": {
+        "id": 1238
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 2600.8416831303734,
+      "id": "t00248",
+      "operation": "search",
+      "params": {
+        "query": "task-t00248"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 2700.8100708162265,
+      "id": "t00257",
+      "operation": "search",
+      "params": {
+        "query": "task-t00257"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 2800.9123462480384,
+      "id": "t00267",
+      "operation": "product",
+      "params": {
+        "id": 1267
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 2900.216986005439,
+      "id": "t00276",
+      "operation": "search",
+      "params": {
+        "query": "task-t00276"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 3000.5225019450518,
+      "id": "t00285",
+      "operation": "search",
+      "params": {
+        "query": "task-t00285"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 3100.4337632426573,
+      "id": "t00295",
+      "operation": "search",
+      "params": {
+        "query": "task-t00295"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 3200.5478019457073,
+      "id": "t00305",
+      "operation": "product",
+      "params": {
+        "id": 1305
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 3300.3287452939007,
+      "id": "t00314",
+      "operation": "search",
+      "params": {
+        "query": "task-t00314"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 3400.911778405787,
+      "id": "t00324",
+      "operation": "product",
+      "params": {
+        "id": 1324
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 3500.00473070809,
+      "id": "t00333",
+      "operation": "product",
+      "params": {
+        "id": 1333
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 3600.6110356530344,
+      "id": "t00343",
+      "operation": "product",
+      "params": {
+        "id": 1343
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 3700.1687882441865,
+      "id": "t00352",
+      "operation": "product",
+      "params": {
+        "id": 1352
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 3800.516376618859,
+      "id": "t00361",
+      "operation": "search",
+      "params": {
+        "query": "task-t00361"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 3900.7691932580105,
+      "id": "t00371",
+      "operation": "search",
+      "params": {
+        "query": "task-t00371"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 4000.6562669623836,
+      "id": "t00381",
+      "operation": "search",
+      "params": {
+        "query": "task-t00381"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 4100.018599196293,
+      "id": "t00390",
+      "operation": "search",
+      "params": {
+        "query": "task-t00390"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 4200.327993740236,
+      "id": "t00400",
+      "operation": "search",
+      "params": {
+        "query": "task-t00400"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 4300.03771712507,
+      "id": "t00409",
+      "operation": "search",
+      "params": {
+        "query": "task-t00409"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 4400.546483572642,
+      "id": "t00419",
+      "operation": "search",
+      "params": {
+        "query": "task-t00419"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 4500.747628204437,
+      "id": "t00428",
+      "operation": "search",
+      "params": {
+        "query": "task-t00428"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 4600.48808946559,
+      "id": "t00438",
+      "operation": "product",
+      "params": {
+        "id": 1438
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 4700.232814633171,
+      "id": "t00447",
+      "operation": "search",
+      "params": {
+        "query": "task-t00447"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 4800.055745096099,
+      "id": "t00456",
+      "operation": "product",
+      "params": {
+        "id": 1456
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 4900.701604366575,
+      "id": "t00466",
+      "operation": "search",
+      "params": {
+        "query": "task-t00466"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 5000.593708738736,
+      "id": "t00475",
+      "operation": "search",
+      "params": {
+        "query": "task-t00475"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 5100.796918156213,
+      "id": "t00485",
+      "operation": "search",
+      "params": {
+        "query": "task-t00485"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 5200.946621123073,
+      "id": "t00495",
+      "operation": "search",
+      "params": {
+        "query": "task-t00495"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 5300.7139771023485,
+      "id": "t00504",
+      "operation": "product",
+      "params": {
+        "id": 1504
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 5400.666893706049,
+      "id": "t00513",
+      "operation": "search",
+      "params": {
+        "query": "task-t00513"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 5500.154034166404,
+      "id": "t00523",
+      "operation": "search",
+      "params": {
+        "query": "task-t00523"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 5600.5338891657175,
+      "id": "t00533",
+      "operation": "product",
+      "params": {
+        "id": 1533
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 5700.414277093707,
+      "id": "t00542",
+      "operation": "product",
+      "params": {
+        "id": 1542
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 5800.601881896446,
+      "id": "t00551",
+      "operation": "search",
+      "params": {
+        "query": "task-t00551"
+      }
+    },
+    {
+      "class": "agent",
+      "owner": "demo-owner",
+      "arrival_ms": 5900.585411677972,
+      "id": "t00561",
+      "operation": "product",
+      "params": {
+        "id": 1561
+      }
+    }
+  ],
+  "scenario": "mixed_overload",
+  "repetition": 2
+}

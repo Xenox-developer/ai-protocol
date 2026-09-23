@@ -1,0 +1,32 @@
+{
+  "service_id": "practice",
+  "operations": [
+    {
+      "name": "read_record",
+      "description": "Read a training record by its numeric ID.",
+      "path": "/records/read",
+      "upstream_path": "/api/tickets/get",
+      "parameters": {
+        "id": {"type": "integer", "upstream": "ticket_id"}
+      }
+    }
+  ],
+  "credentials": [
+    {
+      "token_env": "SERVICE_AGENT_TOKEN",
+      "required": true,
+      "principal_id": "practice-owner",
+      "client_class": "agent",
+      "operations": ["read_record"],
+      "max_outstanding": 5
+    },
+    {
+      "token_env": "SERVICE_READ_TOKEN",
+      "required": false,
+      "principal_id": "practice-owner",
+      "client_class": "agent",
+      "operations": ["read_record"],
+      "max_outstanding": 5
+    }
+  ]
+}

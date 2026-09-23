@@ -1,0 +1,366 @@
+[
+  {
+    "scenario": "mixed_overload",
+    "process_count": 1,
+    "mode": "C",
+    "median_run_p95_ms": 5604.5499405266455,
+    "failure_reasons": {},
+    "discovery_requests": 33,
+    "upstream_started": 990,
+    "client_completed_by_run": [
+      [
+        240
+      ],
+      [
+        240
+      ],
+      [
+        240
+      ]
+    ],
+    "tasks": 720,
+    "success": 720,
+    "failed": 0,
+    "attempts": 720,
+    "http_429": 0
+  },
+  {
+    "scenario": "mixed_overload",
+    "process_count": 1,
+    "mode": "D",
+    "median_run_p95_ms": 5718.961704684873,
+    "failure_reasons": {},
+    "discovery_requests": 3,
+    "upstream_started": 990,
+    "client_completed_by_run": [
+      [
+        240
+      ],
+      [
+        240
+      ],
+      [
+        240
+      ]
+    ],
+    "tasks": 720,
+    "success": 720,
+    "failed": 0,
+    "attempts": 720,
+    "http_429": 0
+  },
+  {
+    "scenario": "mixed_overload",
+    "process_count": 2,
+    "mode": "C",
+    "median_run_p95_ms": 4223.36499936683,
+    "failure_reasons": {
+      "Operation HTTP status 429": 89
+    },
+    "discovery_requests": 63,
+    "upstream_started": 901,
+    "client_completed_by_run": [
+      [
+        106,
+        107
+      ],
+      [
+        105,
+        103
+      ],
+      [
+        102,
+        108
+      ]
+    ],
+    "tasks": 720,
+    "success": 631,
+    "failed": 89,
+    "attempts": 1964,
+    "http_429": 1333
+  },
+  {
+    "scenario": "mixed_overload",
+    "process_count": 2,
+    "mode": "D",
+    "median_run_p95_ms": 4418.4781607060995,
+    "failure_reasons": {
+      "Operation HTTP status 429": 104
+    },
+    "discovery_requests": 6,
+    "upstream_started": 886,
+    "client_completed_by_run": [
+      [
+        96,
+        93
+      ],
+      [
+        107,
+        109
+      ],
+      [
+        107,
+        104
+      ]
+    ],
+    "tasks": 720,
+    "success": 616,
+    "failed": 104,
+    "attempts": 1929,
+    "http_429": 1313
+  },
+  {
+    "scenario": "mixed_overload",
+    "process_count": 4,
+    "mode": "C",
+    "median_run_p95_ms": 4222.082095795564,
+    "failure_reasons": {
+      "Operation HTTP status 429": 99
+    },
+    "discovery_requests": 126,
+    "upstream_started": 891,
+    "client_completed_by_run": [
+      [
+        49,
+        54,
+        50,
+        53
+      ],
+      [
+        53,
+        48,
+        53,
+        53
+      ],
+      [
+        51,
+        51,
+        54,
+        52
+      ]
+    ],
+    "tasks": 720,
+    "success": 621,
+    "failed": 99,
+    "attempts": 1993,
+    "http_429": 1372
+  },
+  {
+    "scenario": "mixed_overload",
+    "process_count": 4,
+    "mode": "D",
+    "median_run_p95_ms": 4223.957840407544,
+    "failure_reasons": {
+      "Operation HTTP status 429": 112
+    },
+    "discovery_requests": 12,
+    "upstream_started": 878,
+    "client_completed_by_run": [
+      [
+        51,
+        51,
+        47,
+        49
+      ],
+      [
+        51,
+        54,
+        51,
+        51
+      ],
+      [
+        49,
+        54,
+        50,
+        50
+      ]
+    ],
+    "tasks": 720,
+    "success": 608,
+    "failed": 112,
+    "attempts": 1948,
+    "http_429": 1340
+  },
+  {
+    "scenario": "dynamic",
+    "process_count": 1,
+    "mode": "C",
+    "median_run_p95_ms": 4243.917090652628,
+    "failure_reasons": {},
+    "discovery_requests": 33,
+    "upstream_started": 780,
+    "client_completed_by_run": [
+      [
+        180
+      ],
+      [
+        180
+      ],
+      [
+        180
+      ]
+    ],
+    "tasks": 540,
+    "success": 540,
+    "failed": 0,
+    "attempts": 563,
+    "http_429": 23
+  },
+  {
+    "scenario": "dynamic",
+    "process_count": 1,
+    "mode": "D",
+    "median_run_p95_ms": 3722.749483212983,
+    "failure_reasons": {},
+    "discovery_requests": 3,
+    "upstream_started": 780,
+    "client_completed_by_run": [
+      [
+        180
+      ],
+      [
+        180
+      ],
+      [
+        180
+      ]
+    ],
+    "tasks": 540,
+    "success": 540,
+    "failed": 0,
+    "attempts": 789,
+    "http_429": 249
+  },
+  {
+    "scenario": "dynamic",
+    "process_count": 2,
+    "mode": "C",
+    "median_run_p95_ms": 3915.921946425182,
+    "failure_reasons": {
+      "Operation HTTP status 429": 63
+    },
+    "discovery_requests": 72,
+    "upstream_started": 717,
+    "client_completed_by_run": [
+      [
+        79,
+        82
+      ],
+      [
+        82,
+        75
+      ],
+      [
+        81,
+        78
+      ]
+    ],
+    "tasks": 540,
+    "success": 477,
+    "failed": 63,
+    "attempts": 1145,
+    "http_429": 668
+  },
+  {
+    "scenario": "dynamic",
+    "process_count": 2,
+    "mode": "D",
+    "median_run_p95_ms": 4217.25379840811,
+    "failure_reasons": {
+      "Operation HTTP status 429": 16
+    },
+    "discovery_requests": 6,
+    "upstream_started": 764,
+    "client_completed_by_run": [
+      [
+        88,
+        85
+      ],
+      [
+        88,
+        89
+      ],
+      [
+        86,
+        88
+      ]
+    ],
+    "tasks": 540,
+    "success": 524,
+    "failed": 16,
+    "attempts": 1146,
+    "http_429": 622
+  },
+  {
+    "scenario": "dynamic",
+    "process_count": 4,
+    "mode": "C",
+    "median_run_p95_ms": 4217.774698626561,
+    "failure_reasons": {
+      "Operation HTTP status 429": 23
+    },
+    "discovery_requests": 130,
+    "upstream_started": 757,
+    "client_completed_by_run": [
+      [
+        43,
+        44,
+        43,
+        43
+      ],
+      [
+        43,
+        41,
+        43,
+        44
+      ],
+      [
+        43,
+        44,
+        43,
+        43
+      ]
+    ],
+    "tasks": 540,
+    "success": 517,
+    "failed": 23,
+    "attempts": 1127,
+    "http_429": 610
+  },
+  {
+    "scenario": "dynamic",
+    "process_count": 4,
+    "mode": "D",
+    "median_run_p95_ms": 4214.008098499392,
+    "failure_reasons": {
+      "Operation HTTP status 429": 18
+    },
+    "discovery_requests": 12,
+    "upstream_started": 762,
+    "client_completed_by_run": [
+      [
+        45,
+        41,
+        45,
+        44
+      ],
+      [
+        45,
+        42,
+        45,
+        42
+      ],
+      [
+        43,
+        42,
+        44,
+        44
+      ]
+    ],
+    "tasks": 540,
+    "success": 522,
+    "failed": 18,
+    "attempts": 1133,
+    "http_429": 611
+  }
+]

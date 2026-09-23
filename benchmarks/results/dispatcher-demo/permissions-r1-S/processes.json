@@ -1,0 +1,43 @@
+[
+  {
+    "id": "agent-1",
+    "pid": 9004,
+    "token_env": "AGENT_TOKEN_1",
+    "tasks": [
+      "agent-1-search"
+    ]
+  },
+  {
+    "id": "agent-2",
+    "pid": 9005,
+    "token_env": "AGENT_TOKEN_2",
+    "tasks": [
+      "agent-2-search"
+    ]
+  },
+  {
+    "id": "agent-3",
+    "pid": 9006,
+    "token_env": "AGENT_TOKEN_3",
+    "tasks": [
+      "agent-3-search"
+    ]
+  },
+  {
+    "id": "agent-4",
+    "pid": 9007,
+    "token_env": "PRODUCT_ONLY_TOKEN",
+    "tasks": [
+      "agent-4-search",
+      "agent-4-product"
+    ]
+  },
+  {
+    "id": "interactive",
+    "pid": 9008,
+    "token_env": "INTERACTIVE_TOKEN",
+    "tasks": [
+      "interactive"
+    ]
+  }
+]

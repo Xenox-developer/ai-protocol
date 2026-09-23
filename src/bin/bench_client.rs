@@ -1,4 +1,4 @@
-//! Open-loop benchmark client; A/B/C share scheduling, retry, and timeout code.
+//! Open-loop benchmark client; A/B/C/D share scheduling, retry, and timeout code.
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
@@ -12,7 +12,11 @@ use tokio::time::{Instant, sleep, sleep_until, timeout_at};
 mod control;
 #[path = "load/retry.rs"]
 mod retry;
-use control::{Gate, Policy};
+use control::Gate;
+#[path = "client/dispatch.rs"]
+mod dispatch;
+#[path = "client/transport.rs"]
+mod transport;
 
 #[derive(Clone, Deserialize, Serialize)]
 struct Task {
@@ -38,7 +42,13 @@ struct Log {
 }
 impl Log {
     fn emit(&self, mut value: Value) {
-        value["at_ms"] = json!(self.start.elapsed().as_secs_f64() * 1000.0);
+        let now = Instant::now();
+        let milliseconds = if now >= self.start {
+            now.duration_since(self.start).as_secs_f64() * 1000.0
+        } else {
+            -self.start.duration_since(now).as_secs_f64() * 1000.0
+        };
+        value["at_ms"] = json!(milliseconds);
         let mut file = self.file.lock().unwrap();
         serde_json::to_writer(&mut *file, &value).expect("Cannot write client results");
         writeln!(file).expect("Cannot write client results");
@@ -71,19 +81,12 @@ async fn poll(
     owner: &'static str,
     gate: Arc<Gate>,
     log: Arc<Log>,
+    refresh: bool,
 ) {
     loop {
+        log.emit(json!({"event":"discovery_start", "owner":owner}));
         let result = async {
-            let policy = http
-                .get(format!("{base}/agent-policy"))
-                .bearer_auth(&token)
-                .timeout(Duration::from_secs(2))
-                .send()
-                .await
-                .map_err(|_| ())?
-                .error_for_status()
-                .map_err(|_| ())?
-                .json::<Policy>()
+            let policy = transport::policy(&http, &base, &token)
                 .await
                 .map_err(|_| ())?;
             let refresh = policy.refresh_after_ms;
@@ -94,9 +97,14 @@ async fn poll(
         if result.is_err() {
             gate.pause();
         }
+        log.emit(json!({"event":"discovery_end", "owner":owner, "success":result.is_ok()}));
         let state = gate.snapshot();
         log.emit(json!({"event":"policy", "owner":owner, "ready":state.ready,
             "limit":state.maximum, "revision":state.revision, "active":state.active}));
+        // D uses the same Gate and initial-discovery recovery as C, then freezes.
+        if !refresh && result.is_ok() {
+            return;
+        }
         sleep(Duration::from_millis(result.unwrap_or(1000))).await;
     }
 }
@@ -121,14 +129,7 @@ async fn operation(
         async move {
             let permit = match gate { Some(gate) => Some(gate.acquire().await?), None => None };
             log.emit(json!({"event":"attempt_start", "id":task.id, "number":number}));
-            let result = async {
-                let response = http.post(format!("{base}/{}", task.operation)).bearer_auth(token)
-                    .json(&task.params).send().await.map_err(|_| "network_error".to_string())?;
-                let status = response.status();
-                let retry_after = response.headers().get("Retry-After").and_then(|v| v.to_str().ok()).map(str::to_owned);
-                let body = response.bytes().await.map_err(|_| "network_error".to_string())?.to_vec();
-                Ok::<_, String>(retry::Response { status, retry_after, body })
-            }.await;
+            let result = transport::send(&http, &base, &token, &task.operation, &task.params).await;
             drop(permit);
             match &result {
                 Ok(response) => log.emit(json!({"event":"attempt_end", "id":task.id, "number":number,
@@ -154,7 +155,7 @@ async fn main() {
         "Configuration too large"
     );
     let config: Config = serde_json::from_slice(&std::fs::read(&args[1]).unwrap()).unwrap();
-    assert!(["A", "B", "C"].contains(&config.mode.as_str()));
+    assert!(["A", "B", "C", "D", "S"].contains(&config.mode.as_str()));
     assert!(config.tasks.len() <= 100_000 && (1..=10_000).contains(&config.max_pending));
     assert!(config.run_timeout_s > 0.0 && config.run_timeout_s <= 3600.0);
     assert!(config.task_timeout_s > 0.0 && config.task_timeout_s <= 3600.0);
@@ -197,16 +198,36 @@ async fn main() {
         "http://127.0.0.1:{}",
         std::env::var("GATEWAY_PORT").unwrap()
     );
-    let agent = std::env::var("AGENT_TOKEN_1").unwrap();
-    let other = std::env::var("OTHER_AGENT_TOKEN").unwrap();
-    let interactive = std::env::var("INTERACTIVE_TOKEN").unwrap();
+    // A process discovers only the agent scopes present in its static partition.
+    let used = ["demo-owner", "other-owner"].map(|owner| {
+        config
+            .tasks
+            .iter()
+            .any(|task| task.class == "agent" && task.owner == owner)
+    });
+    let credential = |needed, name| {
+        if needed {
+            std::env::var(name).expect("Missing task credential")
+        } else {
+            String::new()
+        }
+    };
+    let agent = credential(used[0], "AGENT_TOKEN_1");
+    let other = credential(used[1], "OTHER_AGENT_TOKEN");
+    let interactive = credential(
+        config.tasks.iter().any(|task| task.class == "interactive"),
+        "INTERACTIVE_TOKEN",
+    );
     let gates = [Gate::new(), Gate::new()];
     let mut pollers = JoinSet::new();
-    if config.mode == "C" {
-        for (owner, token, gate) in [
-            ("demo-owner", agent.clone(), gates[0].clone()),
-            ("other-owner", other.clone(), gates[1].clone()),
+    if matches!(config.mode.as_str(), "C" | "D") {
+        for (needed, owner, token, gate) in [
+            (used[0], "demo-owner", agent.clone(), gates[0].clone()),
+            (used[1], "other-owner", other.clone(), gates[1].clone()),
         ] {
+            if !needed {
+                continue;
+            }
             pollers.spawn(poll(
                 http.clone(),
                 base.clone(),
@@ -214,6 +235,7 @@ async fn main() {
                 owner,
                 gate,
                 log.clone(),
+                config.mode == "C",
             ));
         }
     }
@@ -240,9 +262,25 @@ async fn main() {
             } else {
                 other.clone()
             };
-            let gate = (config.mode == "C" && task.class == "agent").then(|| gates[owner].clone());
+            let gate = (matches!(config.mode.as_str(), "C" | "D") && task.class == "agent")
+                .then(|| gates[owner].clone());
             let deadline =
                 start + Duration::from_secs_f64(task.arrival_ms / 1000.0 + config.task_timeout_s);
+            let dispatched = config.mode == "S" && task.class == "agent";
+            let socket = if dispatched {
+                Some(std::env::var("DISPATCH_SOCKET").expect("Set DISPATCH_SOCKET"))
+            } else {
+                None
+            };
+            let request = dispatch::Request {
+                id: task.id.clone(),
+                token: token.clone(),
+                operation: task.operation.clone(),
+                params: task.params.clone(),
+                deadline_unix_ms: config.start_unix_s * 1000.0
+                    + task.arrival_ms
+                    + config.task_timeout_s * 1000.0,
+            };
             let execution = operation(
                 task.clone(),
                 http.clone(),
@@ -252,6 +290,13 @@ async fn main() {
                 log.clone(),
             );
             running.spawn(async move {
+                if let Some(socket) = socket {
+                    let reply = dispatch::submit(&socket, &request, deadline).await;
+                    guard.log.emit(json!({"event":"dispatch_reply", "id":request.id,
+                        "code":reply.code, "execution":reply.execution, "attempts":reply.attempts, "status":reply.status}));
+                    guard.finish(if reply.ok { "success" } else { "failed" }, &reply.code);
+                    return;
+                }
                 match timeout_at(deadline, execution).await {
                     Ok(Ok(())) => guard.finish("success", "completed"),
                     Ok(Err(error)) => guard.finish("failed", &error),
@@ -268,10 +313,19 @@ async fn main() {
         running.abort_all();
     }
     while running.join_next().await.is_some() {}
-    for gate in gates {
-        gate.stop();
-    }
     pollers.abort_all();
     while pollers.join_next().await.is_some() {}
+    for (owner, gate) in ["demo-owner", "other-owner"].into_iter().zip(gates) {
+        let state = gate.snapshot();
+        log.emit(
+            json!({"event":"gate_final", "owner":owner, "limit":state.maximum,
+            "revision":state.revision, "active":state.active, "ready":state.ready}),
+        );
+        gate.stop();
+    }
     log.emit(json!({"event":"run_end", "deadline_reached":expired}));
 }
+
+#[cfg(test)]
+#[path = "bench/tests.rs"]
+mod tests;

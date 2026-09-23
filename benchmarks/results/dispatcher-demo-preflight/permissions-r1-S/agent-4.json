@@ -1,0 +1,71 @@
+{
+  "seed": 20260921,
+  "repetitions": 3,
+  "upstream_delay_ms": 200,
+  "interactive_max_wait_ms": 2000,
+  "agent_max_wait_ms": 10000,
+  "task_timeout_s": 10,
+  "run_timeout_s": 22,
+  "cleanup_timeout_s": 12,
+  "max_pending": 1024,
+  "sample_ms": 50,
+  "scenarios": [
+    {
+      "name": "mixed_overload",
+      "duration_s": 6,
+      "interactive_rps": 15,
+      "agent_rps": 80
+    },
+    {
+      "name": "dynamic",
+      "duration_s": 8,
+      "interactive_rps": 10,
+      "agent_rps": 45,
+      "changes": [
+        {
+          "at_s": 2,
+          "limit": 2
+        },
+        {
+          "at_s": 5,
+          "limit": 5
+        }
+      ]
+    }
+  ],
+  "source_results": "benchmarks/results/stage4-main",
+  "mode_orders": [
+    "CD",
+    "DC",
+    "CD",
+    "DC",
+    "CD",
+    "DC"
+  ],
+  "mode": "S",
+  "start_unix_s": 1790110464.786525,
+  "tasks": [
+    {
+      "id": "agent-4-search",
+      "owner": "demo-owner",
+      "arrival_ms": 15,
+      "operation": "search",
+      "params": {
+        "query": "agent-4-search"
+      },
+      "class": "agent"
+    },
+    {
+      "id": "agent-4-product",
+      "owner": "demo-owner",
+      "arrival_ms": 20,
+      "operation": "product",
+      "params": {
+        "id": 12
+      },
+      "class": "agent"
+    }
+  ],
+  "scenario": "permissions",
+  "repetition": 1
+}

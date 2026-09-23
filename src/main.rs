@@ -1,6 +1,6 @@
 use axum::{
     Extension, Json, Router,
-    extract::{Path, Request, State},
+    extract::{OriginalUri, Path, Request, State},
     http::{HeaderValue, StatusCode, header},
     middleware::{self, Next},
     response::{IntoResponse, Response},
@@ -13,6 +13,7 @@ use std::time::Duration;
 use tokio::sync::{Mutex, Notify, oneshot};
 
 mod budget;
+mod service;
 use budget::{Budget, Permit};
 use tokio::task::JoinSet;
 use tokio::time::{Instant, sleep_until};
@@ -24,7 +25,7 @@ use telemetry::Trace;
 const EXECUTION_LIMIT: usize = 10;
 const QUEUE_LIMIT: usize = 32;
 
-#[derive(Clone, Copy, PartialEq, Eq, serde::Serialize)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "lowercase")]
 enum ClientClass {
     Agent,
@@ -33,104 +34,31 @@ enum ClientClass {
 
 #[derive(Clone)]
 struct ClientIdentity {
-    principal_id: &'static str,
+    principal_id: String,
     class: ClientClass,
-    operations: Vec<&'static str>,
+    operations: Vec<String>,
     budget: Arc<Budget>,
 }
 
-// Authentication configuration is independent of the queue scheduler.
+// Preserve the demo configuration for existing tests and launch commands.
+#[cfg(test)]
 fn identities_from(
-    mut read: impl FnMut(&str) -> Result<String, std::env::VarError>,
+    read: impl FnMut(&str) -> Result<String, std::env::VarError>,
 ) -> Result<HashMap<String, ClientIdentity>, String> {
-    let agent_budget = Budget::new(5);
-    let interactive_budget = Budget::new(10);
-    let other_budget = Budget::new(5);
-    let mut identities = HashMap::new();
-    for (name, required, principal_id, class, operations, budget) in [
-        (
-            "AGENT_TOKEN_1",
-            true,
-            "demo-owner",
-            ClientClass::Agent,
-            vec!["search_products", "get_product"],
-            agent_budget.clone(),
-        ),
-        (
-            "AGENT_TOKEN_2",
-            true,
-            "demo-owner",
-            ClientClass::Agent,
-            vec!["search_products", "get_product"],
-            agent_budget.clone(),
-        ),
-        (
-            "PRODUCT_ONLY_TOKEN",
-            false,
-            "demo-owner",
-            ClientClass::Agent,
-            vec!["get_product"],
-            agent_budget,
-        ),
-        (
-            "INTERACTIVE_TOKEN",
-            true,
-            "demo-owner",
-            ClientClass::Interactive,
-            vec!["search_products", "get_product"],
-            interactive_budget,
-        ),
-        (
-            "OTHER_AGENT_TOKEN",
-            false,
-            "other-owner",
-            ClientClass::Agent,
-            vec!["search_products", "get_product"],
-            other_budget,
-        ),
-    ] {
-        let token = match read(name) {
-            Ok(token) => token,
-            Err(std::env::VarError::NotPresent) if !required => continue,
-            Err(_) => {
-                return Err(format!(
-                    "Missing or invalid {name}; run examples/setup_demo.py"
-                ));
-            }
-        };
-        if token.is_empty()
-            || !token
-                .bytes()
-                .all(|b| b.is_ascii_alphanumeric() || b"-._~+/=".contains(&b))
-        {
-            return Err(format!("Invalid bearer token in {name}"));
-        }
-        if identities
-            .insert(
-                token,
-                ClientIdentity {
-                    principal_id,
-                    class,
-                    operations,
-                    budget,
-                },
-            )
-            .is_some()
-        {
-            return Err("Token values must be distinct".into());
-        }
-    }
-    Ok(identities)
+    service::Service::catalog().identities(read)
 }
 
-enum CatalogAction {
+enum TaskAction {
+    Mapped(service::UpstreamRequest),
+    #[cfg(test)]
     Search(String),
+    #[cfg(test)]
     GetProduct(u64),
 }
 
 struct Job {
     reply: oneshot::Sender<Response>,
-    action: CatalogAction,
+    action: TaskAction,
     permit: Permit,
     accepted_at: Instant,
     max_wait: Duration,
@@ -144,6 +72,7 @@ impl Job {
 }
 
 struct AppState {
+    service: service::Service,
     queues: Mutex<Queues>,
     notify: Notify,
     reject_once: AtomicBool,
@@ -176,6 +105,7 @@ impl AppState {
         queue_settings: QueueSettings,
     ) -> Arc<Self> {
         Arc::new(Self {
+            service: service::Service::catalog(),
             queues: Mutex::new(Queues::default()),
             notify: Notify::new(),
             reject_once: AtomicBool::new(reject_once),
@@ -188,82 +118,21 @@ impl AppState {
     }
 }
 
-#[derive(serde::Deserialize)]
-#[serde(deny_unknown_fields)]
-struct ProductRequest {
-    id: u64,
-}
-
-#[derive(serde::Deserialize)]
-#[serde(deny_unknown_fields)]
-struct WorkRequest {
-    query: String,
-}
-
-#[derive(serde::Serialize)]
-struct Operation {
-    name: &'static str,
-    description: &'static str,
-    method: &'static str,
-    path: &'static str,
-    input_schema: serde_json::Value,
-}
-
 async fn agent_policy(
     State(state): State<Arc<AppState>>,
     Extension(identity): Extension<ClientIdentity>,
 ) -> Json<serde_json::Value> {
-    let operations = vec![
-        Operation {
-            name: "search_products",
-            description: "Search products by a substring in their English name. \
-                              For sneakers, pass query=\"sneakers\"; \
-                              for boots, pass query=\"boots\". \
-                              To retrieve all products, pass query=\"\". \
-                              The catalog contains only footwear, so a request \
-                              for all available footwear means retrieving all products.",
-            method: "POST",
-            path: "/search",
-            input_schema: serde_json::json!({
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
-                "type": "object",
-                "properties": {
-                    "query": {
-                        "type": "string",
-                        "description": "Product search string"
-                    }
-                },
-                "required": ["query"],
-                "additionalProperties": false
-            }),
-        },
-        Operation {
-            name: "get_product",
-            description: "Retrieve a single product by its known numeric ID. \
-                              Use this when the user provides a product ID.",
-            method: "POST",
-            path: "/product",
-            input_schema: serde_json::json!({
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "minimum": 0,
-                        "description": "Product ID"
-                    }
-                },
-                "required": ["id"],
-                "additionalProperties": false
-            }),
-        },
-    ]
-    .into_iter()
-    .filter(|op| identity.operations.contains(&op.name))
-    .collect::<Vec<_>>();
+    let operations: Vec<_> = state
+        .service
+        .operations
+        .iter()
+        .filter(|op| identity.operations.contains(&op.name))
+        .map(service::Operation::descriptor)
+        .collect();
     let budget = identity.budget.snapshot();
     Json(serde_json::json!({
         "version": 3,
+        "service_id": state.service.service_id,
         "policy_revision": budget.revision,
         "refresh_after_ms": 1000,
         "outstanding": budget.outstanding,
@@ -288,10 +157,11 @@ fn app(state: Arc<AppState>) -> Router {
             state.clone(),
             authenticate_admin,
         ));
-    Router::new()
-        .route("/agent-policy", get(agent_policy))
-        .route("/search", post(work))
-        .route("/product", post(get_product))
+    let mut router = Router::new().route("/agent-policy", get(agent_policy));
+    for operation in &state.service.operations {
+        router = router.route(&operation.path, post(work));
+    }
+    router
         .route_layer(middleware::from_fn_with_state(state.clone(), authenticate))
         .merge(admin)
         .with_state(state)
@@ -305,12 +175,12 @@ async fn authenticate(
     let identity = bearer_token(&request).and_then(|token| state.identities.get(token));
 
     let mut response = if let Some(identity) = identity {
-        let operation = match request.uri().path() {
-            "/search" => Some("search_products"),
-            "/product" => Some("get_product"),
-            _ => None,
-        };
-        if operation.is_some_and(|name| !identity.operations.contains(&name)) {
+        let operation = state
+            .service
+            .operations
+            .iter()
+            .find(|op| op.path == request.uri().path());
+        if operation.is_some_and(|op| !identity.operations.contains(&op.name)) {
             (StatusCode::FORBIDDEN, "Operation is not permitted").into_response()
         } else {
             request.extensions_mut().insert(identity.clone());
@@ -423,10 +293,16 @@ async fn update_limits(
 
 #[tokio::main]
 async fn main() {
-    let identities = identities_from(|name| std::env::var(name)).unwrap_or_else(|error| {
+    let service = service::Service::from_env().unwrap_or_else(|error| {
         eprintln!("Configuration error: {error}");
         std::process::exit(1);
     });
+    let identities = service
+        .identities(|name| std::env::var(name))
+        .unwrap_or_else(|error| {
+            eprintln!("Configuration error: {error}");
+            std::process::exit(1);
+        });
     let port = |name: &str, default: u16| -> u16 {
         match std::env::var(name) {
             Ok(value) => value.parse::<u16>().ok().filter(|port| *port > 0),
@@ -439,7 +315,18 @@ async fn main() {
         })
     };
     let gateway_port = port("GATEWAY_PORT", 3000);
-    let catalog_port = port("CATALOG_PORT", 4000);
+    let upstream_url = service::upstream_origin(
+        std::env::var("UPSTREAM_URL")
+            .unwrap_or_else(|_| format!("http://127.0.0.1:{}", port("CATALOG_PORT", 4000))),
+    )
+    .unwrap_or_else(|error| {
+        eprintln!("Configuration error: {error}");
+        std::process::exit(1);
+    });
+    if service.service_id != "catalog" && std::env::var_os("UPSTREAM_URL").is_none() {
+        eprintln!("Configuration error: set UPSTREAM_URL for a custom service");
+        std::process::exit(1);
+    }
     let admin_token =
         admin_token_from(std::env::var("ADMIN_TOKEN"), &identities).unwrap_or_else(|error| {
             eprintln!("Configuration error: {error}");
@@ -459,6 +346,7 @@ async fn main() {
         admin_token,
         queue_settings,
     );
+    Arc::get_mut(&mut state).unwrap().service = service;
     state.queues.lock().await.mode = mode;
     Arc::get_mut(&mut state).unwrap().trace = Trace::from_env().unwrap_or_else(|_| {
         eprintln!("Cannot create BENCHMARK_TRACE_PATH (must be a new file)");
@@ -467,10 +355,7 @@ async fn main() {
     if state.trace.is_some() {
         tokio::spawn(telemetry::sample(state.clone()));
     }
-    tokio::spawn(scheduler(
-        state.clone(),
-        format!("http://127.0.0.1:{catalog_port}"),
-    ));
+    tokio::spawn(scheduler(state.clone(), upstream_url));
     let listener = tokio::net::TcpListener::bind(("127.0.0.1", gateway_port))
         .await
         .unwrap();
@@ -487,11 +372,7 @@ fn overloaded(message: &'static str, delay: &'static str) -> Response {
         .into_response()
 }
 
-async fn enqueue(
-    state: Arc<AppState>,
-    identity: ClientIdentity,
-    action: CatalogAction,
-) -> Response {
+async fn enqueue(state: Arc<AppState>, identity: ClientIdentity, action: TaskAction) -> Response {
     if identity.class == ClientClass::Agent && state.reject_once.swap(false, Ordering::Relaxed) {
         return overloaded("Test rejection", "2");
     }
@@ -538,17 +419,19 @@ async fn enqueue(
 async fn work(
     State(state): State<Arc<AppState>>,
     Extension(identity): Extension<ClientIdentity>,
-    Json(request): Json<WorkRequest>,
+    OriginalUri(uri): OriginalUri,
+    Json(params): Json<serde_json::Value>,
 ) -> Response {
-    enqueue(state, identity, CatalogAction::Search(request.query)).await
-}
-
-async fn get_product(
-    State(state): State<Arc<AppState>>,
-    Extension(identity): Extension<ClientIdentity>,
-    Json(request): Json<ProductRequest>,
-) -> Response {
-    enqueue(state, identity, CatalogAction::GetProduct(request.id)).await
+    let operation = state
+        .service
+        .operations
+        .iter()
+        .find(|op| op.path == uri.path())
+        .unwrap();
+    match operation.request(&params) {
+        Ok(request) => enqueue(state, identity, TaskAction::Mapped(request)).await,
+        Err(error) => (StatusCode::UNPROCESSABLE_ENTITY, error).into_response(),
+    }
 }
 
 fn queue_timeout() -> Response {
@@ -560,7 +443,7 @@ fn queue_timeout() -> Response {
         .into_response()
 }
 
-async fn scheduler(state: Arc<AppState>, catalog_url: String) {
+async fn scheduler(state: Arc<AppState>, upstream_url: String) {
     let client = reqwest::Client::builder()
         .no_proxy()
         .redirect(reqwest::redirect::Policy::none())
@@ -569,15 +452,15 @@ async fn scheduler(state: Arc<AppState>, catalog_url: String) {
         .unwrap();
     run_scheduler(state, move |action| {
         let client = client.clone();
-        let catalog_url = catalog_url.clone();
-        async move { call_catalog(client, &catalog_url, action).await }
+        let upstream_url = upstream_url.clone();
+        async move { call_upstream(client, &upstream_url, action).await }
     })
     .await;
 }
 
 async fn run_scheduler<F, Fut>(state: Arc<AppState>, execute: F)
 where
-    F: Fn(CatalogAction) -> Fut,
+    F: Fn(TaskAction) -> Fut,
     Fut: std::future::Future<Output = Response> + Send + 'static,
 {
     let mut running = JoinSet::<()>::new();
@@ -620,17 +503,22 @@ where
     }
 }
 
-async fn call_catalog(
+async fn call_upstream(
     client: reqwest::Client,
-    catalog_url: &str,
-    action: CatalogAction,
+    upstream_url: &str,
+    action: TaskAction,
 ) -> Response {
     let request = match action {
-        CatalogAction::Search(query) => client
-            .get(format!("{catalog_url}/products/search"))
+        TaskAction::Mapped(request) => client
+            .get(format!("{upstream_url}{}", request.path))
+            .query(&request.query),
+        #[cfg(test)]
+        TaskAction::Search(query) => client
+            .get(format!("{upstream_url}/products/search"))
             .query(&[("query", query)]),
-        CatalogAction::GetProduct(id) => client
-            .get(format!("{catalog_url}/products/get"))
+        #[cfg(test)]
+        TaskAction::GetProduct(id) => client
+            .get(format!("{upstream_url}/products/get"))
             .query(&[("id", id)]),
     };
 
@@ -638,9 +526,9 @@ async fn call_catalog(
 
     match result {
         Ok(response) => {
-            // Treat a catalog error as a failure of the upstream service.
+            // Treat an upstream error as a failure of the upstream service.
             if response.status() != reqwest::StatusCode::OK {
-                return (StatusCode::BAD_GATEWAY, "Catalog returned an error").into_response();
+                return (StatusCode::BAD_GATEWAY, "Upstream returned an error").into_response();
             }
 
             match response.bytes().await {
@@ -648,15 +536,17 @@ async fn call_catalog(
                     (StatusCode::OK, [("Content-Type", "application/json")], body).into_response()
                 }
 
-                Err(_) => (StatusCode::BAD_GATEWAY, "Cannot read catalog response").into_response(),
+                Err(_) => {
+                    (StatusCode::BAD_GATEWAY, "Cannot read upstream response").into_response()
+                }
             }
         }
 
         Err(error) => {
             if error.is_timeout() {
-                (StatusCode::GATEWAY_TIMEOUT, "Catalog timeout").into_response()
+                (StatusCode::GATEWAY_TIMEOUT, "Upstream timeout").into_response()
             } else {
-                (StatusCode::BAD_GATEWAY, "Catalog unavailable").into_response()
+                (StatusCode::BAD_GATEWAY, "Upstream unavailable").into_response()
             }
         }
     }
@@ -664,3 +554,6 @@ async fn call_catalog(
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod service_tests;

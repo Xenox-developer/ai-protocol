@@ -7,11 +7,11 @@ import time
 import httpx
 import jsonschema
 
-BASE_URL = f"http://127.0.0.1:{int(os.environ.get('GATEWAY_PORT', '3000'))}"
+BASE_URL = os.environ.get("SERVICE_URL", f"http://127.0.0.1:{int(os.environ.get('GATEWAY_PORT', '3000'))}").rstrip("/")
 
 
-def service_client():
-    token = os.environ.get("AGENT_TOKEN_1")
+def service_client(token=None):
+    token = token or os.environ.get("AGENT_TOKEN_1")
     if not token:
         raise ValueError("Set AGENT_TOKEN_1 before running the client")
     if not re.fullmatch(r"[A-Za-z0-9._~+/=-]+", token):
@@ -59,8 +59,8 @@ def validate_operation(operation):
     jsonschema.Draft202012Validator.check_schema(schema)
 
 
-def discover(client):
-    response = client.get(BASE_URL + "/agent-policy")
+def discover(client, *, base_url=None):
+    response = client.get((base_url or BASE_URL).rstrip("/") + "/agent-policy")
     response.raise_for_status()
     policy = response.json()
     if (
@@ -108,7 +108,7 @@ def safe_to_retry(response):
     )
 
 
-def execute(client, operation, params, *, task_timeout=120):
+def execute(client, operation, params, *, task_timeout=120, base_url=None):
     validate_operation(operation)
     jsonschema.Draft202012Validator(operation["input_schema"]).validate(params)
     deadline = time.monotonic() + task_timeout
@@ -117,7 +117,7 @@ def execute(client, operation, params, *, task_timeout=120):
         if remaining <= 0:
             raise TimeoutError("Operation deadline exceeded")
         response = client.request(
-            operation["method"], BASE_URL + operation["path"], json=params,
+            operation["method"], (base_url or BASE_URL).rstrip("/") + operation["path"], json=params,
             timeout=min(30, remaining),
         )
         if time.monotonic() >= deadline:

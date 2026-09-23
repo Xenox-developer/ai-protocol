@@ -1,0 +1,66 @@
+[
+  {
+    "scenario": "mixed_overload",
+    "mode": "C",
+    "tasks": 720,
+    "success": 619,
+    "failed": 101,
+    "unfinished": 0,
+    "attempts": 1974,
+    "http_429": 1355,
+    "median_run_p95_ms": 4225.460630929847,
+    "discovery_requests": 122,
+    "identity_discovery_requests": 0,
+    "upstream_started": 889,
+    "failure_reasons": {
+      "Operation HTTP status 429": 101
+    }
+  },
+  {
+    "scenario": "mixed_overload",
+    "mode": "S",
+    "tasks": 720,
+    "success": 720,
+    "failed": 0,
+    "unfinished": 0,
+    "attempts": 720,
+    "http_429": 0,
+    "median_run_p95_ms": 3828.562545724785,
+    "discovery_requests": 45,
+    "identity_discovery_requests": 12,
+    "upstream_started": 990,
+    "failure_reasons": {}
+  },
+  {
+    "scenario": "dynamic",
+    "mode": "C",
+    "tasks": 540,
+    "success": 516,
+    "failed": 24,
+    "unfinished": 0,
+    "attempts": 1136,
+    "http_429": 620,
+    "median_run_p95_ms": 3414.828180543521,
+    "discovery_requests": 134,
+    "identity_discovery_requests": 0,
+    "upstream_started": 756,
+    "failure_reasons": {
+      "Operation HTTP status 429": 24
+    }
+  },
+  {
+    "scenario": "dynamic",
+    "mode": "S",
+    "tasks": 540,
+    "success": 540,
+    "failed": 0,
+    "unfinished": 0,
+    "attempts": 562,
+    "http_429": 22,
+    "median_run_p95_ms": 2193.6156438371568,
+    "discovery_requests": 45,
+    "identity_discovery_requests": 12,
+    "upstream_started": 780,
+    "failure_reasons": {}
+  }
+]

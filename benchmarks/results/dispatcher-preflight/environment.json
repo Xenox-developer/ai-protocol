@@ -1,0 +1,103 @@
+{
+  "config": {
+    "seed": 20260921,
+    "repetitions": 3,
+    "upstream_delay_ms": 200,
+    "interactive_max_wait_ms": 2000,
+    "agent_max_wait_ms": 10000,
+    "task_timeout_s": 10,
+    "run_timeout_s": 22,
+    "cleanup_timeout_s": 12,
+    "max_pending": 1024,
+    "sample_ms": 50,
+    "scenarios": [
+      {
+        "name": "mixed_overload",
+        "duration_s": 6,
+        "interactive_rps": 15,
+        "agent_rps": 80
+      },
+      {
+        "name": "dynamic",
+        "duration_s": 8,
+        "interactive_rps": 10,
+        "agent_rps": 45,
+        "changes": [
+          {
+            "at_s": 2,
+            "limit": 2
+          },
+          {
+            "at_s": 5,
+            "limit": 5
+          }
+        ]
+      }
+    ],
+    "source_results": "benchmarks/results/stage4-main",
+    "mode_orders": [
+      "CS",
+      "SC",
+      "CS",
+      "SC",
+      "CS",
+      "SC"
+    ],
+    "process_counts": [
+      4
+    ],
+    "agent_owner": "demo-owner",
+    "assignment": "round_robin",
+    "interactive_background_processes": 1
+  },
+  "commit": "cce8a6394c8df4262b0a48b2ba0a5cd42e41e0ea",
+  "git_status": "M README.md\n M benchmarks/README.md\n M benchmarks/stage4/run.py\n M docs/protocol.md\n M src/bin/bench_client.rs\n M src/main.rs\n M src/tests.rs\n?? benchmarks/MULTICLIENT_REPORT.md\n?? benchmarks/STAGE4_1_REPORT.md\n?? benchmarks/dispatcher/\n?? benchmarks/multiclient/\n?? benchmarks/results/dispatcher-demo/\n?? benchmarks/results/dispatcher-main/\n?? benchmarks/results/multiclient-main/\n?? benchmarks/results/stage4_1-main/\n?? benchmarks/stage4_1/\n?? examples/dispatch_client.py\n?? examples/dispatcher_demo.py\n?? src/bin/bench/\n?? src/bin/client/\n?? src/bin/dispatcher.rs\n?? src/bin/dispatcher/\n?? tests/test_benchmark_comparison.py\n?? tests/test_dispatch_client.py\n?? tests/test_multiclient.py",
+  "dirty": true,
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+  "python": "3.12.1 (v3.12.1:2305ca5144, Dec  7 2023, 17:23:38) [Clang 13.0.0 (clang-1300.0.29.30)]",
+  "httpx": "0.28.1",
+  "os": "Darwin",
+  "os_release": "24.6.0",
+  "architecture": "arm64",
+  "logical_cpus": 10,
+  "machine_model": "MacBookPro18,1",
+  "cpu": "Apple M1 Pro",
+  "memory_bytes": "17179869184",
+  "tokio_worker_threads_per_process": 4,
+  "build_profile": "release",
+  "source_sha256": {
+    "Cargo.toml": "85d7d513041208112eabb6c8b8b00f905ae20a946254734053df7919542cf12a",
+    "Cargo.lock": "d6dccf784fa02d3c21f4932cad98f2a3698d33acd5edfec64d214024f933a780",
+    "src/telemetry.rs": "928ff4409a452be55623dbbb224b7f749f4136960c60f7370164b105c6438d7b",
+    "src/budget.rs": "8b409b45973c3d1dd441b603c1ecd2bca18062f0877b97714362ba7fa0c6543f",
+    "src/dynamic_tests.rs": "d650abd9e24715105ce978313974afa5ced56ae967506fde69ab7f109a5f8196",
+    "src/queue_tests.rs": "41d535632673e87918a78d801d6128b80cf0375484db4f820c8c3c1c6f081055",
+    "src/queue.rs": "04c34f2a0c499912bc3a5bf83880efc2f642895412aa359693ca3674bbe53720",
+    "src/main.rs": "6897e2e95564f5402a065294714003e50a9d43d0bc5d5ad7a14f9bb8dfaa28fc",
+    "src/tests.rs": "519f817f22cf14b015186db9da5204e08e1eedc8a1fe0d8f77214ea767b887bb",
+    "src/bin/load_plain.rs": "d258c888ac90dc7fc60582bc81c9a512e037de25e2f8e6a03691377511472b93",
+    "src/bin/dispatcher.rs": "47d28ffc1b909f283dac9e21738b04bec18e9727eaabf4d97ece14e5290dd2ce",
+    "src/bin/load.rs": "b070b04efca53e30053fa0a5d55cbcf612e03de898eecb7d2525c639e2a663a3",
+    "src/bin/bench_client.rs": "802f77a28c7a299dcb053d4f0ee0a0133206bf86f619bb9923bba0265b452d6d",
+    "src/bin/bench/tests.rs": "6aca9607f37574fece6409c41efa209563502501dfc992894552dcc30adb54e4",
+    "src/bin/dispatcher/tests.rs": "5fd2e680d24c5b85623741099deadd7cb4c3966985f2b354046111a501ccae12",
+    "src/bin/load/control.rs": "ac97d1bc1a2614fe7b33e4a6d2129ce926b72c5ab8fa34e180a23332f751e677",
+    "src/bin/load/tests.rs": "592a6dc27438748dd44af160162005c9c533da42d29d5a78af9d5b4b5b313092",
+    "src/bin/load/retry.rs": "1cb319e02b30601f8a672d1487ee9f100f549e32d55d71feb3528d3a04fed176",
+    "src/bin/client/dispatch.rs": "52b312d29a083113c01a84b36dda55c4a99ffe571216bd1604b6b230a929a2af",
+    "src/bin/client/transport.rs": "5b092fee5e6812f2eb1d691a1c65e4a3c512221f42d3dfa57e691fa45cd5fc9b",
+    "benchmarks/stage4/run.py": "29ca3b5d5a8ffb964cbba37b87e0351f45d204461ca890fce5cd5c811f055d16",
+    "benchmarks/stage4/check.py": "8023d299a44c726353a440974c8908e592b25cdd0a3e69384efa4cc9b734ed6f",
+    "benchmarks/stage4/analyze.py": "83e09f93a5e864f987acf8e90b5ad805b7adaa50e22c3111b2a8b059f097f26d",
+    "benchmarks/stage4/config.json": "748c71d7e013d306ac508adc42d9a5c568db4038235ff7ce3d41fc40a5b152c7",
+    "benchmarks/dispatcher/run.py": "8b14caad5c94bdab7d35b656a996b8aee0523b2d013d4ea0340118531a5661d3",
+    "benchmarks/dispatcher/analyze_dispatcher.py": "745fe1f5839fbc1d2c72ac8c990f9ada3cb660f830276903d9918d829f503277"
+  },
+  "binary_sha256": {
+    "ai-protocol": "2b84e15b5b306553ecf9c992820576f870bb52599c3050cd20af71115782ab64",
+    "bench_client": "ae15e6e9549dca45d915ae686e7bae3638f6433b48047f0d19dbd2a027c5b31b",
+    "dispatcher": "a9c46f7f5f76bc428bb3968808d09c7f7783c159bc92ccb338324b94af0452d2"
+  },
+  "created_utc": "2026-09-22T20:56:20Z"
+}

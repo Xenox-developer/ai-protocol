@@ -1,6 +1,19 @@
 # Load tests
 
-The current controlled experiment is documented in [stage 4 methodology](stage4/README.md).
+For four producers sharing one local dispatcher, see the
+[C/S methodology](dispatcher/README.md), [report](DISPATCHER_REPORT.md), and
+[results](results/dispatcher-main/SUMMARY.md).
+
+For independent processes sharing one owner budget, see the
+[1/2/4-client methodology](multiclient/README.md),
+[separate report](MULTICLIENT_REPORT.md), and
+[raw-run summary](results/multiclient-main/SUMMARY.md).
+
+Stage 4.1 isolates refreshing policy from fixed initial concurrency: see
+[methodology](stage4_1/README.md), [report](STAGE4_1_REPORT.md), and
+[new C/D results](results/stage4_1-main/SUMMARY.md).
+
+The original controlled experiment is documented in [stage 4 methodology](stage4/README.md).
 See [BENCHMARK_REPORT.md](BENCHMARK_REPORT.md) for actual measurements and limitations,
 and [raw-run summary](results/stage4-main/SUMMARY.md) for all repeated runs.
 It compares compliant A/B clients with the adaptive C client; the older load

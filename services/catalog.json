@@ -1,0 +1,107 @@
+{
+  "service_id": "catalog",
+  "operations": [
+    {
+      "name": "search_products",
+      "description": "Search products by a substring in their English name. For sneakers, pass query=\"sneakers\"; for boots, pass query=\"boots\". To retrieve all products, pass query=\"\". The catalog contains only footwear, so a request for all available footwear means retrieving all products.",
+      "path": "/search",
+      "upstream_path": "/products/search",
+      "parameters": {
+        "query": {
+          "type": "string",
+          "upstream": "query"
+        }
+      }
+    },
+    {
+      "name": "get_product",
+      "description": "Retrieve a single product by its known numeric ID. Use this when the user provides a product ID.",
+      "path": "/product",
+      "upstream_path": "/products/get",
+      "parameters": {
+        "id": {
+          "type": "integer",
+          "upstream": "id"
+        }
+      }
+    }
+  ],
+  "credentials": [
+    {
+      "token_env": "AGENT_TOKEN_1",
+      "required": true,
+      "principal_id": "demo-owner",
+      "client_class": "agent",
+      "operations": [
+        "search_products",
+        "get_product"
+      ],
+      "max_outstanding": 5
+    },
+    {
+      "token_env": "AGENT_TOKEN_2",
+      "required": true,
+      "principal_id": "demo-owner",
+      "client_class": "agent",
+      "operations": [
+        "search_products",
+        "get_product"
+      ],
+      "max_outstanding": 5
+    },
+    {
+      "token_env": "AGENT_TOKEN_3",
+      "required": false,
+      "principal_id": "demo-owner",
+      "client_class": "agent",
+      "operations": [
+        "search_products",
+        "get_product"
+      ],
+      "max_outstanding": 5
+    },
+    {
+      "token_env": "AGENT_TOKEN_4",
+      "required": false,
+      "principal_id": "demo-owner",
+      "client_class": "agent",
+      "operations": [
+        "search_products",
+        "get_product"
+      ],
+      "max_outstanding": 5
+    },
+    {
+      "token_env": "PRODUCT_ONLY_TOKEN",
+      "required": false,
+      "principal_id": "demo-owner",
+      "client_class": "agent",
+      "operations": [
+        "get_product"
+      ],
+      "max_outstanding": 5
+    },
+    {
+      "token_env": "INTERACTIVE_TOKEN",
+      "required": true,
+      "principal_id": "demo-owner",
+      "client_class": "interactive",
+      "operations": [
+        "search_products",
+        "get_product"
+      ],
+      "max_outstanding": 10
+    },
+    {
+      "token_env": "OTHER_AGENT_TOKEN",
+      "required": false,
+      "principal_id": "other-owner",
+      "client_class": "agent",
+      "operations": [
+        "search_products",
+        "get_product"
+      ],
+      "max_outstanding": 5
+    }
+  ]
+}

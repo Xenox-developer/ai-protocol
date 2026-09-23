@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "tasks": 6,
+  "success": 5,
+  "restricted_search_status": 403,
+  "restricted_product": "success",
+  "forbidden_search_upstream_calls": 0,
+  "final_outstanding": 0
+}

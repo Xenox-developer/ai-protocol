@@ -1,0 +1,7 @@
+{"at_ms":31.947246999999997,"event":"arrival","id":"interactive","scheduled_ms":30.0}
+{"at_ms":32.139789,"event":"attempt_start","id":"interactive","number":1}
+{"at_ms":236.405539,"error":null,"event":"attempt_end","id":"interactive","number":1,"retry_after":null,"status":200}
+{"at_ms":236.874955,"event":"terminal","id":"interactive","outcome":"success","reason":"completed"}
+{"active":0,"at_ms":237.01803900000002,"event":"gate_final","limit":0,"owner":"demo-owner","ready":false,"revision":0}
+{"active":0,"at_ms":237.140955,"event":"gate_final","limit":0,"owner":"other-owner","ready":false,"revision":0}
+{"at_ms":237.25333,"deadline_reached":false,"event":"run_end"}

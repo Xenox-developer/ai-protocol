@@ -3,11 +3,75 @@
 An experimental protocol for cooperative agent access to web services over HTTP.
 The Rust gateway publishes permitted operations, authenticates callers, enforces
 shared owner budgets, selects work with interactive/agent weights of 3:1, and forwards work to a
-Python catalog. This is a local MVP, not a public standard or production platform.
+configured HTTP upstream. The included catalog and support-ticket service use
+the same gateway, discovery client and local dispatcher. This is a local MVP,
+not a public standard or production platform.
+
+## First external developer trial
+
+Start with the [short Unix quickstart](docs/QUICKSTART.md), then try the
+[manifest template exercise](docs/trial/EXERCISE.md) and return the
+[feedback form](docs/trial/FEEDBACK.md). The main path uses local data, temporary
+credentials and free ports; no LLM or paid API is needed. Rust/Cargo 1.98.1 is
+pinned for this trial; use Python 3.12. See the
+[preparation and verification report](docs/trial/REPORT.md).
+
+**Experimental limitations:** gateway budgets, queue state and dispatcher jobs
+are held in memory. Budget accounting covers one server process, not replicas.
+The dispatcher coordinates only connected agents and does not guarantee task
+recovery after restart or replay unknown outcomes. API integration requires
+manual operation/parameter mapping; the current adapter is limited to flat
+POST JSON → GET query. Native Windows is unsupported because of Unix sockets.
+Automated successful runs do not prove that external developers find this easy.
+
+Roles: the service owner configures API mappings, permissions and budgets; the
+agent developer discovers/calls operations using their own credential; an owner
+of multiple agents may additionally run a shared dispatcher. Detailed
+responsibilities are in the [quickstart](docs/QUICKSTART.md#who-does-what-next).
+
+Run the same bounded local checks as Unix CI (after installing dependencies):
+
+```sh
+bash scripts/verify.sh
+# Optional stronger check: fresh copy, venv, Cargo downloads and build outputs.
+python3 scripts/check_clean.py --report /tmp/ai-clean-report.json
+```
+
+The report path must be new. The clean check copies tracked and nonignored new
+files inside this repository, so uncommitted intended work is testable without a
+commit. It excludes local secrets, build outputs, `.git` and parent-directory
+files. It is a working-snapshot check, not evidence of a published commit. Tool
+and package downloads need internet access; test service traffic stays local.
+
+## Second service: support tickets
+
+The catalog remains the default. `services/support.json` manually maps ticket
+search and lookup to the independent `examples/support_service.py`, with local
+fixtures and no external API or LLM. `SERVICE_CONFIG` chooses the operation and
+credential manifest; `UPSTREAM_URL` is the owner's fixed upstream origin.
+`SERVICE_URL` selects the gateway in general clients and the dispatcher.
+
+Policy v3 adds `service_id` without renaming existing fields. Budgets belong to
+one service gateway, owner and class. Run a separate dispatcher/socket per
+service and owner, even when owner IDs match. Clients select discovered operation
+descriptors; no new operation-name branches are needed.
+
+See the [owner and agent integration instructions](docs/service-integration.md)
+and [verified report with raw results](integration/SECOND_SERVICE_REPORT.md).
+To reproduce only the targeted integration check, on private free-port instances:
+
+```sh
+cargo build --locked --bins
+python3 examples/service_integration_demo.py --output integration/results/my-run
+```
+
+The output directory must be new. Existing catalog startup commands below remain
+valid; the full historical load series does not need to be repeated.
 
 ## Getting started
 
-You need Rust/Cargo with edition 2024 support and Python 3.10+.
+For the first trial, use the pinned Rust/Cargo 1.98.1 and Python 3.12.
+The older manual catalog workflow below remains available.
 Run commands from the repository root.
 
 ```sh
@@ -40,7 +104,8 @@ Optional `CATALOG_PORT` and `GATEWAY_PORT` select different local ports; set
 `CATALOG_PORT` for both servers and `GATEWAY_PORT` for the gateway and clients.
 The gateway requires `AGENT_TOKEN_1`, `AGENT_TOKEN_2`, and `INTERACTIVE_TOKEN`;
 it fails closed if required configuration is missing. `PRODUCT_ONLY_TOKEN`
-and `OTHER_AGENT_TOKEN` are optional test roles. `ADMIN_TOKEN` enables the
+and `OTHER_AGENT_TOKEN` are optional test roles. Optional `AGENT_TOKEN_3` and
+`AGENT_TOKEN_4` have the same owner, operations and shared budget as the first two agent tokens. `ADMIN_TOKEN` enables the
 separate administrative endpoint; if absent, that endpoint returns 404. All provided values must differ.
 The environment is read at startup; the server does not load `.env.demo` itself.
 
@@ -77,7 +142,7 @@ All endpoints require `Authorization: Bearer <token>`.
 | POST | `/product` | Retrieve a product: `{"id":2}` |
 | PATCH | `/admin/principals/{principal_id}/limits` | Change an agent budget; separate `ADMIN_TOKEN` required |
 
-`AGENT_TOKEN_1`, `AGENT_TOKEN_2`, and `PRODUCT_ONLY_TOKEN` initially share five outstanding
+`AGENT_TOKEN_1` through `AGENT_TOKEN_4`, and `PRODUCT_ONLY_TOKEN` initially share five outstanding
 operations for `demo-owner`. This includes queued and running work, across all
 connections and client processes. The product-only token cannot search (403).
 `OTHER_AGENT_TOKEN` has its own five slots. `INTERACTIVE_TOKEN` has a separate
@@ -232,6 +297,25 @@ Raw JSONL, timeseries CSV, configuration, seed, commit/dirty status, tool and
 machine metadata are retained. Successful-only percentiles are always accompanied
 by outcome counts; a median of run p95 values is never called an overall p95.
 
+## Fixed versus refreshing policy (stage 4.1)
+
+Mode D reads the initial policy and holds that local concurrency limit for the
+whole run. It uses the same Gate, waiting, safe retries and planned-arrival deadline
+as C. Only C keeps refreshing policy. The server is unchanged.
+
+```sh
+cargo build --locked --release --bins
+python3 benchmarks/stage4_1/run.py --output benchmarks/results/new-stage4_1
+```
+
+This separate twelve-run C/D experiment reuses the exact saved stage-4 overload
+and dynamic schedules. Both modes receive three new runs per scenario, alternating
+order. It adds discovery counts, revision-matched policy application delay bounds,
+reduced/restored-budget cohorts and final error reasons. Old results are preserved.
+See [methodology](benchmarks/stage4_1/README.md),
+[stage 4.1 report](benchmarks/STAGE4_1_REPORT.md) and
+[per-run summary](benchmarks/results/stage4_1-main/SUMMARY.md).
+
 ## Checks
 
 ```sh
@@ -302,3 +386,40 @@ safe retry rules for future writes. Historical benchmarks do not measure v3.
 ## License
 
 Copyright (c) 2026 Nikita Chindin. Licensed under [Apache-2.0](LICENSE).
+
+
+## Independent clients of one owner
+
+A separate experiment partitions the same owner workload across 1, 2, and 4
+independent client processes, each with its own token and local Gate. It compares
+fresh C/D runs under constant and 5 -> 2 -> 5 budgets without interprocess
+coordination or a slot-distribution mechanism. Interactive background traffic
+remains fixed. See the [methodology](benchmarks/multiclient/README.md),
+[report](benchmarks/MULTICLIENT_REPORT.md), and
+[per-run evidence](benchmarks/results/multiclient-main/SUMMARY.md).
+
+```sh
+cargo build --locked --release --bins
+python3 benchmarks/multiclient/run.py --output benchmarks/results/new-multiclient
+```
+
+
+## Shared local agent dispatcher
+
+Multiple agent processes can opt into one bounded local queue, owner Gate and
+policy refresher through a private Unix socket. Each job keeps its own service
+token, permissions, original deadline and five-attempt retry budget. A lost
+reply is explicit and never triggers automatic replay or direct HTTP fallback.
+The gateway and existing direct clients are unchanged. The dispatcher coordinates
+only its connected clients, is a single point of failure, and does not guarantee
+job recovery after restart.
+
+See [agent connection instructions](docs/dispatcher.md),
+[comparison methodology](benchmarks/dispatcher/README.md), and
+[measured report](benchmarks/DISPATCHER_REPORT.md).
+
+```sh
+cargo build --locked --release --bins
+python3 examples/dispatcher_demo.py
+python3 benchmarks/dispatcher/run.py --output benchmarks/results/new-dispatcher
+```

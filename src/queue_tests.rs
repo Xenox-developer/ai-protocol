@@ -6,7 +6,7 @@ fn make_job(budget: &Arc<Budget>, id: u64, wait: Duration) -> (Job, oneshot::Rec
     (
         Job {
             reply,
-            action: CatalogAction::GetProduct(id),
+            action: TaskAction::GetProduct(id),
             permit: budget.try_acquire().unwrap(),
             accepted_at: Instant::now(),
             max_wait: wait,
@@ -18,7 +18,7 @@ fn make_job(budget: &Arc<Budget>, id: u64, wait: Duration) -> (Job, oneshot::Rec
 
 fn id(job: &Job) -> u64 {
     match job.action {
-        CatalogAction::GetProduct(id) => id,
+        TaskAction::GetProduct(id) => id,
         _ => panic!("Expected a product task"),
     }
 }
@@ -50,7 +50,7 @@ impl Drop for Executor {
 fn executor(state: Arc<AppState>) -> Executor {
     let (tx, selected) = mpsc::unbounded_channel();
     let task = tokio::spawn(run_scheduler(state, move |action| {
-        let CatalogAction::GetProduct(id) = action else {
+        let TaskAction::GetProduct(id) = action else {
             panic!("Expected product task")
         };
         let (complete, finished) = oneshot::channel();
@@ -129,7 +129,7 @@ async fn scheduler_fills_ten_slots_and_reuses_each_completion_without_clock_tick
         requests.push(submit(
             &state,
             "AGENT_TOKEN_1",
-            CatalogAction::GetProduct(index),
+            TaskAction::GetProduct(index),
         ));
         slots(&budget, 19 - index as usize).await;
     }
@@ -169,7 +169,7 @@ async fn timer_expires_waiters_without_events_and_preserves_running_jobs_and_res
         requests.push(submit(
             &state,
             "INTERACTIVE_TOKEN",
-            CatalogAction::GetProduct(index),
+            TaskAction::GetProduct(index),
         ));
     }
     for _ in 0..10 {
@@ -181,20 +181,16 @@ async fn timer_expires_waiters_without_events_and_preserves_running_jobs_and_res
         expired.push(submit(
             &state,
             "AGENT_TOKEN_1",
-            CatalogAction::GetProduct(index),
+            TaskAction::GetProduct(index),
         ));
     }
     slots(&budget, 2).await;
     budget.set_maximum(2);
     assert_eq!(budget.snapshot().outstanding, 3);
     assert_eq!(
-        finish(submit(
-            &state,
-            "AGENT_TOKEN_2",
-            CatalogAction::GetProduct(200)
-        ))
-        .await
-        .status(),
+        finish(submit(&state, "AGENT_TOKEN_2", TaskAction::GetProduct(200)))
+            .await
+            .status(),
         429
     );
     advance(Duration::from_millis(9999)).await;
@@ -233,7 +229,7 @@ async fn timer_expires_waiters_without_events_and_preserves_running_jobs_and_res
             .outstanding,
         0
     );
-    let request = submit(&state, "AGENT_TOKEN_2", CatalogAction::GetProduct(300));
+    let request = submit(&state, "AGENT_TOKEN_2", TaskAction::GetProduct(300));
     let (id, release) = executor.selected.recv().await.unwrap();
     assert_eq!(id, 300);
     release.send(()).unwrap();
@@ -252,17 +248,17 @@ async fn earlier_new_deadline_rearms_the_single_scheduler_timer() {
         requests.push(submit(
             &state,
             "AGENT_TOKEN_1",
-            CatalogAction::GetProduct(index),
+            TaskAction::GetProduct(index),
         ));
     }
     let mut running = Vec::new();
     for _ in 0..10 {
         running.push(executor.selected.recv().await.unwrap().1);
     }
-    let agent = submit(&state, "AGENT_TOKEN_1", CatalogAction::GetProduct(100));
+    let agent = submit(&state, "AGENT_TOKEN_1", TaskAction::GetProduct(100));
     slots(&budget, 9).await;
     advance(Duration::from_secs(1)).await;
-    let interactive = submit(&state, "INTERACTIVE_TOKEN", CatalogAction::GetProduct(200));
+    let interactive = submit(&state, "INTERACTIVE_TOKEN", TaskAction::GetProduct(200));
     slots(&identity(&state, "INTERACTIVE_TOKEN").budget, 9).await;
     advance(Duration::from_secs(2)).await;
     assert_queue_timeout(finish(interactive).await).await;

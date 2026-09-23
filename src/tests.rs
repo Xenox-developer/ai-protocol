@@ -51,7 +51,7 @@ async fn slots(budget: &Budget, expected: usize) {
     .expect("budget did not reach the expected value");
 }
 
-fn submit(state: &Arc<AppState>, name: &str, action: CatalogAction) -> JoinHandle<Response> {
+fn submit(state: &Arc<AppState>, name: &str, action: TaskAction) -> JoinHandle<Response> {
     tokio::spawn(enqueue(state.clone(), identity(state, name), action))
 }
 
@@ -97,6 +97,7 @@ async fn authentication_permissions_and_discovery() {
         assert_eq!(response.headers()["cache-control"], "no-store");
         let policy: serde_json::Value = response.json().await.unwrap();
         assert_eq!(policy["version"], 3);
+        assert_eq!(policy["service_id"], "catalog");
         assert_eq!(policy["principal_id"], "demo-owner");
         assert_eq!(policy["client_class"], "agent");
         assert_eq!(policy["limits"]["scope"], "principal");
@@ -182,7 +183,7 @@ async fn concurrent_tokens_share_budget_and_other_scopes_are_independent() {
             } else {
                 "AGENT_TOKEN_2"
             },
-            CatalogAction::Search("".into()),
+            TaskAction::Search("".into()),
         ));
     }
     timeout(Duration::from_secs(3), async {
@@ -194,15 +195,15 @@ async fn concurrent_tokens_share_budget_and_other_scopes_are_independent() {
     .unwrap();
     assert_eq!(a.budget.available_permits(), 0);
     assert_eq!(state.queues.lock().await.agents.len(), 5);
-    let other = submit(&state, "OTHER_AGENT_TOKEN", CatalogAction::GetProduct(2));
-    let interactive = submit(&state, "INTERACTIVE_TOKEN", CatalogAction::GetProduct(2));
+    let other = submit(&state, "OTHER_AGENT_TOKEN", TaskAction::GetProduct(2));
+    let interactive = submit(&state, "INTERACTIVE_TOKEN", TaskAction::GetProduct(2));
     slots(&identity(&state, "OTHER_AGENT_TOKEN").budget, 4).await;
     slots(&identity(&state, "INTERACTIVE_TOKEN").budget, 9).await;
     let mut queues = state.queues.lock().await;
     // A fresh weighted cycle selects an interactive job first.
     assert_eq!(queues.interactive.len(), 1);
     let job = queues.pop_next().unwrap();
-    assert!(matches!(job.action, CatalogAction::GetProduct(2)));
+    assert!(matches!(job.action, TaskAction::GetProduct(2)));
     job.reply.send(StatusCode::OK.into_response()).unwrap();
     drop(job.permit);
     while let Some(job) = queues.pop_next() {
@@ -235,19 +236,19 @@ async fn queued_cancellation_releases_slot_and_never_runs() {
     let task = submit(
         &state,
         "AGENT_TOKEN_1",
-        CatalogAction::Search("cancelled".into()),
+        TaskAction::Search("cancelled".into()),
     );
     slots(&budget, 4).await;
     task.abort();
     assert!(task.await.unwrap_err().is_cancelled());
-    let replacement = submit(&state, "AGENT_TOKEN_2", CatalogAction::GetProduct(2));
+    let replacement = submit(&state, "AGENT_TOKEN_2", TaskAction::GetProduct(2));
     timeout(Duration::from_secs(3), async {
         loop {
             let queues = state.queues.lock().await;
             if queues
                 .agents
                 .front()
-                .is_some_and(|job| matches!(job.action, CatalogAction::GetProduct(2)))
+                .is_some_and(|job| matches!(job.action, TaskAction::GetProduct(2)))
             {
                 break;
             }
@@ -301,7 +302,7 @@ async fn running_cancellation_keeps_permit_until_upstream_finishes() {
         tasks.push(submit(
             &state,
             "AGENT_TOKEN_1",
-            CatalogAction::Search("".into()),
+            TaskAction::Search("".into()),
         ));
     }
     for _ in 0..5 {
@@ -314,12 +315,7 @@ async fn running_cancellation_keeps_permit_until_upstream_finishes() {
     cancelled.abort();
     assert!(cancelled.await.unwrap_err().is_cancelled());
     assert_eq!(budget.available_permits(), 0);
-    let response = finish(submit(
-        &state,
-        "AGENT_TOKEN_2",
-        CatalogAction::GetProduct(2),
-    ))
-    .await;
+    let response = finish(submit(&state, "AGENT_TOKEN_2", TaskAction::GetProduct(2))).await;
     assert_eq!(response.status(), 429);
     assert!(upstream.started.try_recv().is_err());
     upstream.release.add_permits(5);
@@ -327,7 +323,7 @@ async fn running_cancellation_keeps_permit_until_upstream_finishes() {
         assert_eq!(finish(task).await.status(), 200);
     }
     slots(&budget, 5).await;
-    let next = submit(&state, "AGENT_TOKEN_2", CatalogAction::GetProduct(2));
+    let next = submit(&state, "AGENT_TOKEN_2", TaskAction::GetProduct(2));
     timeout(Duration::from_secs(3), upstream.started.recv())
         .await
         .unwrap()
@@ -347,7 +343,7 @@ async fn upstream_errors_release_budget_and_429_is_not_forwarded() {
         let state = test_state();
         let mut upstream = upstream(status).await;
         let scheduler = tokio::spawn(scheduler(state.clone(), upstream.server.url.clone()));
-        let task = submit(&state, "AGENT_TOKEN_1", CatalogAction::Search("".into()));
+        let task = submit(&state, "AGENT_TOKEN_1", TaskAction::Search("".into()));
         timeout(Duration::from_secs(3), upstream.started.recv())
             .await
             .unwrap()
@@ -367,9 +363,9 @@ async fn queue_overflow_does_not_leak_either_class_budget() {
         let state = test_state();
         // Independent synthetic principals exercise the global queue cap.
         let identity = ClientIdentity {
-            principal_id: "queue-test",
+            principal_id: "queue-test".into(),
             class,
-            operations: vec!["get_product"],
+            operations: vec!["get_product".into()],
             budget: Budget::new(QUEUE_LIMIT + 1),
         };
         let mut tasks = Vec::new();
@@ -377,16 +373,11 @@ async fn queue_overflow_does_not_leak_either_class_budget() {
             tasks.push(tokio::spawn(enqueue(
                 state.clone(),
                 identity.clone(),
-                CatalogAction::GetProduct(1),
+                TaskAction::GetProduct(1),
             )));
         }
         slots(&identity.budget, 1).await;
-        let response = enqueue(
-            state.clone(),
-            identity.clone(),
-            CatalogAction::GetProduct(1),
-        )
-        .await;
+        let response = enqueue(state.clone(), identity.clone(), TaskAction::GetProduct(1)).await;
         assert_eq!(response.status(), 429);
         assert_eq!(identity.budget.available_permits(), 1);
         for task in tasks {
@@ -406,7 +397,14 @@ fn configuration_fails_closed_without_exposing_tokens() {
     assert!(!error.contains("same-secret"));
     assert!(
         identities_from(|name| {
-            if name == "OTHER_AGENT_TOKEN" || name == "PRODUCT_ONLY_TOKEN" {
+            if [
+                "OTHER_AGENT_TOKEN",
+                "PRODUCT_ONLY_TOKEN",
+                "AGENT_TOKEN_3",
+                "AGENT_TOKEN_4",
+            ]
+            .contains(&name)
+            {
                 Err(std::env::VarError::NotPresent)
             } else {
                 Ok(format!("test-{name}"))
@@ -479,7 +477,7 @@ async fn test_rejection_consumes_no_budget() {
     let response = enqueue(
         state.clone(),
         identity(&state, "AGENT_TOKEN_1"),
-        CatalogAction::GetProduct(2),
+        TaskAction::GetProduct(2),
     )
     .await;
     assert_eq!(response.status(), 429);
@@ -496,7 +494,7 @@ async fn upstream_timeout_releases_budget() {
     let state = test_state();
     let mut upstream = upstream(StatusCode::OK).await;
     let scheduler = tokio::spawn(scheduler(state.clone(), upstream.server.url.clone()));
-    let task = submit(&state, "AGENT_TOKEN_1", CatalogAction::Search("".into()));
+    let task = submit(&state, "AGENT_TOKEN_1", TaskAction::Search("".into()));
     timeout(Duration::from_secs(3), upstream.started.recv())
         .await
         .unwrap()
@@ -526,7 +524,7 @@ async fn broken_upstream_body_releases_budget() {
     });
     let state = test_state();
     let scheduler = tokio::spawn(scheduler(state.clone(), url));
-    let task = submit(&state, "AGENT_TOKEN_1", CatalogAction::GetProduct(2));
+    let task = submit(&state, "AGENT_TOKEN_1", TaskAction::GetProduct(2));
     assert_eq!(finish(task).await.status(), 502);
     slots(&identity(&state, "AGENT_TOKEN_1").budget, 5).await;
     broken.await.unwrap();
@@ -542,14 +540,14 @@ async fn interactive_budget_is_ten_and_shared_within_its_class() {
         tasks.push(submit(
             &state,
             "INTERACTIVE_TOKEN",
-            CatalogAction::GetProduct(1),
+            TaskAction::GetProduct(1),
         ));
     }
     slots(&interactive.budget, 0).await;
     let response = enqueue(
         state.clone(),
         interactive.clone(),
-        CatalogAction::GetProduct(1),
+        TaskAction::GetProduct(1),
     )
     .await;
     assert_eq!(response.status(), 429);
@@ -570,3 +568,30 @@ mod dynamic;
 
 #[path = "queue_tests.rs"]
 mod queueing;
+
+#[test]
+fn four_distinct_agent_credentials_share_the_same_resizable_budget() {
+    let identities = identities_from(|name| Ok(format!("test-{name}"))).unwrap();
+    let agents: Vec<_> = (1..=4)
+        .map(|n| &identities[&format!("test-AGENT_TOKEN_{n}")])
+        .collect();
+    for agent in &agents {
+        assert_eq!(agent.principal_id, "demo-owner");
+        assert!(agent.class == ClientClass::Agent);
+        assert_eq!(agent.operations, ["search_products", "get_product"]);
+        assert!(Arc::ptr_eq(&agent.budget, &agents[0].budget));
+    }
+    let permits: Vec<_> = (0..5)
+        .map(|n| agents[n % 4].budget.try_acquire().unwrap())
+        .collect();
+    assert!(agents.iter().all(|a| a.budget.try_acquire().is_none()));
+    agents[0].budget.set_maximum(2);
+    assert!(agents.iter().all(|a| a.budget.try_acquire().is_none()));
+    drop(permits);
+    assert!(agents.iter().all(|a| a.budget.snapshot().outstanding == 0));
+    let permit = agents[3].budget.try_acquire().unwrap();
+    assert_eq!(agents[0].budget.snapshot().outstanding, 1);
+    drop(permit);
+    agents[2].budget.set_maximum(5);
+    assert!(agents.iter().all(|a| a.budget.snapshot().maximum == 5));
+}

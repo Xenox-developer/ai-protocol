@@ -1,0 +1,61 @@
+{"credential_index": 0, "event": "discovery_start", "purpose": "identity", "unix_s": 1790110981.8825958, "at_ms": -529.5443534851074, "client_id": "dispatcher", "executor": "dispatcher"}
+{"credential_index": 0, "event": "discovery_end", "purpose": "identity", "success": true, "unix_s": 1790110981.884317, "at_ms": -527.8232097625732, "client_id": "dispatcher", "executor": "dispatcher"}
+{"credential_index": 1, "event": "discovery_start", "purpose": "identity", "unix_s": 1790110981.884443, "at_ms": -527.6970863342285, "client_id": "dispatcher", "executor": "dispatcher"}
+{"credential_index": 1, "event": "discovery_end", "purpose": "identity", "success": true, "unix_s": 1790110981.8848965, "at_ms": -527.2436141967773, "client_id": "dispatcher", "executor": "dispatcher"}
+{"credential_index": 2, "event": "discovery_start", "purpose": "identity", "unix_s": 1790110981.885065, "at_ms": -527.0750522613525, "client_id": "dispatcher", "executor": "dispatcher"}
+{"credential_index": 2, "event": "discovery_end", "purpose": "identity", "success": true, "unix_s": 1790110981.8855333, "at_ms": -526.6067981719971, "client_id": "dispatcher", "executor": "dispatcher"}
+{"credential_index": 3, "event": "discovery_start", "purpose": "identity", "unix_s": 1790110981.8856509, "at_ms": -526.4892578125, "client_id": "dispatcher", "executor": "dispatcher"}
+{"credential_index": 3, "event": "discovery_end", "purpose": "identity", "success": true, "unix_s": 1790110981.88602, "at_ms": -526.1201858520508, "client_id": "dispatcher", "executor": "dispatcher"}
+{"event": "discovery_start", "purpose": "refresh", "unix_s": 1790110981.8863294, "at_ms": -525.810718536377, "client_id": "dispatcher", "executor": "dispatcher"}
+{"event": "discovery_end", "purpose": "refresh", "success": true, "unix_s": 1790110981.8866417, "at_ms": -525.4983901977539, "client_id": "dispatcher", "executor": "dispatcher"}
+{"active": 0, "event": "policy", "limit": 5, "owner": "demo-owner", "ready": true, "revision": 1, "unix_s": 1790110981.8867185, "at_ms": -525.4216194152832, "client_id": "dispatcher", "executor": "dispatcher"}
+{"at_ms": 1.873106, "event": "arrival", "id": "agent-1-search", "scheduled_ms": 0.0, "client_id": "agent-1"}
+{"event": "attempt_start", "id": "agent-1-search", "local_active": 1, "local_limit": 5, "number": 1, "unix_s": 1790110982.41439, "at_ms": 2.2499561309814453, "client_id": "agent-1", "executor": "dispatcher"}
+{"at_ms": 6.5710109999999995, "event": "arrival", "id": "agent-2-search", "scheduled_ms": 5.0, "client_id": "agent-2"}
+{"event": "attempt_start", "id": "agent-2-search", "local_active": 2, "local_limit": 5, "number": 1, "unix_s": 1790110982.4192097, "at_ms": 7.069587707519531, "client_id": "agent-2", "executor": "dispatcher"}
+{"at_ms": 12.198746, "event": "arrival", "id": "agent-3-search", "scheduled_ms": 10.0, "client_id": "agent-3"}
+{"event": "attempt_start", "id": "agent-3-search", "local_active": 3, "local_limit": 5, "number": 1, "unix_s": 1790110982.4246383, "at_ms": 12.498140335083008, "client_id": "agent-3", "executor": "dispatcher"}
+{"at_ms": 17.199777, "event": "arrival", "id": "agent-4-search", "scheduled_ms": 15.0, "client_id": "agent-4"}
+{"event": "attempt_start", "id": "agent-4-search", "local_active": 4, "local_limit": 5, "number": 1, "unix_s": 1790110982.4301264, "at_ms": 17.986297607421875, "client_id": "agent-4", "executor": "dispatcher"}
+{"error": null, "event": "attempt_end", "id": "agent-4-search", "number": 1, "retry_after": null, "status": 403, "unix_s": 1790110982.431693, "at_ms": 19.552946090698242, "client_id": "agent-4", "executor": "dispatcher"}
+{"attempts": 1, "code": "Operation HTTP status 403", "event": "dispatcher_terminal", "execution": "not_started", "id": "agent-4-search", "unix_s": 1790110982.431881, "at_ms": 19.740819931030273, "client_id": "agent-4", "executor": "dispatcher"}
+{"at_ms": 19.914527, "attempts": 1, "code": "Operation HTTP status 403", "event": "dispatch_reply", "execution": "not_started", "id": "agent-4-search", "status": 403, "client_id": "agent-4"}
+{"at_ms": 20.079610000000002, "event": "terminal", "id": "agent-4-search", "outcome": "failed", "reason": "Operation HTTP status 403", "client_id": "agent-4"}
+{"at_ms": 21.346318999999998, "event": "arrival", "id": "agent-4-product", "scheduled_ms": 20.0, "client_id": "agent-4"}
+{"event": "attempt_start", "id": "agent-4-product", "local_active": 4, "local_limit": 5, "number": 1, "unix_s": 1790110982.4337852, "at_ms": 21.645069122314453, "client_id": "agent-4", "executor": "dispatcher"}
+{"at_ms": 32.128882, "event": "arrival", "id": "interactive", "scheduled_ms": 30.0, "client_id": "interactive"}
+{"at_ms": 33.187466, "event": "attempt_start", "id": "interactive", "number": 1, "client_id": "interactive"}
+{"error": null, "event": "attempt_end", "id": "agent-1-search", "number": 1, "retry_after": null, "status": 200, "unix_s": 1790110982.621369, "at_ms": 209.2287540435791, "client_id": "agent-1", "executor": "dispatcher"}
+{"attempts": 1, "code": "completed", "event": "dispatcher_terminal", "execution": "completed", "id": "agent-1-search", "unix_s": 1790110982.6216476, "at_ms": 209.50746536254883, "client_id": "agent-1", "executor": "dispatcher"}
+{"error": null, "event": "attempt_end", "id": "agent-2-search", "number": 1, "retry_after": null, "status": 200, "unix_s": 1790110982.621671, "at_ms": 209.53083038330078, "client_id": "agent-2", "executor": "dispatcher"}
+{"at_ms": 209.73144, "attempts": 1, "code": "completed", "event": "dispatch_reply", "execution": "completed", "id": "agent-1-search", "status": 200, "client_id": "agent-1"}
+{"attempts": 1, "code": "completed", "event": "dispatcher_terminal", "execution": "completed", "id": "agent-2-search", "unix_s": 1790110982.622005, "at_ms": 209.86485481262207, "client_id": "agent-2", "executor": "dispatcher"}
+{"at_ms": 209.99806500000003, "event": "terminal", "id": "agent-1-search", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 210.10597, "attempts": 1, "code": "completed", "event": "dispatch_reply", "execution": "completed", "id": "agent-2-search", "status": 200, "client_id": "agent-2"}
+{"active": 0, "at_ms": 210.194606, "event": "gate_final", "limit": 0, "owner": "demo-owner", "ready": false, "revision": 0, "client_id": "agent-1"}
+{"at_ms": 210.353511, "event": "terminal", "id": "agent-2-search", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"active": 0, "at_ms": 210.414481, "event": "gate_final", "limit": 0, "owner": "other-owner", "ready": false, "revision": 0, "client_id": "agent-1"}
+{"active": 0, "at_ms": 210.61947, "event": "gate_final", "limit": 0, "owner": "demo-owner", "ready": false, "revision": 0, "client_id": "agent-2"}
+{"at_ms": 210.96144, "deadline_reached": false, "event": "run_end", "client_id": "agent-1"}
+{"active": 0, "at_ms": 211.389386, "event": "gate_final", "limit": 0, "owner": "other-owner", "ready": false, "revision": 0, "client_id": "agent-2"}
+{"at_ms": 211.562053, "deadline_reached": false, "event": "run_end", "client_id": "agent-2"}
+{"error": null, "event": "attempt_end", "id": "agent-3-search", "number": 1, "retry_after": null, "status": 200, "unix_s": 1790110982.6297684, "at_ms": 217.62824058532715, "client_id": "agent-3", "executor": "dispatcher"}
+{"attempts": 1, "code": "completed", "event": "dispatcher_terminal", "execution": "completed", "id": "agent-3-search", "unix_s": 1790110982.6300626, "at_ms": 217.92244911193848, "client_id": "agent-3", "executor": "dispatcher"}
+{"at_ms": 218.157621, "attempts": 1, "code": "completed", "event": "dispatch_reply", "execution": "completed", "id": "agent-3-search", "status": 200, "client_id": "agent-3"}
+{"at_ms": 218.34483, "event": "terminal", "id": "agent-3-search", "outcome": "success", "reason": "completed", "client_id": "agent-3"}
+{"active": 0, "at_ms": 218.481496, "event": "gate_final", "limit": 0, "owner": "demo-owner", "ready": false, "revision": 0, "client_id": "agent-3"}
+{"active": 0, "at_ms": 218.624496, "event": "gate_final", "limit": 0, "owner": "other-owner", "ready": false, "revision": 0, "client_id": "agent-3"}
+{"at_ms": 218.760996, "deadline_reached": false, "event": "run_end", "client_id": "agent-3"}
+{"error": null, "event": "attempt_end", "id": "agent-4-product", "number": 1, "retry_after": null, "status": 200, "unix_s": 1790110982.6362567, "at_ms": 224.11656379699707, "client_id": "agent-4", "executor": "dispatcher"}
+{"attempts": 1, "code": "completed", "event": "dispatcher_terminal", "execution": "completed", "id": "agent-4-product", "unix_s": 1790110982.6364057, "at_ms": 224.26557540893555, "client_id": "agent-4", "executor": "dispatcher"}
+{"at_ms": 224.432194, "attempts": 1, "code": "completed", "event": "dispatch_reply", "execution": "completed", "id": "agent-4-product", "status": 200, "client_id": "agent-4"}
+{"at_ms": 224.594402, "event": "terminal", "id": "agent-4-product", "outcome": "success", "reason": "completed", "client_id": "agent-4"}
+{"active": 0, "at_ms": 224.73531899999998, "event": "gate_final", "limit": 0, "owner": "demo-owner", "ready": false, "revision": 0, "client_id": "agent-4"}
+{"active": 0, "at_ms": 224.87506900000002, "event": "gate_final", "limit": 0, "owner": "other-owner", "ready": false, "revision": 0, "client_id": "agent-4"}
+{"at_ms": 225.00123499999998, "deadline_reached": false, "event": "run_end", "client_id": "agent-4"}
+{"at_ms": 236.685174, "error": null, "event": "attempt_end", "id": "interactive", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 236.990299, "event": "terminal", "id": "interactive", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"active": 0, "at_ms": 237.139716, "event": "gate_final", "limit": 0, "owner": "demo-owner", "ready": false, "revision": 0, "client_id": "interactive"}
+{"active": 0, "at_ms": 237.323382, "event": "gate_final", "limit": 0, "owner": "other-owner", "ready": false, "revision": 0, "client_id": "interactive"}
+{"at_ms": 237.537841, "deadline_reached": false, "event": "run_end", "client_id": "interactive"}
+{"active": 0, "event": "gate_final", "limit": 5, "owner": "demo-owner", "revision": 1, "unix_s": 1790110982.719016, "at_ms": 306.87594413757324, "client_id": "dispatcher", "executor": "dispatcher"}

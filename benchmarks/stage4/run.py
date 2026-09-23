@@ -9,10 +9,12 @@ from pathlib import Path
 import platform
 import random
 import secrets
+import signal
 import socket
 import subprocess
 import sys
 import time
+import tempfile
 from urllib.parse import parse_qs, urlparse
 
 import httpx
@@ -122,14 +124,15 @@ def stop(process):
             process.wait()
 
 
-async def run_one(root, config, scenario, tasks, mode, repetition):
-    path = root / f"{scenario['name']}-r{repetition}-{mode}"
+async def run_one(root, config, scenario, tasks, mode, repetition, *, clients=None,
+                  owners=('demo-owner', 'other-owner'), label=None, credentials=None):
+    path = root / (label or f"{scenario['name']}-r{repetition}-{mode}")
     path.mkdir()
     env = os.environ.copy()
     for name in ('OPENAI_API_KEY', 'TEST_429'):
         env.pop(name, None)
-    for name in ('AGENT_TOKEN_1', 'AGENT_TOKEN_2', 'OTHER_AGENT_TOKEN', 'INTERACTIVE_TOKEN', 'PRODUCT_ONLY_TOKEN', 'ADMIN_TOKEN'):
-        env[name] = secrets.token_urlsafe(32)
+    for name in ('AGENT_TOKEN_1', 'AGENT_TOKEN_2', 'AGENT_TOKEN_3', 'AGENT_TOKEN_4', 'OTHER_AGENT_TOKEN', 'INTERACTIVE_TOKEN', 'PRODUCT_ONLY_TOKEN', 'ADMIN_TOKEN'):
+        env[name] = credentials[name] if credentials is not None else secrets.token_urlsafe(32)
     with ExitStack() as stack:
         upstream = Upstream(config['upstream_delay_ms'], stack.enter_context((path / 'upstream.jsonl').open('w')))
         server = await asyncio.start_server(upstream.handle, '127.0.0.1', 0)
@@ -143,17 +146,21 @@ async def run_one(root, config, scenario, tasks, mode, repetition):
         gateway = subprocess.Popen([str(BIN / 'ai-protocol')], cwd=ROOT, env=env,
                                    stdout=stack.enter_context((path / 'gateway.log').open('w')), stderr=subprocess.STDOUT)
         stack.callback(stop, gateway)
-        client = None
+        processes = []
+        dispatcher = None
         changes = None
         try:
             async with httpx.AsyncClient(trust_env=False, timeout=3) as http:
                 base = f'http://127.0.0.1:{port}'
                 def headers(name):
                     return {'Authorization': 'Bearer ' + env[name]}
+                startup_discovery = 0
+                cleanup_discovery = 0
                 for _ in range(100):
                     if gateway.poll() is not None:
                         raise RuntimeError('Private gateway failed; see gateway.log')
                     try:
+                        startup_discovery += 1
                         if (await http.get(base + '/agent-policy')).status_code == 401:
                             break
                     except httpx.TransportError:
@@ -161,34 +168,74 @@ async def run_one(root, config, scenario, tasks, mode, repetition):
                     await asyncio.sleep(.05)
                 else:
                     raise RuntimeError('Private gateway startup timed out')
+                roles = tuple('AGENT_TOKEN_1' if owner == 'demo-owner' else 'OTHER_AGENT_TOKEN' for owner in owners) + ('INTERACTIVE_TOKEN',)
                 # Same warmup and quiescent start for every mode and repetition.
-                for role in ('AGENT_TOKEN_1', 'OTHER_AGENT_TOKEN', 'INTERACTIVE_TOKEN'):
+                for role in roles:
                     response = await http.post(base + '/search', headers=headers(role), json={'query': 'warmup-' + role})
                     response.raise_for_status()
                 await asyncio.sleep(.1)
+                if mode == 'S':
+                    assert clients is not None and owners == ('demo-owner',)
+                    directory = stack.enter_context(tempfile.TemporaryDirectory(prefix='ai-dispatch-', dir='/tmp'))
+                    env['DISPATCH_SOCKET'] = str(Path(directory) / 'socket')
+                    dispatch_env = {**env, 'DISPATCH_TOKEN_VARS': ','.join(g['token_env'] for g in clients if g['id'] != 'interactive'),
+                                    'DISPATCH_CAPACITY': str(config['max_pending']), 'DISPATCH_TRACE_PATH': str(path / 'dispatcher-events.jsonl')}
+                    dispatcher = subprocess.Popen([str(BIN / 'dispatcher')], cwd=ROOT, env=dispatch_env,
+                                                  stdout=stack.enter_context((path / 'dispatcher.log').open('w')), stderr=subprocess.STDOUT)
+                    stack.callback(stop, dispatcher)
+                    for _ in range(200):
+                        if dispatcher.poll() is not None:
+                            raise RuntimeError('Private dispatcher startup failed')
+                        if Path(env['DISPATCH_SOCKET']).exists():
+                            break
+                        await asyncio.sleep(.025)
+                    else:
+                        raise RuntimeError('Private dispatcher startup timed out')
+                    save(path / 'dispatcher.json', {'pid': dispatcher.pid, 'capacity': config['max_pending'],
+                                                   'token_vars': dispatch_env['DISPATCH_TOKEN_VARS'].split(','), 'transport': 'private_unix_socket'})
                 epoch = time.time() + .5
                 start = asyncio.get_running_loop().time() + (epoch - time.time())
                 client_config = {**config, 'mode': mode, 'start_unix_s': epoch, 'tasks': tasks,
                                  'scenario': scenario['name'], 'repetition': repetition}
                 save(path / 'client.json', client_config)
-                client = subprocess.Popen([str(BIN / 'bench_client'), str(path / 'client.json'), str(path / 'client-events.jsonl')],
-                                          cwd=ROOT, env=env, stdout=stack.enter_context((path / 'client.log').open('w')), stderr=subprocess.STDOUT)
-                stack.callback(stop, client)
+                groups = clients if clients is not None else [{'id': 'client', 'tasks': tasks}]
+                manifest = []
+                for group in groups:
+                    client_env = env.copy()
+                    if clients is not None:
+                        # Each independent worker receives only its own service credential.
+                        for key in tuple(client_env):
+                            if key.endswith('_TOKEN') or key.startswith('AGENT_TOKEN_') or key == 'DISPATCH_TOKEN_VARS':
+                                client_env.pop(key)
+                        credential = group['token_env']
+                        client_env['INTERACTIVE_TOKEN' if group['id'] == 'interactive' else 'AGENT_TOKEN_1'] = env[credential]
+                    prefix = group['id']
+                    save(path / f'{prefix}.json', {**client_config, 'tasks': group['tasks']})
+                    client = subprocess.Popen([str(BIN / 'bench_client'), str(path / f'{prefix}.json'), str(path / f'{prefix}-events.jsonl')],
+                                              cwd=ROOT, env=client_env, stdout=stack.enter_context((path / f'{prefix}.log').open('w')), stderr=subprocess.STDOUT)
+                    processes.append(client)
+                    stack.callback(stop, client)
+                    manifest.append({'id': prefix, 'pid': client.pid, 'token_env': group.get('token_env'),
+                                     'tasks': [task['id'] for task in group['tasks']]})
+                if clients is not None:
+                    save(path / 'processes.json', manifest)
                 async def resize():
                     with (path / 'admin.jsonl').open('w') as events:
                         for change in scenario.get('changes', []):
                             await asyncio.sleep(max(0, start + change['at_s'] - asyncio.get_running_loop().time()))
                             async def update(owner):
+                                requested = asyncio.get_running_loop().time() - start
                                 response = await http.patch(base + f'/admin/principals/{owner}/limits',
                                                             headers=headers('ADMIN_TOKEN'), json={'max_outstanding': change['limit']})
                                 response.raise_for_status()
-                                events.write(json.dumps({'scheduled_s': change['at_s'], 'actual_s': asyncio.get_running_loop().time() - start,
+                                events.write(json.dumps({'scheduled_s': change['at_s'], 'request_started_s': requested, 'actual_s': asyncio.get_running_loop().time() - start,
                                                          'response': response.json()}) + '\n')
                                 events.flush()
-                            await asyncio.gather(*(update(owner) for owner in ('demo-owner', 'other-owner')))
+                            await asyncio.gather(*(update(owner) for owner in owners))
                 changes = asyncio.create_task(resize())
-                returncode = await asyncio.wait_for(asyncio.to_thread(client.wait), timeout=config['run_timeout_s'] + 3)
-                if returncode:
+                returncodes = await asyncio.wait_for(asyncio.gather(*(asyncio.to_thread(client.wait) for client in processes)),
+                                                      timeout=config['run_timeout_s'] + 3)
+                if any(returncodes):
                     raise RuntimeError('Benchmark client failed; see client.log')
                 await changes
                 # The client deadline does not cancel already accepted gateway work.
@@ -196,7 +243,8 @@ async def run_one(root, config, scenario, tasks, mode, repetition):
                 until = asyncio.get_running_loop().time() + config['cleanup_timeout_s']
                 while True:
                     outstanding = 0
-                    for role in ('AGENT_TOKEN_1', 'OTHER_AGENT_TOKEN', 'INTERACTIVE_TOKEN'):
+                    for role in roles:
+                        cleanup_discovery += 1
                         response = await http.get(base + '/agent-policy', headers=headers(role))
                         response.raise_for_status()
                         outstanding += response.json()['outstanding']
@@ -206,18 +254,43 @@ async def run_one(root, config, scenario, tasks, mode, repetition):
                         raise RuntimeError(f'Cleanup failed: outstanding={outstanding}')
                     await asyncio.sleep(.05)
                 await asyncio.sleep(.06)
-                save(path / 'cleanup.json', {'outstanding': outstanding, 'unix_s': time.time()})
+                save(path / 'cleanup.json', {'outstanding': outstanding, 'unix_s': time.time(),
+                                             'harness_discovery': {'startup': startup_discovery, 'cleanup': cleanup_discovery}})
         finally:
             if changes and not changes.done():
                 changes.cancel()
                 await asyncio.gather(changes, return_exceptions=True)
-            if client:
+            for client in processes:
                 stop(client)
+            if dispatcher and dispatcher.poll() is None:
+                dispatcher.send_signal(signal.SIGINT)
+                try:
+                    await asyncio.wait_for(asyncio.to_thread(dispatcher.wait), timeout=7)
+                except asyncio.TimeoutError:
+                    stop(dispatcher)
+                    raise RuntimeError('Dispatcher did not drain on shutdown')
             stop(gateway)
             server.close()
             await server.wait_closed()
             await upstream.close()
-    print(f"Completed {scenario['name']} repetition={repetition} mode={mode}", flush=True)
+    if clients is not None:
+        merged = []
+        for group in groups:
+            with (path / f"{group['id']}-events.jsonl").open() as stream:
+                merged.extend({**json.loads(line), 'client_id': group['id']} for line in stream)
+        if mode == 'S':
+            assignment = {task['id']: group['id'] for group in groups for task in group['tasks']}
+            with (path / 'dispatcher-events.jsonl').open() as stream:
+                for line in stream:
+                    event = json.loads(line)
+                    event.update(at_ms=(event['unix_s'] - epoch) * 1000,
+                                 client_id=assignment.get(event.get('id'), 'dispatcher'), executor='dispatcher')
+                    merged.append(event)
+        merged.sort(key=lambda event: event['at_ms'])
+        with (path / 'client-events.jsonl').open('w') as stream:
+            for event in merged:
+                stream.write(json.dumps(event) + '\n')
+    print(f"Completed {path.name}", flush=True)
 
 
 async def main():

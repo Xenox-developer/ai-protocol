@@ -1,0 +1,1451 @@
+{"at_ms": -486.942404, "event": "discovery_start", "owner": "demo-owner", "client_id": "agent-1"}
+{"at_ms": -485.711404, "event": "discovery_end", "owner": "demo-owner", "success": true, "client_id": "agent-1"}
+{"active": 0, "at_ms": -485.564779, "event": "policy", "limit": 5, "owner": "demo-owner", "ready": true, "revision": 1, "client_id": "agent-1"}
+{"at_ms": -484.083225, "event": "discovery_start", "owner": "demo-owner", "client_id": "agent-2"}
+{"at_ms": -483.247433, "event": "discovery_end", "owner": "demo-owner", "success": true, "client_id": "agent-2"}
+{"active": 0, "at_ms": -483.14214100000004, "event": "policy", "limit": 5, "owner": "demo-owner", "ready": true, "revision": 1, "client_id": "agent-2"}
+{"at_ms": 2.211096, "event": "arrival", "id": "t00000", "scheduled_ms": 0.6342507382825499, "client_id": "agent-1"}
+{"at_ms": 2.535679, "event": "attempt_start", "id": "t00000", "number": 1, "client_id": "agent-1"}
+{"at_ms": 3.192418, "event": "arrival", "id": "t00001", "scheduled_ms": 0.8707512858639607, "client_id": "interactive"}
+{"at_ms": 3.57296, "event": "attempt_start", "id": "t00001", "number": 1, "client_id": "interactive"}
+{"at_ms": 48.4499, "event": "arrival", "id": "t00003", "scheduled_ms": 44.650921294357126, "client_id": "agent-2"}
+{"at_ms": 49.150067, "event": "attempt_start", "id": "t00003", "number": 1, "client_id": "agent-2"}
+{"at_ms": 90.233929, "event": "arrival", "id": "t00005", "scheduled_ms": 89.33562687634173, "client_id": "agent-1"}
+{"at_ms": 90.87713699999999, "event": "attempt_start", "id": "t00005", "number": 1, "client_id": "agent-1"}
+{"at_ms": 102.352835, "event": "arrival", "id": "t00006", "scheduled_ms": 100.0367584540728, "client_id": "interactive"}
+{"at_ms": 102.907377, "event": "attempt_start", "id": "t00006", "number": 1, "client_id": "interactive"}
+{"at_ms": 135.900109, "event": "arrival", "id": "t00008", "scheduled_ms": 133.81771419791588, "client_id": "agent-2"}
+{"at_ms": 136.253525, "event": "attempt_start", "id": "t00008", "number": 1, "client_id": "agent-2"}
+{"at_ms": 179.964179, "event": "arrival", "id": "t00010", "scheduled_ms": 178.52859668064204, "client_id": "agent-1"}
+{"at_ms": 182.15588699999998, "event": "attempt_start", "id": "t00010", "number": 1, "client_id": "agent-1"}
+{"at_ms": 202.474543, "event": "arrival", "id": "t00011", "scheduled_ms": 200.07777967920535, "client_id": "interactive"}
+{"at_ms": 202.908877, "event": "attempt_start", "id": "t00011", "number": 1, "client_id": "interactive"}
+{"at_ms": 207.111471, "error": null, "event": "attempt_end", "id": "t00000", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 207.48876199999998, "event": "terminal", "id": "t00000", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 207.64687700000002, "error": null, "event": "attempt_end", "id": "t00001", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 207.775627, "event": "terminal", "id": "t00001", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 224.225234, "event": "arrival", "id": "t00013", "scheduled_ms": 222.5068741717024, "client_id": "agent-2"}
+{"at_ms": 224.693275, "event": "attempt_start", "id": "t00013", "number": 1, "client_id": "agent-2"}
+{"at_ms": 254.2649, "error": null, "event": "attempt_end", "id": "t00003", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 254.87548399999997, "event": "terminal", "id": "t00003", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 267.84405399999997, "event": "arrival", "id": "t00015", "scheduled_ms": 266.7313046723131, "client_id": "agent-1"}
+{"at_ms": 268.274346, "event": "attempt_start", "id": "t00015", "number": 1, "client_id": "agent-1"}
+{"at_ms": 295.493304, "error": null, "event": "attempt_end", "id": "t00005", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 295.919637, "event": "terminal", "id": "t00005", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 303.296543, "event": "arrival", "id": "t00017", "scheduled_ms": 300.045476525037, "client_id": "interactive"}
+{"at_ms": 304.05296, "event": "attempt_start", "id": "t00017", "number": 1, "client_id": "interactive"}
+{"at_ms": 307.84445999999997, "error": null, "event": "attempt_end", "id": "t00006", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 308.003293, "event": "terminal", "id": "t00006", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 315.41760899999997, "event": "arrival", "id": "t00018", "scheduled_ms": 311.75976000634904, "client_id": "agent-2"}
+{"at_ms": 315.913567, "event": "attempt_start", "id": "t00018", "number": 1, "client_id": "agent-2"}
+{"at_ms": 343.386775, "error": null, "event": "attempt_end", "id": "t00008", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 343.874567, "event": "terminal", "id": "t00008", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 358.340512, "event": "arrival", "id": "t00020", "scheduled_ms": 355.99745004336916, "client_id": "agent-1"}
+{"at_ms": 358.842804, "event": "attempt_start", "id": "t00020", "number": 1, "client_id": "agent-1"}
+{"at_ms": 386.400887, "error": null, "event": "attempt_end", "id": "t00010", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 386.869012, "event": "terminal", "id": "t00010", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 402.25219200000004, "event": "arrival", "id": "t00022", "scheduled_ms": 400.28441215745016, "client_id": "agent-2"}
+{"at_ms": 402.424775, "event": "attempt_start", "id": "t00022", "number": 1, "client_id": "agent-2"}
+{"at_ms": 402.99571000000003, "event": "arrival", "id": "t00023", "scheduled_ms": 400.7175937008672, "client_id": "interactive"}
+{"at_ms": 403.136418, "event": "attempt_start", "id": "t00023", "number": 1, "client_id": "interactive"}
+{"at_ms": 408.359377, "error": null, "event": "attempt_end", "id": "t00011", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 408.71479300000004, "event": "terminal", "id": "t00011", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 430.330025, "error": null, "event": "attempt_end", "id": "t00013", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 431.917567, "event": "terminal", "id": "t00013", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 448.344929, "event": "arrival", "id": "t00025", "scheduled_ms": 445.39545705393215, "client_id": "agent-1"}
+{"at_ms": 448.772304, "event": "attempt_start", "id": "t00025", "number": 1, "client_id": "agent-1"}
+{"at_ms": 474.66013699999996, "error": null, "event": "attempt_end", "id": "t00015", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 475.138846, "event": "terminal", "id": "t00015", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 491.14802499999996, "event": "arrival", "id": "t00027", "scheduled_ms": 489.2121375964055, "client_id": "agent-2"}
+{"at_ms": 491.553442, "event": "attempt_start", "id": "t00027", "number": 1, "client_id": "agent-2"}
+{"at_ms": 503.225335, "event": "arrival", "id": "t00028", "scheduled_ms": 500.3790999602441, "client_id": "interactive"}
+{"at_ms": 503.56408500000003, "event": "attempt_start", "id": "t00028", "number": 1, "client_id": "interactive"}
+{"at_ms": 508.703877, "error": null, "event": "attempt_end", "id": "t00017", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 508.88158500000003, "event": "terminal", "id": "t00017", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 519.452067, "error": null, "event": "attempt_end", "id": "t00018", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 520.103859, "event": "terminal", "id": "t00018", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 536.400346, "event": "arrival", "id": "t00030", "scheduled_ms": 533.9198175030679, "client_id": "agent-1"}
+{"at_ms": 536.753387, "event": "attempt_start", "id": "t00030", "number": 1, "client_id": "agent-1"}
+{"at_ms": 562.478971, "error": null, "event": "attempt_end", "id": "t00020", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 563.186387, "event": "terminal", "id": "t00020", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 582.189317, "event": "arrival", "id": "t00032", "scheduled_ms": 578.45065493387, "client_id": "agent-2"}
+{"at_ms": 582.799192, "event": "attempt_start", "id": "t00032", "number": 1, "client_id": "agent-2"}
+{"at_ms": 603.0829180000001, "event": "arrival", "id": "t00033", "scheduled_ms": 600.1880757117318, "client_id": "interactive"}
+{"at_ms": 603.591752, "event": "attempt_start", "id": "t00033", "number": 1, "client_id": "interactive"}
+{"at_ms": 607.1159, "error": null, "event": "attempt_end", "id": "t00022", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 607.118752, "error": null, "event": "attempt_end", "id": "t00023", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 607.686234, "event": "terminal", "id": "t00022", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 607.691793, "event": "terminal", "id": "t00023", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 625.070637, "event": "arrival", "id": "t00035", "scheduled_ms": 623.0751522531302, "client_id": "agent-1"}
+{"at_ms": 625.718679, "event": "attempt_start", "id": "t00035", "number": 1, "client_id": "agent-1"}
+{"at_ms": 652.297512, "error": null, "event": "attempt_end", "id": "t00025", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 652.873262, "event": "terminal", "id": "t00025", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 669.2053999999999, "event": "arrival", "id": "t00037", "scheduled_ms": 667.398576929284, "client_id": "agent-2"}
+{"at_ms": 669.726359, "event": "attempt_start", "id": "t00037", "number": 1, "client_id": "agent-2"}
+{"at_ms": 696.341567, "error": null, "event": "attempt_end", "id": "t00027", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 696.7603999999999, "event": "terminal", "id": "t00027", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 702.58646, "event": "arrival", "id": "t00039", "scheduled_ms": 700.330673436277, "client_id": "interactive"}
+{"at_ms": 702.953543, "event": "attempt_start", "id": "t00039", "number": 1, "client_id": "interactive"}
+{"at_ms": 708.973085, "error": null, "event": "attempt_end", "id": "t00028", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 709.126627, "event": "terminal", "id": "t00028", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 713.383679, "event": "arrival", "id": "t00040", "scheduled_ms": 711.3491856612351, "client_id": "agent-1"}
+{"at_ms": 717.245137, "event": "attempt_start", "id": "t00040", "number": 1, "client_id": "agent-1"}
+{"at_ms": 744.732012, "error": null, "event": "attempt_end", "id": "t00030", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 744.892471, "event": "terminal", "id": "t00030", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 758.373359, "event": "arrival", "id": "t00042", "scheduled_ms": 756.200746948135, "client_id": "agent-2"}
+{"at_ms": 758.5119, "event": "attempt_start", "id": "t00042", "number": 1, "client_id": "agent-2"}
+{"at_ms": 786.241942, "error": null, "event": "attempt_end", "id": "t00032", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 786.3656500000001, "event": "terminal", "id": "t00032", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 800.6440849999999, "event": "arrival", "id": "t00044", "scheduled_ms": 800.0704199623896, "client_id": "interactive"}
+{"at_ms": 800.781168, "event": "attempt_start", "id": "t00044", "number": 1, "client_id": "interactive"}
+{"at_ms": 801.900554, "event": "arrival", "id": "t00045", "scheduled_ms": 800.3807586081093, "client_id": "agent-1"}
+{"at_ms": 801.995762, "event": "attempt_start", "id": "t00045", "number": 1, "client_id": "agent-1"}
+{"at_ms": 808.02771, "error": null, "event": "attempt_end", "id": "t00033", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 808.144085, "event": "terminal", "id": "t00033", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 828.4905540000001, "error": null, "event": "attempt_end", "id": "t00035", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 829.172471, "event": "terminal", "id": "t00035", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 848.65565, "event": "arrival", "id": "t00047", "scheduled_ms": 845.0449527686692, "client_id": "agent-2"}
+{"at_ms": 849.501984, "event": "attempt_start", "id": "t00047", "number": 1, "client_id": "agent-2"}
+{"at_ms": 876.179484, "error": null, "event": "attempt_end", "id": "t00037", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 876.5604000000001, "event": "terminal", "id": "t00037", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 891.268762, "event": "arrival", "id": "t00049", "scheduled_ms": 889.5755210601649, "client_id": "agent-1"}
+{"at_ms": 891.409554, "event": "attempt_start", "id": "t00049", "number": 1, "client_id": "agent-1"}
+{"at_ms": 902.756002, "event": "arrival", "id": "t00050", "scheduled_ms": 900.9045647106082, "client_id": "interactive"}
+{"at_ms": 903.114127, "event": "attempt_start", "id": "t00050", "number": 1, "client_id": "interactive"}
+{"at_ms": 906.86771, "error": null, "event": "attempt_end", "id": "t00039", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 907.028335, "event": "terminal", "id": "t00039", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 920.600179, "error": null, "event": "attempt_end", "id": "t00040", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 921.011012, "event": "terminal", "id": "t00040", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 934.957942, "event": "arrival", "id": "t00052", "scheduled_ms": 933.360005590603, "client_id": "agent-2"}
+{"at_ms": 935.311192, "event": "attempt_start", "id": "t00052", "number": 1, "client_id": "agent-2"}
+{"at_ms": 960.14215, "error": null, "event": "attempt_end", "id": "t00042", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 960.2849, "event": "terminal", "id": "t00042", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 980.4066369999999, "event": "arrival", "id": "t00054", "scheduled_ms": 977.8424615351796, "client_id": "agent-1"}
+{"at_ms": 980.6270959999999, "event": "attempt_start", "id": "t00054", "number": 1, "client_id": "agent-1"}
+{"at_ms": 1003.2169179999999, "event": "arrival", "id": "t00056", "scheduled_ms": 1000.7017772351908, "client_id": "interactive"}
+{"at_ms": 1003.649002, "event": "attempt_start", "id": "t00056", "number": 1, "client_id": "interactive"}
+{"at_ms": 1004.972377, "error": null, "event": "attempt_end", "id": "t00044", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 1005.0305539999999, "error": null, "event": "attempt_end", "id": "t00045", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 1006.860293, "event": "terminal", "id": "t00044", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 1006.926054, "event": "terminal", "id": "t00045", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 1023.9976500000001, "event": "arrival", "id": "t00057", "scheduled_ms": 1022.99406034229, "client_id": "agent-2"}
+{"at_ms": 1024.127067, "event": "attempt_start", "id": "t00057", "number": 1, "client_id": "agent-2"}
+{"at_ms": 1052.4836500000001, "error": null, "event": "attempt_end", "id": "t00047", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 1052.614025, "event": "terminal", "id": "t00047", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 1069.435721, "event": "arrival", "id": "t00059", "scheduled_ms": 1066.9377882398585, "client_id": "agent-1"}
+{"at_ms": 1069.864929, "event": "attempt_start", "id": "t00059", "number": 1, "client_id": "agent-1"}
+{"at_ms": 1094.092429, "error": null, "event": "attempt_end", "id": "t00049", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 1094.349679, "event": "terminal", "id": "t00049", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 1103.196418, "event": "arrival", "id": "t00061", "scheduled_ms": 1100.4055933653349, "client_id": "interactive"}
+{"at_ms": 1103.619585, "event": "attempt_start", "id": "t00061", "number": 1, "client_id": "interactive"}
+{"at_ms": 1109.2454599999999, "error": null, "event": "attempt_end", "id": "t00050", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 1109.3947930000002, "event": "terminal", "id": "t00050", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 1112.831734, "event": "arrival", "id": "t00062", "scheduled_ms": 1111.738145167211, "client_id": "agent-2"}
+{"at_ms": 1113.1227749999998, "event": "attempt_start", "id": "t00062", "number": 1, "client_id": "agent-2"}
+{"at_ms": 1140.366567, "error": null, "event": "attempt_end", "id": "t00052", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 1140.454817, "event": "terminal", "id": "t00052", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 1158.460137, "event": "arrival", "id": "t00064", "scheduled_ms": 1156.2426981698102, "client_id": "agent-1"}
+{"at_ms": 1158.681554, "event": "attempt_start", "id": "t00064", "number": 1, "client_id": "agent-1"}
+{"at_ms": 1186.039471, "error": null, "event": "attempt_end", "id": "t00054", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 1186.120887, "event": "terminal", "id": "t00054", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 1202.5175020000001, "event": "arrival", "id": "t00066", "scheduled_ms": 1200.5652433425084, "client_id": "interactive"}
+{"at_ms": 1202.6620429999998, "event": "attempt_start", "id": "t00066", "number": 1, "client_id": "interactive"}
+{"at_ms": 1203.4909, "event": "arrival", "id": "t00067", "scheduled_ms": 1200.898773035803, "client_id": "agent-2"}
+{"at_ms": 1203.552025, "event": "attempt_start", "id": "t00067", "number": 1, "client_id": "agent-2"}
+{"at_ms": 1207.7021269999998, "error": null, "event": "attempt_end", "id": "t00056", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 1207.8022930000002, "event": "terminal", "id": "t00056", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 1227.768942, "error": null, "event": "attempt_end", "id": "t00057", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 1228.352192, "event": "terminal", "id": "t00057", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 1246.904554, "event": "arrival", "id": "t00069", "scheduled_ms": 1244.8730197951147, "client_id": "agent-1"}
+{"at_ms": 1248.972804, "event": "attempt_start", "id": "t00069", "number": 1, "client_id": "agent-1"}
+{"at_ms": 1275.2348869999998, "error": null, "event": "attempt_end", "id": "t00059", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 1275.522971, "event": "terminal", "id": "t00059", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 1290.70865, "event": "arrival", "id": "t00071", "scheduled_ms": 1289.4424645813742, "client_id": "agent-2"}
+{"at_ms": 1291.362567, "event": "attempt_start", "id": "t00071", "number": 1, "client_id": "agent-2"}
+{"at_ms": 1302.6075429999999, "event": "arrival", "id": "t00072", "scheduled_ms": 1300.8682563450338, "client_id": "interactive"}
+{"at_ms": 1302.8567520000001, "event": "attempt_start", "id": "t00072", "number": 1, "client_id": "interactive"}
+{"at_ms": 1310.5383769999999, "error": null, "event": "attempt_end", "id": "t00061", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 1311.017043, "event": "terminal", "id": "t00061", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 1318.4391500000002, "error": null, "event": "attempt_end", "id": "t00062", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 1318.6514419999999, "event": "terminal", "id": "t00062", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 1336.491221, "event": "arrival", "id": "t00074", "scheduled_ms": 1333.9041562962118, "client_id": "agent-1"}
+{"at_ms": 1336.894929, "event": "attempt_start", "id": "t00074", "number": 1, "client_id": "agent-1"}
+{"at_ms": 1362.5822210000001, "error": null, "event": "attempt_end", "id": "t00064", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 1362.691887, "event": "terminal", "id": "t00064", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 1383.147525, "event": "arrival", "id": "t00076", "scheduled_ms": 1378.6326778763105, "client_id": "agent-2"}
+{"at_ms": 1383.5441500000002, "event": "attempt_start", "id": "t00076", "number": 1, "client_id": "agent-2"}
+{"at_ms": 1401.74871, "event": "arrival", "id": "t00077", "scheduled_ms": 1400.027854364727, "client_id": "interactive"}
+{"at_ms": 1402.633127, "event": "attempt_start", "id": "t00077", "number": 1, "client_id": "interactive"}
+{"at_ms": 1404.6946679999999, "error": null, "event": "attempt_end", "id": "t00066", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 1404.712442, "error": null, "event": "attempt_end", "id": "t00067", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 1404.819502, "event": "terminal", "id": "t00066", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 1404.856734, "event": "terminal", "id": "t00067", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 1425.3829289999999, "event": "arrival", "id": "t00079", "scheduled_ms": 1423.1619389336563, "client_id": "agent-1"}
+{"at_ms": 1425.4726369999998, "event": "attempt_start", "id": "t00079", "number": 1, "client_id": "agent-1"}
+{"at_ms": 1452.208929, "error": null, "event": "attempt_end", "id": "t00069", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 1452.3363869999998, "event": "terminal", "id": "t00069", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 1469.016984, "event": "arrival", "id": "t00081", "scheduled_ms": 1467.2473889560663, "client_id": "agent-2"}
+{"at_ms": 1469.2602749999999, "event": "attempt_start", "id": "t00081", "number": 1, "client_id": "agent-2"}
+{"at_ms": 1495.309317, "error": null, "event": "attempt_end", "id": "t00071", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 1495.641859, "event": "terminal", "id": "t00071", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 1502.5607519999999, "event": "arrival", "id": "t00083", "scheduled_ms": 1500.8452245269125, "client_id": "interactive"}
+{"at_ms": 1502.888043, "event": "attempt_start", "id": "t00083", "number": 1, "client_id": "interactive"}
+{"at_ms": 1507.085293, "error": null, "event": "attempt_end", "id": "t00072", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 1507.335543, "event": "terminal", "id": "t00072", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 1514.909387, "event": "arrival", "id": "t00084", "scheduled_ms": 1512.0878367172766, "client_id": "agent-1"}
+{"at_ms": 1515.452512, "event": "attempt_start", "id": "t00084", "number": 1, "client_id": "agent-1"}
+{"at_ms": 1546.126179, "error": null, "event": "attempt_end", "id": "t00074", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 1546.351971, "event": "terminal", "id": "t00074", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 1558.4864839999998, "event": "arrival", "id": "t00086", "scheduled_ms": 1555.977198327001, "client_id": "agent-2"}
+{"at_ms": 1558.741442, "event": "attempt_start", "id": "t00086", "number": 1, "client_id": "agent-2"}
+{"at_ms": 1586.5749, "error": null, "event": "attempt_end", "id": "t00076", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 1586.678359, "event": "terminal", "id": "t00076", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 1602.435085, "event": "arrival", "id": "t00089", "scheduled_ms": 1600.5023620888448, "client_id": "interactive"}
+{"at_ms": 1602.546418, "event": "attempt_start", "id": "t00089", "number": 1, "client_id": "interactive"}
+{"at_ms": 1602.630971, "event": "arrival", "id": "t00088", "scheduled_ms": 1600.455120268026, "client_id": "agent-1"}
+{"at_ms": 1602.708179, "event": "attempt_start", "id": "t00088", "number": 1, "client_id": "agent-1"}
+{"at_ms": 1605.434835, "error": null, "event": "attempt_end", "id": "t00077", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 1605.52721, "event": "terminal", "id": "t00077", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 1628.047346, "error": null, "event": "attempt_end", "id": "t00079", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 1628.2126369999999, "event": "terminal", "id": "t00079", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 1646.403484, "event": "arrival", "id": "t00091", "scheduled_ms": 1645.2408504544262, "client_id": "agent-2"}
+{"at_ms": 1646.933025, "event": "attempt_start", "id": "t00091", "number": 1, "client_id": "agent-2"}
+{"at_ms": 1673.6471499999998, "error": null, "event": "attempt_end", "id": "t00081", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 1673.835234, "event": "terminal", "id": "t00081", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 1689.741679, "event": "arrival", "id": "t00093", "scheduled_ms": 1689.417635281722, "client_id": "agent-1"}
+{"at_ms": 1689.909846, "event": "attempt_start", "id": "t00093", "number": 1, "client_id": "agent-1"}
+{"at_ms": 1702.416377, "event": "arrival", "id": "t00094", "scheduled_ms": 1700.6409837659778, "client_id": "interactive"}
+{"at_ms": 1702.525918, "event": "attempt_start", "id": "t00094", "number": 1, "client_id": "interactive"}
+{"at_ms": 1706.934793, "error": null, "event": "attempt_end", "id": "t00083", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 1707.037043, "event": "terminal", "id": "t00083", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 1718.235012, "error": null, "event": "attempt_end", "id": "t00084", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 1718.3333460000001, "event": "terminal", "id": "t00084", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 1736.0254, "event": "arrival", "id": "t00096", "scheduled_ms": 1733.8430620819151, "client_id": "agent-2"}
+{"at_ms": 1736.1393170000001, "event": "attempt_start", "id": "t00096", "number": 1, "client_id": "agent-2"}
+{"at_ms": 1762.2443589999998, "error": null, "event": "attempt_end", "id": "t00086", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 1762.360359, "event": "terminal", "id": "t00086", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 1780.3585119999998, "event": "arrival", "id": "t00098", "scheduled_ms": 1777.895790373714, "client_id": "agent-1"}
+{"at_ms": 1780.488429, "event": "attempt_start", "id": "t00098", "number": 1, "client_id": "agent-1"}
+{"at_ms": 1802.9572520000002, "event": "arrival", "id": "t00099", "scheduled_ms": 1800.4245065735045, "client_id": "interactive"}
+{"at_ms": 1803.085043, "event": "attempt_start", "id": "t00099", "number": 1, "client_id": "interactive"}
+{"at_ms": 1804.710668, "error": null, "event": "attempt_end", "id": "t00089", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 1804.7763869999999, "error": null, "event": "attempt_end", "id": "t00088", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 1804.835293, "event": "terminal", "id": "t00089", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 1804.9337620000001, "event": "terminal", "id": "t00088", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 1823.810817, "event": "arrival", "id": "t00101", "scheduled_ms": 1822.2891258656423, "client_id": "agent-2"}
+{"at_ms": 1823.9157750000002, "event": "attempt_start", "id": "t00101", "number": 1, "client_id": "agent-2"}
+{"at_ms": 1853.632942, "error": null, "event": "attempt_end", "id": "t00091", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 1853.791484, "event": "terminal", "id": "t00091", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 1869.104887, "event": "arrival", "id": "t00103", "scheduled_ms": 1867.333455446654, "client_id": "agent-1"}
+{"at_ms": 1869.300221, "event": "attempt_start", "id": "t00103", "number": 1, "client_id": "agent-1"}
+{"at_ms": 1893.0826789999999, "error": null, "event": "attempt_end", "id": "t00093", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 1893.244137, "event": "terminal", "id": "t00093", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 1901.328793, "event": "arrival", "id": "t00105", "scheduled_ms": 1900.285666525358, "client_id": "interactive"}
+{"at_ms": 1901.5451269999999, "event": "attempt_start", "id": "t00105", "number": 1, "client_id": "interactive"}
+{"at_ms": 1904.005918, "error": null, "event": "attempt_end", "id": "t00094", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 1904.17896, "event": "terminal", "id": "t00094", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 1913.461025, "event": "arrival", "id": "t00106", "scheduled_ms": 1912.083551750989, "client_id": "agent-2"}
+{"at_ms": 1913.6188590000002, "event": "attempt_start", "id": "t00106", "number": 1, "client_id": "agent-2"}
+{"at_ms": 1939.294192, "error": null, "event": "attempt_end", "id": "t00096", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 1939.4320249999998, "event": "terminal", "id": "t00096", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 1958.474721, "event": "arrival", "id": "t00108", "scheduled_ms": 1956.265911991284, "client_id": "agent-1"}
+{"at_ms": 1958.878637, "event": "attempt_start", "id": "t00108", "number": 1, "client_id": "agent-1"}
+{"at_ms": 1984.8277620000001, "error": null, "event": "attempt_end", "id": "t00098", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 1984.9445540000002, "event": "terminal", "id": "t00098", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 2002.6824, "event": "arrival", "id": "t00110", "scheduled_ms": 2000.492862407212, "client_id": "agent-2"}
+{"at_ms": 2002.8885669999997, "event": "attempt_start", "id": "t00110", "number": 1, "client_id": "agent-2"}
+{"at_ms": 2004.089377, "event": "arrival", "id": "t00111", "scheduled_ms": 2000.970720719283, "client_id": "interactive"}
+{"at_ms": 2004.2789179999997, "event": "attempt_start", "id": "t00111", "number": 1, "client_id": "interactive"}
+{"at_ms": 2006.1794599999998, "error": null, "event": "attempt_end", "id": "t00099", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 2006.297377, "event": "terminal", "id": "t00099", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 2028.1288169999998, "error": null, "event": "attempt_end", "id": "t00101", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 2028.2353170000001, "event": "terminal", "id": "t00101", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 2048.168804, "event": "arrival", "id": "t00113", "scheduled_ms": 2045.1138643473728, "client_id": "agent-1"}
+{"at_ms": 2048.602304, "event": "attempt_start", "id": "t00113", "number": 1, "client_id": "agent-1"}
+{"at_ms": 2049.4154710000003, "error": null, "event": "attempt_end", "id": "t00113", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 2073.683804, "error": null, "event": "attempt_end", "id": "t00103", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 2074.033804, "event": "terminal", "id": "t00103", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 2091.703067, "event": "arrival", "id": "t00115", "scheduled_ms": 2089.828958638393, "client_id": "agent-2"}
+{"at_ms": 2091.999859, "event": "attempt_start", "id": "t00115", "number": 1, "client_id": "agent-2"}
+{"at_ms": 2093.1019420000002, "error": null, "event": "attempt_end", "id": "t00115", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 2102.753002, "event": "arrival", "id": "t00116", "scheduled_ms": 2100.53633858052, "client_id": "interactive"}
+{"at_ms": 2102.993127, "event": "attempt_start", "id": "t00116", "number": 1, "client_id": "interactive"}
+{"at_ms": 2104.351168, "error": null, "event": "attempt_end", "id": "t00105", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 2104.5869599999996, "event": "terminal", "id": "t00105", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 2117.538067, "error": null, "event": "attempt_end", "id": "t00106", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 2117.9896089999997, "event": "terminal", "id": "t00106", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 2136.121054, "event": "arrival", "id": "t00118", "scheduled_ms": 2133.6740364324132, "client_id": "agent-1"}
+{"at_ms": 2136.443846, "event": "attempt_start", "id": "t00118", "number": 1, "client_id": "agent-1"}
+{"at_ms": 2137.102137, "error": null, "event": "attempt_end", "id": "t00118", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 2165.738096, "error": null, "event": "attempt_end", "id": "t00108", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 2165.850179, "event": "terminal", "id": "t00108", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 2180.302234, "event": "arrival", "id": "t00120", "scheduled_ms": 2177.955930912732, "client_id": "agent-2"}
+{"at_ms": 2183.198192, "event": "attempt_start", "id": "t00120", "number": 1, "client_id": "agent-2"}
+{"at_ms": 2202.6120429999996, "event": "arrival", "id": "t00121", "scheduled_ms": 2200.577933445039, "client_id": "interactive"}
+{"at_ms": 2203.0164600000003, "event": "attempt_start", "id": "t00121", "number": 1, "client_id": "interactive"}
+{"at_ms": 2208.284067, "error": null, "event": "attempt_end", "id": "t00110", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 2208.468127, "error": null, "event": "attempt_end", "id": "t00111", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 2208.5064, "event": "terminal", "id": "t00110", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 2208.70521, "event": "terminal", "id": "t00111", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 2224.9850539999998, "event": "arrival", "id": "t00123", "scheduled_ms": 2222.5364170412736, "client_id": "agent-1"}
+{"at_ms": 2225.191221, "event": "attempt_start", "id": "t00123", "number": 1, "client_id": "agent-1"}
+{"at_ms": 2268.6904839999997, "event": "arrival", "id": "t00125", "scheduled_ms": 2267.656601578502, "client_id": "agent-2"}
+{"at_ms": 2268.9372749999998, "event": "attempt_start", "id": "t00125", "number": 1, "client_id": "agent-2"}
+{"at_ms": 2269.7316920000003, "error": null, "event": "attempt_end", "id": "t00125", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 2303.6935019999996, "event": "arrival", "id": "t00127", "scheduled_ms": 2300.5093819622184, "client_id": "interactive"}
+{"at_ms": 2303.828335, "event": "attempt_start", "id": "t00127", "number": 1, "client_id": "interactive"}
+{"at_ms": 2305.13046, "error": null, "event": "attempt_end", "id": "t00116", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 2305.25171, "event": "terminal", "id": "t00116", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 2315.579679, "event": "arrival", "id": "t00128", "scheduled_ms": 2311.715814042635, "client_id": "agent-1"}
+{"at_ms": 2315.781262, "event": "attempt_start", "id": "t00128", "number": 1, "client_id": "agent-1"}
+{"at_ms": 2316.357554, "error": null, "event": "attempt_end", "id": "t00128", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 2358.0641920000003, "event": "arrival", "id": "t00130", "scheduled_ms": 2355.974340603752, "client_id": "agent-2"}
+{"at_ms": 2358.1978590000003, "event": "attempt_start", "id": "t00130", "number": 1, "client_id": "agent-2"}
+{"at_ms": 2358.758859, "error": null, "event": "attempt_end", "id": "t00130", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 2386.984984, "error": null, "event": "attempt_end", "id": "t00120", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 2387.103609, "event": "terminal", "id": "t00120", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 2400.683168, "event": "arrival", "id": "t00132", "scheduled_ms": 2400.125443525873, "client_id": "interactive"}
+{"at_ms": 2400.896502, "event": "attempt_start", "id": "t00132", "number": 1, "client_id": "interactive"}
+{"at_ms": 2402.554179, "event": "arrival", "id": "t00133", "scheduled_ms": 2400.55951044724, "client_id": "agent-1"}
+{"at_ms": 2402.722762, "event": "attempt_start", "id": "t00133", "number": 1, "client_id": "agent-1"}
+{"at_ms": 2408.00846, "error": null, "event": "attempt_end", "id": "t00121", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 2408.3085849999998, "event": "terminal", "id": "t00121", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 2428.7061790000002, "error": null, "event": "attempt_end", "id": "t00123", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 2428.930679, "event": "terminal", "id": "t00123", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 2449.7005249999997, "event": "arrival", "id": "t00135", "scheduled_ms": 2445.0383197694364, "client_id": "agent-2"}
+{"at_ms": 2449.8214420000004, "event": "attempt_start", "id": "t00135", "number": 1, "client_id": "agent-2"}
+{"at_ms": 2490.8875120000002, "event": "arrival", "id": "t00137", "scheduled_ms": 2489.478081868815, "client_id": "agent-1"}
+{"at_ms": 2491.053429, "event": "attempt_start", "id": "t00137", "number": 1, "client_id": "agent-1"}
+{"at_ms": 2491.627054, "error": null, "event": "attempt_end", "id": "t00137", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 2502.491252, "event": "arrival", "id": "t00138", "scheduled_ms": 2500.860866709823, "client_id": "interactive"}
+{"at_ms": 2502.603293, "event": "attempt_start", "id": "t00138", "number": 1, "client_id": "interactive"}
+{"at_ms": 2505.5285019999997, "error": null, "event": "attempt_end", "id": "t00127", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 2505.8919180000003, "event": "terminal", "id": "t00127", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 2535.2487340000002, "event": "arrival", "id": "t00140", "scheduled_ms": 2533.401060759027, "client_id": "agent-2"}
+{"at_ms": 2535.379317, "event": "attempt_start", "id": "t00140", "number": 1, "client_id": "agent-2"}
+{"at_ms": 2535.919817, "error": null, "event": "attempt_end", "id": "t00140", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 2579.8019710000003, "event": "arrival", "id": "t00142", "scheduled_ms": 2577.954834889182, "client_id": "agent-1"}
+{"at_ms": 2579.923221, "event": "attempt_start", "id": "t00142", "number": 1, "client_id": "agent-1"}
+{"at_ms": 2581.043971, "error": null, "event": "attempt_end", "id": "t00142", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 2603.05371, "event": "arrival", "id": "t00143", "scheduled_ms": 2600.594818058862, "client_id": "interactive"}
+{"at_ms": 2603.187877, "event": "attempt_start", "id": "t00143", "number": 1, "client_id": "interactive"}
+{"at_ms": 2603.565168, "error": null, "event": "attempt_end", "id": "t00132", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 2603.6943770000003, "event": "terminal", "id": "t00132", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 2603.954721, "error": null, "event": "attempt_end", "id": "t00133", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 2604.073137, "event": "terminal", "id": "t00133", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 2626.523984, "event": "arrival", "id": "t00145", "scheduled_ms": 2622.592246069356, "client_id": "agent-2"}
+{"at_ms": 2626.6824, "event": "attempt_start", "id": "t00145", "number": 1, "client_id": "agent-2"}
+{"at_ms": 2652.413275, "error": null, "event": "attempt_end", "id": "t00135", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 2652.553442, "event": "terminal", "id": "t00135", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 2669.242346, "event": "arrival", "id": "t00147", "scheduled_ms": 2667.1296405066387, "client_id": "agent-1"}
+{"at_ms": 2669.4050119999997, "event": "attempt_start", "id": "t00147", "number": 1, "client_id": "agent-1"}
+{"at_ms": 2701.385793, "event": "arrival", "id": "t00149", "scheduled_ms": 2700.056307928755, "client_id": "interactive"}
+{"at_ms": 2702.27971, "event": "attempt_start", "id": "t00149", "number": 1, "client_id": "interactive"}
+{"at_ms": 2703.8200429999997, "error": null, "event": "attempt_end", "id": "t00138", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 2703.918085, "event": "terminal", "id": "t00138", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 2712.880234, "event": "arrival", "id": "t00150", "scheduled_ms": 2711.7706393210906, "client_id": "agent-2"}
+{"at_ms": 2713.010984, "event": "attempt_start", "id": "t00150", "number": 1, "client_id": "agent-2"}
+{"at_ms": 2713.722109, "error": null, "event": "attempt_end", "id": "t00150", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 2759.4510960000002, "event": "arrival", "id": "t00152", "scheduled_ms": 2756.2542787870166, "client_id": "agent-1"}
+{"at_ms": 2759.710429, "event": "attempt_start", "id": "t00152", "number": 1, "client_id": "agent-1"}
+{"at_ms": 2760.564887, "error": null, "event": "attempt_end", "id": "t00152", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 2802.088168, "event": "arrival", "id": "t00154", "scheduled_ms": 2800.1880625777694, "client_id": "interactive"}
+{"at_ms": 2802.181335, "event": "attempt_start", "id": "t00154", "number": 1, "client_id": "interactive"}
+{"at_ms": 2803.420275, "event": "arrival", "id": "t00155", "scheduled_ms": 2800.9972636963266, "client_id": "agent-2"}
+{"at_ms": 2803.4817749999997, "event": "attempt_start", "id": "t00155", "number": 1, "client_id": "agent-2"}
+{"at_ms": 2803.856192, "error": null, "event": "attempt_end", "id": "t00155", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 2804.406043, "error": null, "event": "attempt_end", "id": "t00143", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 2804.490127, "event": "terminal", "id": "t00143", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 2829.4336919999996, "error": null, "event": "attempt_end", "id": "t00145", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 2829.5224000000003, "event": "terminal", "id": "t00145", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 2846.057304, "event": "arrival", "id": "t00157", "scheduled_ms": 2845.4108304213996, "client_id": "agent-1"}
+{"at_ms": 2846.1832620000005, "event": "attempt_start", "id": "t00157", "number": 1, "client_id": "agent-1"}
+{"at_ms": 2875.565804, "error": null, "event": "attempt_end", "id": "t00147", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 2875.803971, "event": "terminal", "id": "t00147", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 2890.666734, "event": "arrival", "id": "t00159", "scheduled_ms": 2889.2968382661857, "client_id": "agent-2"}
+{"at_ms": 2890.8899420000002, "event": "attempt_start", "id": "t00159", "number": 1, "client_id": "agent-2"}
+{"at_ms": 2903.128835, "event": "arrival", "id": "t00160", "scheduled_ms": 2900.583512607397, "client_id": "interactive"}
+{"at_ms": 2903.4773769999997, "event": "attempt_start", "id": "t00160", "number": 1, "client_id": "interactive"}
+{"at_ms": 2904.9513349999997, "error": null, "event": "attempt_end", "id": "t00149", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 2907.8720430000003, "event": "terminal", "id": "t00149", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 2935.8451790000004, "event": "arrival", "id": "t00162", "scheduled_ms": 2934.1107153204325, "client_id": "agent-1"}
+{"at_ms": 2936.072179, "event": "attempt_start", "id": "t00162", "number": 1, "client_id": "agent-1"}
+{"at_ms": 2936.962887, "error": null, "event": "attempt_end", "id": "t00162", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 2980.271317, "event": "arrival", "id": "t00164", "scheduled_ms": 2978.1913524270803, "client_id": "agent-2"}
+{"at_ms": 2984.235984, "event": "attempt_start", "id": "t00164", "number": 1, "client_id": "agent-2"}
+{"at_ms": 2984.8609420000003, "error": null, "event": "attempt_end", "id": "t00164", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 3002.817335, "event": "arrival", "id": "t00166", "scheduled_ms": 3000.7429051217405, "client_id": "interactive"}
+{"at_ms": 3003.246835, "event": "attempt_start", "id": "t00166", "number": 1, "client_id": "interactive"}
+{"at_ms": 3005.184585, "error": null, "event": "attempt_end", "id": "t00154", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 3005.898335, "event": "terminal", "id": "t00154", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 3027.3581790000003, "event": "arrival", "id": "t00167", "scheduled_ms": 3022.587957834062, "client_id": "agent-1"}
+{"at_ms": 3027.5463459999996, "event": "attempt_start", "id": "t00167", "number": 1, "client_id": "agent-1"}
+{"at_ms": 3028.371554, "error": null, "event": "attempt_end", "id": "t00167", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 3050.934971, "event": "attempt_start", "id": "t00113", "number": 2, "client_id": "agent-1"}
+{"at_ms": 3051.932054, "error": null, "event": "attempt_end", "id": "t00157", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 3052.083637, "event": "terminal", "id": "t00157", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 3069.0534000000002, "event": "arrival", "id": "t00169", "scheduled_ms": 3067.423700937143, "client_id": "agent-2"}
+{"at_ms": 3069.210775, "event": "attempt_start", "id": "t00169", "number": 1, "client_id": "agent-2"}
+{"at_ms": 3070.1027339999996, "error": null, "event": "attempt_end", "id": "t00169", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 3094.130234, "event": "attempt_start", "id": "t00115", "number": 2, "client_id": "agent-2"}
+{"at_ms": 3094.23715, "error": null, "event": "attempt_end", "id": "t00159", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 3094.338442, "event": "terminal", "id": "t00159", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 3103.218293, "event": "arrival", "id": "t00171", "scheduled_ms": 3100.569605950912, "client_id": "interactive"}
+{"at_ms": 3103.3771269999997, "event": "attempt_start", "id": "t00171", "number": 1, "client_id": "interactive"}
+{"at_ms": 3108.58446, "error": null, "event": "attempt_end", "id": "t00160", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 3108.707085, "event": "terminal", "id": "t00160", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 3113.769596, "event": "arrival", "id": "t00172", "scheduled_ms": 3111.9876717369675, "client_id": "agent-1"}
+{"at_ms": 3114.179179, "event": "attempt_start", "id": "t00172", "number": 1, "client_id": "agent-1"}
+{"at_ms": 3115.090971, "error": null, "event": "attempt_end", "id": "t00172", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 3140.863679, "event": "attempt_start", "id": "t00118", "number": 2, "client_id": "agent-1"}
+{"at_ms": 3145.482387, "error": null, "event": "attempt_end", "id": "t00118", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 3158.361109, "event": "arrival", "id": "t00174", "scheduled_ms": 3156.132010784552, "client_id": "agent-2"}
+{"at_ms": 3158.496234, "event": "attempt_start", "id": "t00174", "number": 1, "client_id": "agent-2"}
+{"at_ms": 3159.1832750000003, "error": null, "event": "attempt_end", "id": "t00174", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 3202.5918770000003, "event": "arrival", "id": "t00177", "scheduled_ms": 3200.4937815532385, "client_id": "interactive"}
+{"at_ms": 3202.825679, "event": "arrival", "id": "t00176", "scheduled_ms": 3200.145250133989, "client_id": "agent-1"}
+{"at_ms": 3202.8820429999996, "event": "attempt_start", "id": "t00177", "number": 1, "client_id": "interactive"}
+{"at_ms": 3203.149512, "event": "attempt_start", "id": "t00176", "number": 1, "client_id": "agent-1"}
+{"at_ms": 3204.753929, "error": null, "event": "attempt_end", "id": "t00176", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 3208.071543, "error": null, "event": "attempt_end", "id": "t00166", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 3208.201168, "event": "terminal", "id": "t00166", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 3246.357442, "event": "arrival", "id": "t00179", "scheduled_ms": 3244.5336909116018, "client_id": "agent-2"}
+{"at_ms": 3246.6619419999997, "event": "attempt_start", "id": "t00179", "number": 1, "client_id": "agent-2"}
+{"at_ms": 3249.1733169999998, "error": null, "event": "attempt_end", "id": "t00179", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 3253.953054, "error": null, "event": "attempt_end", "id": "t00113", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 3254.275471, "event": "terminal", "id": "t00113", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 3276.4286500000003, "event": "attempt_start", "id": "t00125", "number": 2, "client_id": "agent-2"}
+{"at_ms": 3294.1101790000002, "event": "arrival", "id": "t00181", "scheduled_ms": 3289.6293441375415, "client_id": "agent-1"}
+{"at_ms": 3294.629846, "event": "attempt_start", "id": "t00181", "number": 1, "client_id": "agent-1"}
+{"at_ms": 3295.7133870000002, "error": null, "event": "attempt_end", "id": "t00181", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 3296.702484, "error": null, "event": "attempt_end", "id": "t00115", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 3296.811525, "event": "terminal", "id": "t00115", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 3301.711752, "event": "arrival", "id": "t00182", "scheduled_ms": 3300.1826885687033, "client_id": "interactive"}
+{"at_ms": 3301.821877, "event": "attempt_start", "id": "t00182", "number": 1, "client_id": "interactive"}
+{"at_ms": 3305.267127, "error": null, "event": "attempt_end", "id": "t00171", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 3305.4597519999998, "event": "terminal", "id": "t00171", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 3318.012846, "event": "attempt_start", "id": "t00128", "number": 2, "client_id": "agent-1"}
+{"at_ms": 3335.860275, "event": "arrival", "id": "t00184", "scheduled_ms": 3334.2346490360997, "client_id": "agent-2"}
+{"at_ms": 3336.690734, "event": "attempt_start", "id": "t00184", "number": 1, "client_id": "agent-2"}
+{"at_ms": 3337.996817, "error": null, "event": "attempt_end", "id": "t00184", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 3360.592025, "event": "attempt_start", "id": "t00130", "number": 2, "client_id": "agent-2"}
+{"at_ms": 3361.531734, "error": null, "event": "attempt_end", "id": "t00130", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 3382.984012, "event": "arrival", "id": "t00186", "scheduled_ms": 3377.8344781766177, "client_id": "agent-1"}
+{"at_ms": 3383.299012, "event": "attempt_start", "id": "t00186", "number": 1, "client_id": "agent-1"}
+{"at_ms": 3384.458512, "error": null, "event": "attempt_end", "id": "t00186", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 3403.259752, "event": "arrival", "id": "t00187", "scheduled_ms": 3400.735966817814, "client_id": "interactive"}
+{"at_ms": 3403.801418, "event": "attempt_start", "id": "t00187", "number": 1, "client_id": "interactive"}
+{"at_ms": 3408.488793, "error": null, "event": "attempt_end", "id": "t00177", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 3408.599502, "event": "terminal", "id": "t00177", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 3423.7264, "event": "arrival", "id": "t00189", "scheduled_ms": 3422.473528235253, "client_id": "agent-2"}
+{"at_ms": 3423.8644, "event": "attempt_start", "id": "t00189", "number": 1, "client_id": "agent-2"}
+{"at_ms": 3424.483275, "error": null, "event": "attempt_end", "id": "t00189", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 3469.692762, "event": "arrival", "id": "t00191", "scheduled_ms": 3467.140218868669, "client_id": "agent-1"}
+{"at_ms": 3469.816721, "event": "attempt_start", "id": "t00191", "number": 1, "client_id": "agent-1"}
+{"at_ms": 3470.293679, "error": null, "event": "attempt_end", "id": "t00191", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 3478.418109, "error": null, "event": "attempt_end", "id": "t00125", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 3478.5032340000002, "event": "terminal", "id": "t00125", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 3494.446346, "event": "attempt_start", "id": "t00137", "number": 2, "client_id": "agent-1"}
+{"at_ms": 3502.78496, "event": "arrival", "id": "t00193", "scheduled_ms": 3500.709604233967, "client_id": "interactive"}
+{"at_ms": 3503.263835, "event": "attempt_start", "id": "t00193", "number": 1, "client_id": "interactive"}
+{"at_ms": 3504.228168, "error": null, "event": "attempt_end", "id": "t00182", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 3504.627168, "event": "terminal", "id": "t00182", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 3516.57365, "event": "arrival", "id": "t00194", "scheduled_ms": 3511.6210126484507, "client_id": "agent-2"}
+{"at_ms": 3517.512525, "event": "attempt_start", "id": "t00194", "number": 1, "client_id": "agent-2"}
+{"at_ms": 3518.153484, "error": null, "event": "attempt_end", "id": "t00194", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 3520.7234710000002, "error": null, "event": "attempt_end", "id": "t00128", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 3520.940679, "event": "terminal", "id": "t00128", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 3538.324775, "event": "attempt_start", "id": "t00140", "number": 2, "client_id": "agent-2"}
+{"at_ms": 3558.3276370000003, "event": "arrival", "id": "t00196", "scheduled_ms": 3555.7652968699895, "client_id": "agent-1"}
+{"at_ms": 3558.633221, "event": "attempt_start", "id": "t00196", "number": 1, "client_id": "agent-1"}
+{"at_ms": 3559.820679, "error": null, "event": "attempt_end", "id": "t00196", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 3583.341179, "event": "attempt_start", "id": "t00142", "number": 2, "client_id": "agent-1"}
+{"at_ms": 3584.951596, "error": null, "event": "attempt_end", "id": "t00142", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 3602.5249000000003, "event": "arrival", "id": "t00198", "scheduled_ms": 3600.0981652390305, "client_id": "agent-2"}
+{"at_ms": 3602.532043, "event": "arrival", "id": "t00199", "scheduled_ms": 3600.672377736405, "client_id": "interactive"}
+{"at_ms": 3603.155168, "event": "attempt_start", "id": "t00199", "number": 1, "client_id": "interactive"}
+{"at_ms": 3603.2158170000002, "event": "attempt_start", "id": "t00198", "number": 1, "client_id": "agent-2"}
+{"at_ms": 3604.3374, "error": null, "event": "attempt_end", "id": "t00198", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 3609.089752, "error": null, "event": "attempt_end", "id": "t00187", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 3609.190293, "event": "terminal", "id": "t00187", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 3646.552179, "event": "arrival", "id": "t00201", "scheduled_ms": 3644.5652814700848, "client_id": "agent-1"}
+{"at_ms": 3646.781554, "event": "attempt_start", "id": "t00201", "number": 1, "client_id": "agent-1"}
+{"at_ms": 3649.584762, "error": null, "event": "attempt_end", "id": "t00201", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 3690.6422340000004, "event": "arrival", "id": "t00203", "scheduled_ms": 3689.199799562966, "client_id": "agent-2"}
+{"at_ms": 3690.7579840000003, "event": "attempt_start", "id": "t00203", "number": 1, "client_id": "agent-2"}
+{"at_ms": 3691.18715, "error": null, "event": "attempt_end", "id": "t00203", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 3699.295262, "error": null, "event": "attempt_end", "id": "t00137", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 3699.381596, "event": "terminal", "id": "t00137", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 3703.3235019999997, "event": "arrival", "id": "t00204", "scheduled_ms": 3700.5304076993966, "client_id": "interactive"}
+{"at_ms": 3703.41421, "event": "attempt_start", "id": "t00204", "number": 1, "client_id": "interactive"}
+{"at_ms": 3705.916752, "error": null, "event": "attempt_end", "id": "t00193", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 3706.0085430000004, "event": "terminal", "id": "t00193", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 3716.302484, "event": "attempt_start", "id": "t00150", "number": 2, "client_id": "agent-2"}
+{"at_ms": 3736.358679, "event": "arrival", "id": "t00206", "scheduled_ms": 3734.3027064323287, "client_id": "agent-1"}
+{"at_ms": 3736.467346, "event": "attempt_start", "id": "t00206", "number": 1, "client_id": "agent-1"}
+{"at_ms": 3736.956012, "error": null, "event": "attempt_end", "id": "t00206", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 3744.156942, "error": null, "event": "attempt_end", "id": "t00140", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 3744.48565, "event": "terminal", "id": "t00140", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 3763.103346, "event": "attempt_start", "id": "t00152", "number": 2, "client_id": "agent-1"}
+{"at_ms": 3780.3669840000002, "event": "arrival", "id": "t00208", "scheduled_ms": 3778.7239888019785, "client_id": "agent-2"}
+{"at_ms": 3780.692442, "event": "attempt_start", "id": "t00208", "number": 1, "client_id": "agent-2"}
+{"at_ms": 3781.331567, "error": null, "event": "attempt_end", "id": "t00208", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 3802.607043, "event": "arrival", "id": "t00209", "scheduled_ms": 3800.3962298385254, "client_id": "interactive"}
+{"at_ms": 3802.874085, "event": "attempt_start", "id": "t00209", "number": 1, "client_id": "interactive"}
+{"at_ms": 3805.420442, "event": "attempt_start", "id": "t00155", "number": 2, "client_id": "agent-2"}
+{"at_ms": 3806.1724, "error": null, "event": "attempt_end", "id": "t00155", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 3807.1476679999996, "error": null, "event": "attempt_end", "id": "t00199", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 3807.271627, "event": "terminal", "id": "t00199", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 3825.0688459999997, "event": "arrival", "id": "t00211", "scheduled_ms": 3822.6592593030527, "client_id": "agent-1"}
+{"at_ms": 3825.7812209999997, "event": "attempt_start", "id": "t00211", "number": 1, "client_id": "agent-1"}
+{"at_ms": 3826.529054, "error": null, "event": "attempt_end", "id": "t00211", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 3869.3658170000003, "event": "arrival", "id": "t00213", "scheduled_ms": 3867.120925981793, "client_id": "agent-2"}
+{"at_ms": 3869.5158589999996, "event": "attempt_start", "id": "t00213", "number": 1, "client_id": "agent-2"}
+{"at_ms": 3870.199317, "error": null, "event": "attempt_end", "id": "t00213", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 3902.468168, "event": "arrival", "id": "t00215", "scheduled_ms": 3900.382706903261, "client_id": "interactive"}
+{"at_ms": 3902.845835, "event": "attempt_start", "id": "t00215", "number": 1, "client_id": "interactive"}
+{"at_ms": 3908.041418, "error": null, "event": "attempt_end", "id": "t00204", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 3908.631918, "event": "terminal", "id": "t00204", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 3912.8795959999998, "event": "arrival", "id": "t00216", "scheduled_ms": 3911.961199162843, "client_id": "agent-1"}
+{"at_ms": 3913.271679, "event": "attempt_start", "id": "t00216", "number": 1, "client_id": "agent-1"}
+{"at_ms": 3914.713221, "error": null, "event": "attempt_end", "id": "t00216", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 3918.669275, "error": null, "event": "attempt_end", "id": "t00150", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 3918.760442, "event": "terminal", "id": "t00150", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 3938.1043870000003, "event": "attempt_start", "id": "t00162", "number": 2, "client_id": "agent-1"}
+{"at_ms": 3957.867775, "event": "arrival", "id": "t00218", "scheduled_ms": 3956.507947960159, "client_id": "agent-2"}
+{"at_ms": 3958.169775, "event": "attempt_start", "id": "t00218", "number": 1, "client_id": "agent-2"}
+{"at_ms": 3959.3563999999997, "error": null, "event": "attempt_end", "id": "t00218", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 3970.8417210000002, "error": null, "event": "attempt_end", "id": "t00152", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 3971.182596, "event": "terminal", "id": "t00152", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 3986.792609, "event": "attempt_start", "id": "t00164", "number": 2, "client_id": "agent-2"}
+{"at_ms": 4000.5979180000004, "event": "arrival", "id": "t00220", "scheduled_ms": 4000.192891492275, "client_id": "interactive"}
+{"at_ms": 4001.053668, "event": "attempt_start", "id": "t00220", "number": 1, "client_id": "interactive"}
+{"at_ms": 4004.3465539999997, "event": "arrival", "id": "t00221", "scheduled_ms": 4000.3698860324394, "client_id": "agent-1"}
+{"at_ms": 4004.6662619999997, "event": "attempt_start", "id": "t00221", "number": 1, "client_id": "agent-1"}
+{"at_ms": 4006.021304, "error": null, "event": "attempt_end", "id": "t00221", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4006.2122520000003, "error": null, "event": "attempt_end", "id": "t00209", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 4006.3080019999998, "event": "terminal", "id": "t00209", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 4030.1731790000003, "event": "attempt_start", "id": "t00167", "number": 2, "client_id": "agent-1"}
+{"at_ms": 4035.0798870000003, "error": null, "event": "attempt_end", "id": "t00167", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4046.7258590000006, "event": "arrival", "id": "t00223", "scheduled_ms": 4045.315324623186, "client_id": "agent-2"}
+{"at_ms": 4047.943567, "event": "attempt_start", "id": "t00223", "number": 1, "client_id": "agent-2"}
+{"at_ms": 4048.887734, "error": null, "event": "attempt_end", "id": "t00223", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4071.0975249999997, "event": "attempt_start", "id": "t00169", "number": 2, "client_id": "agent-2"}
+{"at_ms": 4074.464775, "error": null, "event": "attempt_end", "id": "t00169", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4091.2669289999994, "event": "arrival", "id": "t00225", "scheduled_ms": 4089.071759019362, "client_id": "agent-1"}
+{"at_ms": 4091.5485120000003, "event": "attempt_start", "id": "t00225", "number": 1, "client_id": "agent-1"}
+{"at_ms": 4092.872637, "error": null, "event": "attempt_end", "id": "t00225", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4102.799335000001, "event": "arrival", "id": "t00226", "scheduled_ms": 4100.86928171064, "client_id": "interactive"}
+{"at_ms": 4103.048335, "event": "attempt_start", "id": "t00226", "number": 1, "client_id": "interactive"}
+{"at_ms": 4108.100252, "error": null, "event": "attempt_end", "id": "t00215", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 4108.188209999999, "event": "terminal", "id": "t00215", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 4117.666929, "event": "attempt_start", "id": "t00172", "number": 2, "client_id": "agent-1"}
+{"at_ms": 4119.9893870000005, "error": null, "event": "attempt_end", "id": "t00172", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4135.226774999999, "event": "arrival", "id": "t00228", "scheduled_ms": 4133.509665806688, "client_id": "agent-2"}
+{"at_ms": 4135.514567, "event": "attempt_start", "id": "t00228", "number": 1, "client_id": "agent-2"}
+{"at_ms": 4136.611442, "error": null, "event": "attempt_end", "id": "t00228", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4140.695637000001, "error": null, "event": "attempt_end", "id": "t00162", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 4140.787929, "event": "terminal", "id": "t00162", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 4147.965762, "event": "attempt_start", "id": "t00118", "number": 3, "client_id": "agent-1"}
+{"at_ms": 4162.170359, "event": "attempt_start", "id": "t00174", "number": 2, "client_id": "agent-2"}
+{"at_ms": 4165.3579, "error": null, "event": "attempt_end", "id": "t00174", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4184.427471, "event": "arrival", "id": "t00230", "scheduled_ms": 4178.57682835355, "client_id": "agent-1"}
+{"at_ms": 4184.744096, "event": "attempt_start", "id": "t00230", "number": 1, "client_id": "agent-1"}
+{"at_ms": 4185.914596, "error": null, "event": "attempt_end", "id": "t00230", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4190.804942, "error": null, "event": "attempt_end", "id": "t00164", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 4190.914358999999, "event": "terminal", "id": "t00164", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 4202.928043, "event": "arrival", "id": "t00232", "scheduled_ms": 4200.715485677428, "client_id": "interactive"}
+{"at_ms": 4203.254752000001, "event": "attempt_start", "id": "t00232", "number": 1, "client_id": "interactive"}
+{"at_ms": 4207.34896, "error": null, "event": "attempt_end", "id": "t00220", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 4207.451877, "event": "terminal", "id": "t00220", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 4209.039304, "event": "attempt_start", "id": "t00176", "number": 2, "client_id": "agent-1"}
+{"at_ms": 4229.170609, "event": "arrival", "id": "t00233", "scheduled_ms": 4222.78470894145, "client_id": "agent-2"}
+{"at_ms": 4229.387817, "event": "attempt_start", "id": "t00233", "number": 1, "client_id": "agent-2"}
+{"at_ms": 4231.195775, "error": null, "event": "attempt_end", "id": "t00233", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4251.383108999999, "event": "attempt_start", "id": "t00179", "number": 2, "client_id": "agent-2"}
+{"at_ms": 4253.030025, "error": null, "event": "attempt_end", "id": "t00179", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4269.116804, "event": "arrival", "id": "t00235", "scheduled_ms": 4266.708362078586, "client_id": "agent-1"}
+{"at_ms": 4270.327387, "event": "attempt_start", "id": "t00235", "number": 1, "client_id": "agent-1"}
+{"at_ms": 4274.784678999999, "error": null, "event": "attempt_end", "id": "t00235", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4298.206429000001, "event": "attempt_start", "id": "t00181", "number": 2, "client_id": "agent-1"}
+{"at_ms": 4299.420179, "error": null, "event": "attempt_end", "id": "t00181", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4302.899960000001, "event": "arrival", "id": "t00237", "scheduled_ms": 4300.443865127252, "client_id": "interactive"}
+{"at_ms": 4303.946793, "event": "attempt_start", "id": "t00237", "number": 1, "client_id": "interactive"}
+{"at_ms": 4308.045043, "error": null, "event": "attempt_end", "id": "t00226", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 4308.13721, "event": "terminal", "id": "t00226", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 4314.765234, "event": "arrival", "id": "t00238", "scheduled_ms": 4311.360402481001, "client_id": "agent-2"}
+{"at_ms": 4314.978359000001, "event": "attempt_start", "id": "t00238", "number": 1, "client_id": "agent-2"}
+{"at_ms": 4315.764692, "error": null, "event": "attempt_end", "id": "t00238", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4343.08215, "event": "attempt_start", "id": "t00184", "number": 2, "client_id": "agent-2"}
+{"at_ms": 4349.155359, "error": null, "event": "attempt_end", "id": "t00184", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4350.979304, "error": null, "event": "attempt_end", "id": "t00118", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 4351.083221, "event": "terminal", "id": "t00118", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 4358.302637, "event": "arrival", "id": "t00240", "scheduled_ms": 4356.348373997215, "client_id": "agent-1"}
+{"at_ms": 4358.5468040000005, "event": "attempt_start", "id": "t00240", "number": 1, "client_id": "agent-1"}
+{"at_ms": 4364.3823170000005, "event": "attempt_start", "id": "t00130", "number": 3, "client_id": "agent-2"}
+{"at_ms": 4365.101817000001, "error": null, "event": "attempt_end", "id": "t00130", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4386.211346, "event": "attempt_start", "id": "t00186", "number": 2, "client_id": "agent-1"}
+{"at_ms": 4387.141929, "error": null, "event": "attempt_end", "id": "t00186", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4401.842525, "event": "arrival", "id": "t00242", "scheduled_ms": 4400.095267985154, "client_id": "agent-2"}
+{"at_ms": 4402.40665, "event": "attempt_start", "id": "t00242", "number": 1, "client_id": "agent-2"}
+{"at_ms": 4403.286002, "event": "arrival", "id": "t00243", "scheduled_ms": 4400.730473228717, "client_id": "interactive"}
+{"at_ms": 4404.146775, "error": null, "event": "attempt_end", "id": "t00242", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4404.227502000001, "event": "attempt_start", "id": "t00243", "number": 1, "client_id": "interactive"}
+{"at_ms": 4407.327335, "error": null, "event": "attempt_end", "id": "t00232", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 4407.4127929999995, "event": "terminal", "id": "t00232", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 4411.439262, "error": null, "event": "attempt_end", "id": "t00176", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 4411.732929000001, "event": "terminal", "id": "t00176", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 4425.68815, "event": "attempt_start", "id": "t00189", "number": 2, "client_id": "agent-2"}
+{"at_ms": 4448.480429, "event": "arrival", "id": "t00245", "scheduled_ms": 4444.70707396391, "client_id": "agent-1"}
+{"at_ms": 4448.775304, "event": "attempt_start", "id": "t00245", "number": 1, "client_id": "agent-1"}
+{"at_ms": 4449.780137000001, "error": null, "event": "attempt_end", "id": "t00245", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4473.007221, "event": "attempt_start", "id": "t00191", "number": 2, "client_id": "agent-1"}
+{"at_ms": 4474.955304, "error": null, "event": "attempt_end", "id": "t00191", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4491.678484, "event": "arrival", "id": "t00247", "scheduled_ms": 4489.59542753006, "client_id": "agent-2"}
+{"at_ms": 4491.9344, "event": "attempt_start", "id": "t00247", "number": 1, "client_id": "agent-2"}
+{"at_ms": 4492.827942, "error": null, "event": "attempt_end", "id": "t00247", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4502.873377, "event": "arrival", "id": "t00248", "scheduled_ms": 4500.807448487638, "client_id": "interactive"}
+{"at_ms": 4503.562043, "event": "attempt_start", "id": "t00248", "number": 1, "client_id": "interactive"}
+{"at_ms": 4508.100835, "error": null, "event": "attempt_end", "id": "t00237", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 4508.354377, "event": "terminal", "id": "t00237", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 4520.096275, "event": "attempt_start", "id": "t00194", "number": 2, "client_id": "agent-2"}
+{"at_ms": 4520.903025, "error": null, "event": "attempt_end", "id": "t00194", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4536.0700959999995, "event": "arrival", "id": "t00250", "scheduled_ms": 4534.179805529022, "client_id": "agent-1"}
+{"at_ms": 4536.537804, "event": "attempt_start", "id": "t00250", "number": 1, "client_id": "agent-1"}
+{"at_ms": 4537.330262, "error": null, "event": "attempt_end", "id": "t00250", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4563.355679, "event": "attempt_start", "id": "t00196", "number": 2, "client_id": "agent-1"}
+{"at_ms": 4565.439471000001, "error": null, "event": "attempt_end", "id": "t00240", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 4565.7838870000005, "event": "terminal", "id": "t00240", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 4581.54265, "event": "arrival", "id": "t00252", "scheduled_ms": 4577.977159400221, "client_id": "agent-2"}
+{"at_ms": 4582.043984, "event": "attempt_start", "id": "t00252", "number": 1, "client_id": "agent-2"}
+{"at_ms": 4584.289109, "error": null, "event": "attempt_end", "id": "t00252", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4586.669554, "event": "attempt_start", "id": "t00142", "number": 3, "client_id": "agent-1"}
+{"at_ms": 4587.420137, "error": null, "event": "attempt_end", "id": "t00142", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4602.641502, "event": "arrival", "id": "t00253", "scheduled_ms": 4600.631759569388, "client_id": "interactive"}
+{"at_ms": 4602.94646, "event": "attempt_start", "id": "t00253", "number": 1, "client_id": "interactive"}
+{"at_ms": 4607.604484, "event": "attempt_start", "id": "t00198", "number": 2, "client_id": "agent-2"}
+{"at_ms": 4607.970835, "error": null, "event": "attempt_end", "id": "t00243", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 4608.121127, "event": "terminal", "id": "t00243", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 4608.128692, "error": null, "event": "attempt_end", "id": "t00198", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4624.774554, "event": "arrival", "id": "t00255", "scheduled_ms": 4622.765999591889, "client_id": "agent-1"}
+{"at_ms": 4625.099221, "event": "attempt_start", "id": "t00255", "number": 1, "client_id": "agent-1"}
+{"at_ms": 4626.528262, "error": null, "event": "attempt_end", "id": "t00255", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4627.495275, "error": null, "event": "attempt_end", "id": "t00189", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 4627.693566999999, "event": "terminal", "id": "t00189", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 4652.690971, "event": "attempt_start", "id": "t00201", "number": 2, "client_id": "agent-1"}
+{"at_ms": 4668.746859, "event": "arrival", "id": "t00257", "scheduled_ms": 4667.160897669548, "client_id": "agent-2"}
+{"at_ms": 4668.962192, "event": "attempt_start", "id": "t00257", "number": 1, "client_id": "agent-2"}
+{"at_ms": 4669.648192000001, "error": null, "event": "attempt_end", "id": "t00257", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4692.679192, "event": "attempt_start", "id": "t00203", "number": 2, "client_id": "agent-2"}
+{"at_ms": 4693.668234000001, "error": null, "event": "attempt_end", "id": "t00203", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4702.7139179999995, "event": "arrival", "id": "t00259", "scheduled_ms": 4700.615498292985, "client_id": "interactive"}
+{"at_ms": 4702.85271, "event": "attempt_start", "id": "t00259", "number": 1, "client_id": "interactive"}
+{"at_ms": 4708.169167999999, "error": null, "event": "attempt_end", "id": "t00248", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 4708.287377, "event": "terminal", "id": "t00248", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 4715.151512, "event": "arrival", "id": "t00260", "scheduled_ms": 4711.76196529977, "client_id": "agent-1"}
+{"at_ms": 4715.527846, "event": "attempt_start", "id": "t00260", "number": 1, "client_id": "agent-1"}
+{"at_ms": 4716.263011999999, "error": null, "event": "attempt_end", "id": "t00260", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4740.428429, "event": "attempt_start", "id": "t00206", "number": 2, "client_id": "agent-1"}
+{"at_ms": 4742.831429, "error": null, "event": "attempt_end", "id": "t00206", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4758.5547750000005, "event": "arrival", "id": "t00262", "scheduled_ms": 4755.68939637344, "client_id": "agent-2"}
+{"at_ms": 4758.953567, "event": "attempt_start", "id": "t00262", "number": 1, "client_id": "agent-2"}
+{"at_ms": 4760.03965, "error": null, "event": "attempt_end", "id": "t00262", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4768.641804, "error": null, "event": "attempt_end", "id": "t00196", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 4768.974262000001, "event": "terminal", "id": "t00196", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 4782.947359, "event": "attempt_start", "id": "t00208", "number": 2, "client_id": "agent-2"}
+{"at_ms": 4803.0567519999995, "event": "arrival", "id": "t00264", "scheduled_ms": 4800.286322032445, "client_id": "interactive"}
+{"at_ms": 4803.3392619999995, "event": "arrival", "id": "t00265", "scheduled_ms": 4800.97013145648, "client_id": "agent-1"}
+{"at_ms": 4803.379376999999, "event": "attempt_start", "id": "t00264", "number": 1, "client_id": "interactive"}
+{"at_ms": 4803.585512, "event": "attempt_start", "id": "t00265", "number": 1, "client_id": "agent-1"}
+{"at_ms": 4806.925971, "error": null, "event": "attempt_end", "id": "t00265", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4807.410067, "event": "attempt_start", "id": "t00155", "number": 3, "client_id": "agent-2"}
+{"at_ms": 4807.979418000001, "error": null, "event": "attempt_end", "id": "t00253", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 4807.997317, "error": null, "event": "attempt_end", "id": "t00155", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4808.21321, "event": "terminal", "id": "t00253", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 4828.470512, "event": "attempt_start", "id": "t00211", "number": 2, "client_id": "agent-1"}
+{"at_ms": 4829.455387, "error": null, "event": "attempt_end", "id": "t00211", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4846.388275, "event": "arrival", "id": "t00267", "scheduled_ms": 4845.286127574818, "client_id": "agent-2"}
+{"at_ms": 4846.654942, "event": "attempt_start", "id": "t00267", "number": 1, "client_id": "agent-2"}
+{"at_ms": 4850.014692000001, "error": null, "event": "attempt_end", "id": "t00267", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4860.997096, "error": null, "event": "attempt_end", "id": "t00201", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 4861.119678999999, "event": "terminal", "id": "t00201", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 4873.963442, "event": "attempt_start", "id": "t00213", "number": 2, "client_id": "agent-2"}
+{"at_ms": 4891.519554, "event": "arrival", "id": "t00269", "scheduled_ms": 4889.885379138551, "client_id": "agent-1"}
+{"at_ms": 4891.929137, "event": "attempt_start", "id": "t00269", "number": 1, "client_id": "agent-1"}
+{"at_ms": 4893.470762, "error": null, "event": "attempt_end", "id": "t00269", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4901.041418, "event": "arrival", "id": "t00270", "scheduled_ms": 4900.188296388173, "client_id": "interactive"}
+{"at_ms": 4903.386085, "event": "attempt_start", "id": "t00270", "number": 1, "client_id": "interactive"}
+{"at_ms": 4906.48246, "error": null, "event": "attempt_end", "id": "t00259", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 4906.653085, "event": "terminal", "id": "t00259", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 4916.872721, "event": "attempt_start", "id": "t00216", "number": 2, "client_id": "agent-1"}
+{"at_ms": 4918.531554, "error": null, "event": "attempt_end", "id": "t00216", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4934.6874, "event": "arrival", "id": "t00272", "scheduled_ms": 4933.416764185929, "client_id": "agent-2"}
+{"at_ms": 4935.114525, "event": "attempt_start", "id": "t00272", "number": 1, "client_id": "agent-2"}
+{"at_ms": 4936.7309, "error": null, "event": "attempt_end", "id": "t00272", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4961.380234, "event": "attempt_start", "id": "t00218", "number": 2, "client_id": "agent-2"}
+{"at_ms": 4963.587609, "error": null, "event": "attempt_end", "id": "t00218", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 4985.691804, "event": "arrival", "id": "t00274", "scheduled_ms": 4977.999447369905, "client_id": "agent-1"}
+{"at_ms": 4986.017512, "event": "attempt_start", "id": "t00274", "number": 1, "client_id": "agent-1"}
+{"at_ms": 4986.853762, "error": null, "event": "attempt_end", "id": "t00274", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 4986.888484, "error": null, "event": "attempt_end", "id": "t00208", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 4987.044067, "event": "terminal", "id": "t00208", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 5002.543543, "event": "arrival", "id": "t00275", "scheduled_ms": 5000.133661859027, "client_id": "interactive"}
+{"at_ms": 5002.798543, "event": "attempt_start", "id": "t00275", "number": 1, "client_id": "interactive"}
+{"at_ms": 5007.502471, "event": "attempt_start", "id": "t00221", "number": 2, "client_id": "agent-1"}
+{"at_ms": 5007.820043, "error": null, "event": "attempt_end", "id": "t00264", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 5007.953668, "event": "terminal", "id": "t00264", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 5026.750984, "event": "arrival", "id": "t00277", "scheduled_ms": 5023.032293038449, "client_id": "agent-2"}
+{"at_ms": 5026.945108999999, "event": "attempt_start", "id": "t00277", "number": 1, "client_id": "agent-2"}
+{"at_ms": 5037.0266790000005, "event": "attempt_start", "id": "t00167", "number": 3, "client_id": "agent-1"}
+{"at_ms": 5050.652816999999, "event": "attempt_start", "id": "t00223", "number": 2, "client_id": "agent-2"}
+{"at_ms": 5069.0265119999995, "event": "arrival", "id": "t00279", "scheduled_ms": 5066.917136088563, "client_id": "agent-1"}
+{"at_ms": 5069.283304, "event": "attempt_start", "id": "t00279", "number": 1, "client_id": "agent-1"}
+{"at_ms": 5070.216678999999, "error": null, "event": "attempt_end", "id": "t00279", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5077.454108999999, "event": "attempt_start", "id": "t00169", "number": 3, "client_id": "agent-2"}
+{"at_ms": 5079.294817, "error": null, "event": "attempt_end", "id": "t00169", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5079.962025000001, "error": null, "event": "attempt_end", "id": "t00213", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 5080.268024999999, "event": "terminal", "id": "t00213", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 5094.727012, "event": "attempt_start", "id": "t00225", "number": 2, "client_id": "agent-1"}
+{"at_ms": 5102.967043, "event": "arrival", "id": "t00281", "scheduled_ms": 5100.184617082167, "client_id": "interactive"}
+{"at_ms": 5103.235293, "event": "attempt_start", "id": "t00281", "number": 1, "client_id": "interactive"}
+{"at_ms": 5107.002377, "error": null, "event": "attempt_end", "id": "t00270", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 5107.163002, "event": "terminal", "id": "t00270", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 5118.59765, "event": "arrival", "id": "t00282", "scheduled_ms": 5111.824257746957, "client_id": "agent-2"}
+{"at_ms": 5118.897067, "event": "attempt_start", "id": "t00282", "number": 1, "client_id": "agent-2"}
+{"at_ms": 5119.802275, "error": null, "event": "attempt_end", "id": "t00282", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5121.765929, "event": "attempt_start", "id": "t00172", "number": 3, "client_id": "agent-1"}
+{"at_ms": 5125.038304000001, "error": null, "event": "attempt_end", "id": "t00172", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5140.235234000001, "event": "attempt_start", "id": "t00228", "number": 2, "client_id": "agent-2"}
+{"at_ms": 5143.412359, "error": null, "event": "attempt_end", "id": "t00228", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5158.269596, "event": "arrival", "id": "t00284", "scheduled_ms": 5156.405166905469, "client_id": "agent-1"}
+{"at_ms": 5159.410054, "event": "attempt_start", "id": "t00284", "number": 1, "client_id": "agent-1"}
+{"at_ms": 5160.437262, "error": null, "event": "attempt_end", "id": "t00284", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5168.4721500000005, "event": "attempt_start", "id": "t00174", "number": 3, "client_id": "agent-2"}
+{"at_ms": 5169.2074, "error": null, "event": "attempt_end", "id": "t00174", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5188.719429, "event": "attempt_start", "id": "t00230", "number": 2, "client_id": "agent-1"}
+{"at_ms": 5189.552929, "error": null, "event": "attempt_end", "id": "t00230", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5202.963025, "event": "arrival", "id": "t00287", "scheduled_ms": 5200.912346248038, "client_id": "agent-2"}
+{"at_ms": 5203.12565, "event": "attempt_start", "id": "t00287", "number": 1, "client_id": "agent-2"}
+{"at_ms": 5203.356709999999, "event": "arrival", "id": "t00286", "scheduled_ms": 5200.3821515888585, "client_id": "interactive"}
+{"at_ms": 5203.439292999999, "event": "attempt_start", "id": "t00286", "number": 1, "client_id": "interactive"}
+{"at_ms": 5203.784067, "error": null, "event": "attempt_end", "id": "t00287", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5207.808335000001, "error": null, "event": "attempt_end", "id": "t00275", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 5208.027252, "event": "terminal", "id": "t00275", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 5208.719179, "error": null, "event": "attempt_end", "id": "t00221", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 5209.0113870000005, "event": "terminal", "id": "t00221", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 5233.1064, "event": "attempt_start", "id": "t00233", "number": 2, "client_id": "agent-2"}
+{"at_ms": 5233.915609000001, "error": null, "event": "attempt_end", "id": "t00277", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 5235.96615, "event": "terminal", "id": "t00277", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 5241.623095999999, "error": null, "event": "attempt_end", "id": "t00167", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 5241.797221, "event": "terminal", "id": "t00167", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 5246.601387, "event": "arrival", "id": "t00289", "scheduled_ms": 5244.737453929581, "client_id": "agent-1"}
+{"at_ms": 5246.875221, "event": "attempt_start", "id": "t00289", "number": 1, "client_id": "agent-1"}
+{"at_ms": 5253.654525, "error": null, "event": "attempt_end", "id": "t00223", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 5255.2732750000005, "event": "terminal", "id": "t00223", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 5256.411317, "event": "attempt_start", "id": "t00179", "number": 3, "client_id": "agent-2"}
+{"at_ms": 5275.8707620000005, "event": "attempt_start", "id": "t00235", "number": 2, "client_id": "agent-1"}
+{"at_ms": 5291.130525, "event": "arrival", "id": "t00291", "scheduled_ms": 5288.958353167056, "client_id": "agent-2"}
+{"at_ms": 5291.546066999999, "event": "attempt_start", "id": "t00291", "number": 1, "client_id": "agent-2"}
+{"at_ms": 5293.1264, "error": null, "event": "attempt_end", "id": "t00291", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5304.101679, "event": "attempt_start", "id": "t00181", "number": 3, "client_id": "agent-1"}
+{"at_ms": 5307.351877, "event": "arrival", "id": "t00292", "scheduled_ms": 5300.002998628662, "client_id": "interactive"}
+{"at_ms": 5307.516002, "event": "attempt_start", "id": "t00292", "number": 1, "client_id": "interactive"}
+{"at_ms": 5307.798262, "error": null, "event": "attempt_end", "id": "t00181", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5308.040137, "error": null, "event": "attempt_end", "id": "t00225", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 5308.18746, "error": null, "event": "attempt_end", "id": "t00281", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 5308.556971, "event": "terminal", "id": "t00225", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 5308.711502, "event": "terminal", "id": "t00281", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 5318.595567, "event": "attempt_start", "id": "t00238", "number": 2, "client_id": "agent-2"}
+{"at_ms": 5335.050346, "event": "arrival", "id": "t00294", "scheduled_ms": 5333.586442510088, "client_id": "agent-1"}
+{"at_ms": 5335.288554, "event": "attempt_start", "id": "t00294", "number": 1, "client_id": "agent-1"}
+{"at_ms": 5336.068804, "error": null, "event": "attempt_end", "id": "t00294", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5357.57515, "event": "attempt_start", "id": "t00184", "number": 3, "client_id": "agent-2"}
+{"at_ms": 5358.385067, "error": null, "event": "attempt_end", "id": "t00184", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5366.516941999999, "event": "attempt_start", "id": "t00130", "number": 4, "client_id": "agent-2"}
+{"at_ms": 5367.525442, "error": null, "event": "attempt_end", "id": "t00130", "number": 4, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5379.833067, "event": "arrival", "id": "t00296", "scheduled_ms": 5377.9947637832165, "client_id": "agent-2"}
+{"at_ms": 5380.026192, "event": "attempt_start", "id": "t00296", "number": 1, "client_id": "agent-2"}
+{"at_ms": 5383.113109, "error": null, "event": "attempt_end", "id": "t00296", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5391.873429, "event": "attempt_start", "id": "t00186", "number": 3, "client_id": "agent-1"}
+{"at_ms": 5392.907971, "error": null, "event": "attempt_end", "id": "t00186", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5402.697543, "event": "arrival", "id": "t00298", "scheduled_ms": 5400.453475652328, "client_id": "interactive"}
+{"at_ms": 5402.953710000001, "event": "attempt_start", "id": "t00298", "number": 1, "client_id": "interactive"}
+{"at_ms": 5406.63496, "error": null, "event": "attempt_end", "id": "t00286", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 5406.78365, "event": "attempt_start", "id": "t00242", "number": 2, "client_id": "agent-2"}
+{"at_ms": 5407.003835, "event": "terminal", "id": "t00286", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 5407.42415, "error": null, "event": "attempt_end", "id": "t00242", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5425.374554, "event": "arrival", "id": "t00299", "scheduled_ms": 5422.715922627281, "client_id": "agent-1"}
+{"at_ms": 5425.735011999999, "event": "attempt_start", "id": "t00299", "number": 1, "client_id": "agent-1"}
+{"at_ms": 5426.720762000001, "error": null, "event": "attempt_end", "id": "t00299", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5441.4699, "error": null, "event": "attempt_end", "id": "t00233", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 5441.646317, "event": "terminal", "id": "t00233", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 5450.9371790000005, "event": "attempt_start", "id": "t00245", "number": 2, "client_id": "agent-1"}
+{"at_ms": 5451.081804, "error": null, "event": "attempt_end", "id": "t00289", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 5451.251012000001, "event": "terminal", "id": "t00289", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 5458.955609000001, "error": null, "event": "attempt_end", "id": "t00179", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 5459.106275, "event": "terminal", "id": "t00179", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 5469.259692, "event": "arrival", "id": "t00301", "scheduled_ms": 5467.081011561621, "client_id": "agent-2"}
+{"at_ms": 5469.430649999999, "event": "attempt_start", "id": "t00301", "number": 1, "client_id": "agent-2"}
+{"at_ms": 5477.628012, "event": "attempt_start", "id": "t00191", "number": 3, "client_id": "agent-1"}
+{"at_ms": 5479.209929, "error": null, "event": "attempt_end", "id": "t00235", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 5479.460012, "event": "terminal", "id": "t00235", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 5495.058775, "event": "attempt_start", "id": "t00247", "number": 2, "client_id": "agent-2"}
+{"at_ms": 5503.26271, "event": "arrival", "id": "t00303", "scheduled_ms": 5500.782574538417, "client_id": "interactive"}
+{"at_ms": 5503.406293, "event": "attempt_start", "id": "t00303", "number": 1, "client_id": "interactive"}
+{"at_ms": 5510.304293, "error": null, "event": "attempt_end", "id": "t00292", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 5510.44896, "event": "terminal", "id": "t00292", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 5513.756387, "event": "arrival", "id": "t00304", "scheduled_ms": 5511.394850666101, "client_id": "agent-1"}
+{"at_ms": 5514.006554, "event": "attempt_start", "id": "t00304", "number": 1, "client_id": "agent-1"}
+{"at_ms": 5514.602887, "error": null, "event": "attempt_end", "id": "t00304", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5521.178692, "error": null, "event": "attempt_end", "id": "t00238", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 5527.751775000001, "event": "terminal", "id": "t00238", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 5527.873858999999, "event": "attempt_start", "id": "t00194", "number": 3, "client_id": "agent-2"}
+{"at_ms": 5538.727012, "event": "attempt_start", "id": "t00250", "number": 2, "client_id": "agent-1"}
+{"at_ms": 5543.3365539999995, "error": null, "event": "attempt_end", "id": "t00250", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5558.1659420000005, "event": "arrival", "id": "t00306", "scheduled_ms": 5556.078057500607, "client_id": "agent-2"}
+{"at_ms": 5558.628942, "event": "attempt_start", "id": "t00306", "number": 1, "client_id": "agent-2"}
+{"at_ms": 5559.940359, "error": null, "event": "attempt_end", "id": "t00306", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5585.330692, "event": "attempt_start", "id": "t00252", "number": 2, "client_id": "agent-2"}
+{"at_ms": 5586.168692, "error": null, "event": "attempt_end", "id": "t00252", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5591.312637, "event": "attempt_start", "id": "t00142", "number": 4, "client_id": "agent-1"}
+{"at_ms": 5592.8575120000005, "error": null, "event": "attempt_end", "id": "t00142", "number": 4, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5606.033668, "event": "arrival", "id": "t00309", "scheduled_ms": 5600.232326404436, "client_id": "interactive"}
+{"at_ms": 5606.0783870000005, "event": "arrival", "id": "t00308", "scheduled_ms": 5600.172167733459, "client_id": "agent-1"}
+{"at_ms": 5606.3545540000005, "event": "attempt_start", "id": "t00308", "number": 1, "client_id": "agent-1"}
+{"at_ms": 5606.377335, "event": "attempt_start", "id": "t00309", "number": 1, "client_id": "interactive"}
+{"at_ms": 5607.0523459999995, "error": null, "event": "attempt_end", "id": "t00308", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5607.054585, "error": null, "event": "attempt_end", "id": "t00298", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 5607.4797929999995, "event": "terminal", "id": "t00298", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 5609.405692, "event": "attempt_start", "id": "t00198", "number": 3, "client_id": "agent-2"}
+{"at_ms": 5609.759024999999, "error": null, "event": "attempt_end", "id": "t00198", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5629.513304, "event": "attempt_start", "id": "t00255", "number": 2, "client_id": "agent-1"}
+{"at_ms": 5630.461429, "error": null, "event": "attempt_end", "id": "t00255", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5646.114525, "event": "arrival", "id": "t00311", "scheduled_ms": 5645.439659268809, "client_id": "agent-2"}
+{"at_ms": 5646.365609, "event": "attempt_start", "id": "t00311", "number": 1, "client_id": "agent-2"}
+{"at_ms": 5647.341649999999, "error": null, "event": "attempt_end", "id": "t00311", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5654.096596, "error": null, "event": "attempt_end", "id": "t00245", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 5654.238262, "event": "terminal", "id": "t00245", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 5671.581734, "event": "attempt_start", "id": "t00257", "number": 2, "client_id": "agent-2"}
+{"at_ms": 5675.488192, "error": null, "event": "attempt_end", "id": "t00301", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 5675.599359, "event": "terminal", "id": "t00301", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 5683.391096, "error": null, "event": "attempt_end", "id": "t00191", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 5683.509846, "event": "terminal", "id": "t00191", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 5691.507387, "event": "arrival", "id": "t00313", "scheduled_ms": 5689.577258524373, "client_id": "agent-1"}
+{"at_ms": 5691.659428999999, "event": "attempt_start", "id": "t00313", "number": 1, "client_id": "agent-1"}
+{"at_ms": 5695.726775, "event": "attempt_start", "id": "t00203", "number": 3, "client_id": "agent-2"}
+{"at_ms": 5700.502442, "error": null, "event": "attempt_end", "id": "t00247", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 5700.639734, "event": "terminal", "id": "t00247", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 5703.399793, "event": "arrival", "id": "t00314", "scheduled_ms": 5700.959287355742, "client_id": "interactive"}
+{"at_ms": 5703.684085, "event": "attempt_start", "id": "t00314", "number": 1, "client_id": "interactive"}
+{"at_ms": 5706.818335, "error": null, "event": "attempt_end", "id": "t00303", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 5706.984502, "event": "terminal", "id": "t00303", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 5718.257304, "event": "attempt_start", "id": "t00260", "number": 2, "client_id": "agent-1"}
+{"at_ms": 5730.4764, "error": null, "event": "attempt_end", "id": "t00194", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 5730.649899999999, "event": "terminal", "id": "t00194", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 5735.319775, "event": "arrival", "id": "t00316", "scheduled_ms": 5733.76709657599, "client_id": "agent-2"}
+{"at_ms": 5735.681942, "event": "attempt_start", "id": "t00316", "number": 1, "client_id": "agent-2"}
+{"at_ms": 5746.094262, "event": "attempt_start", "id": "t00206", "number": 3, "client_id": "agent-1"}
+{"at_ms": 5749.730679, "error": null, "event": "attempt_end", "id": "t00206", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5761.482817, "event": "attempt_start", "id": "t00262", "number": 2, "client_id": "agent-2"}
+{"at_ms": 5763.408025000001, "error": null, "event": "attempt_end", "id": "t00262", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5779.622012, "event": "arrival", "id": "t00318", "scheduled_ms": 5778.2622198264435, "client_id": "agent-1"}
+{"at_ms": 5780.088970999999, "event": "attempt_start", "id": "t00318", "number": 1, "client_id": "agent-1"}
+{"at_ms": 5785.357054, "error": null, "event": "attempt_end", "id": "t00318", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5802.133502000001, "event": "arrival", "id": "t00319", "scheduled_ms": 5800.135600180786, "client_id": "interactive"}
+{"at_ms": 5802.320002, "event": "attempt_start", "id": "t00319", "number": 1, "client_id": "interactive"}
+{"at_ms": 5808.606668, "error": null, "event": "attempt_end", "id": "t00309", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 5808.732543, "event": "terminal", "id": "t00309", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 5809.551928999999, "event": "attempt_start", "id": "t00265", "number": 2, "client_id": "agent-1"}
+{"at_ms": 5809.565942, "event": "attempt_start", "id": "t00155", "number": 4, "client_id": "agent-2"}
+{"at_ms": 5809.9714, "error": null, "event": "attempt_end", "id": "t00155", "number": 4, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5810.039137000001, "error": null, "event": "attempt_end", "id": "t00265", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5824.192067, "event": "arrival", "id": "t00321", "scheduled_ms": 5822.515191284947, "client_id": "agent-2"}
+{"at_ms": 5824.432359, "event": "attempt_start", "id": "t00321", "number": 1, "client_id": "agent-2"}
+{"at_ms": 5825.1814, "error": null, "event": "attempt_end", "id": "t00321", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5832.219554, "event": "attempt_start", "id": "t00211", "number": 3, "client_id": "agent-1"}
+{"at_ms": 5832.778179, "error": null, "event": "attempt_end", "id": "t00211", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5861.544567, "event": "attempt_start", "id": "t00267", "number": 2, "client_id": "agent-2"}
+{"at_ms": 5863.409484, "error": null, "event": "attempt_end", "id": "t00267", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5869.450471, "event": "arrival", "id": "t00323", "scheduled_ms": 5867.665278165154, "client_id": "agent-1"}
+{"at_ms": 5869.591679, "event": "attempt_start", "id": "t00323", "number": 1, "client_id": "agent-1"}
+{"at_ms": 5870.228762, "error": null, "event": "attempt_end", "id": "t00323", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 5876.6506500000005, "error": null, "event": "attempt_end", "id": "t00257", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 5876.769234, "event": "terminal", "id": "t00257", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 5894.870887, "event": "attempt_start", "id": "t00269", "number": 2, "client_id": "agent-1"}
+{"at_ms": 5894.995846000001, "error": null, "event": "attempt_end", "id": "t00313", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 5895.137762, "event": "terminal", "id": "t00313", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 5899.9358170000005, "error": null, "event": "attempt_end", "id": "t00203", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 5900.0653170000005, "event": "terminal", "id": "t00203", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 5902.738168, "event": "arrival", "id": "t00325", "scheduled_ms": 5900.952370122974, "client_id": "interactive"}
+{"at_ms": 5902.855877, "event": "attempt_start", "id": "t00325", "number": 1, "client_id": "interactive"}
+{"at_ms": 5907.241835, "error": null, "event": "attempt_end", "id": "t00314", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 5907.383543, "event": "terminal", "id": "t00314", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 5916.204567000001, "event": "arrival", "id": "t00326", "scheduled_ms": 5911.658913056819, "client_id": "agent-2"}
+{"at_ms": 5916.593650000001, "event": "attempt_start", "id": "t00326", "number": 1, "client_id": "agent-2"}
+{"at_ms": 5921.343137, "event": "attempt_start", "id": "t00216", "number": 3, "client_id": "agent-1"}
+{"at_ms": 5921.717637000001, "error": null, "event": "attempt_end", "id": "t00260", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 5922.006512, "event": "terminal", "id": "t00260", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 5939.1185669999995, "event": "attempt_start", "id": "t00272", "number": 2, "client_id": "agent-2"}
+{"at_ms": 5939.635984, "error": null, "event": "attempt_end", "id": "t00316", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 5939.760067, "event": "terminal", "id": "t00316", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 5958.297512, "event": "arrival", "id": "t00328", "scheduled_ms": 5955.754607164621, "client_id": "agent-1"}
+{"at_ms": 5958.397596, "event": "attempt_start", "id": "t00328", "number": 1, "client_id": "agent-1"}
+{"at_ms": 5967.858483999999, "event": "attempt_start", "id": "t00218", "number": 3, "client_id": "agent-2"}
+{"at_ms": 5968.39365, "error": null, "event": "attempt_end", "id": "t00218", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 5989.271471, "event": "attempt_start", "id": "t00274", "number": 2, "client_id": "agent-1"}
+{"at_ms": 5989.992346, "error": null, "event": "attempt_end", "id": "t00274", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6001.299376999999, "event": "arrival", "id": "t00331", "scheduled_ms": 6000.34527150534, "client_id": "interactive"}
+{"at_ms": 6001.790002, "event": "attempt_start", "id": "t00331", "number": 1, "client_id": "interactive"}
+{"at_ms": 6002.063275, "event": "arrival", "id": "t00330", "scheduled_ms": 6000.080463070153, "client_id": "agent-2"}
+{"at_ms": 6002.369192, "event": "attempt_start", "id": "t00330", "number": 1, "client_id": "agent-2"}
+{"at_ms": 6004.469484, "error": null, "event": "attempt_end", "id": "t00330", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6005.272585000001, "error": null, "event": "attempt_end", "id": "t00319", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 6005.430585, "event": "terminal", "id": "t00319", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 6046.102179, "event": "arrival", "id": "t00333", "scheduled_ms": 6044.621916332617, "client_id": "agent-1"}
+{"at_ms": 6046.816887, "event": "attempt_start", "id": "t00333", "number": 1, "client_id": "agent-1"}
+{"at_ms": 6047.415596, "error": null, "event": "attempt_end", "id": "t00333", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6072.652346, "event": "attempt_start", "id": "t00279", "number": 2, "client_id": "agent-1"}
+{"at_ms": 6073.2992619999995, "error": null, "event": "attempt_end", "id": "t00279", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6082.010816999999, "event": "attempt_start", "id": "t00169", "number": 4, "client_id": "agent-2"}
+{"at_ms": 6082.515359, "error": null, "event": "attempt_end", "id": "t00169", "number": 4, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6090.259734, "event": "arrival", "id": "t00335", "scheduled_ms": 6089.217634182789, "client_id": "agent-2"}
+{"at_ms": 6090.409734, "event": "attempt_start", "id": "t00335", "number": 1, "client_id": "agent-2"}
+{"at_ms": 6090.881692, "error": null, "event": "attempt_end", "id": "t00335", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6096.723679, "error": null, "event": "attempt_end", "id": "t00269", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 6096.859471, "event": "terminal", "id": "t00269", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 6101.636835, "event": "arrival", "id": "t00336", "scheduled_ms": 6100.157892797309, "client_id": "interactive"}
+{"at_ms": 6101.757752, "event": "attempt_start", "id": "t00336", "number": 1, "client_id": "interactive"}
+{"at_ms": 6104.637627, "error": null, "event": "attempt_end", "id": "t00325", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 6104.7586679999995, "event": "terminal", "id": "t00325", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 6119.2594, "error": null, "event": "attempt_end", "id": "t00326", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 6119.394566999999, "event": "terminal", "id": "t00326", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 6121.778859, "event": "attempt_start", "id": "t00282", "number": 2, "client_id": "agent-2"}
+{"at_ms": 6123.683221, "error": null, "event": "attempt_end", "id": "t00216", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 6123.804054, "event": "terminal", "id": "t00216", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 6126.178512, "event": "attempt_start", "id": "t00172", "number": 4, "client_id": "agent-1"}
+{"at_ms": 6136.512721, "event": "arrival", "id": "t00338", "scheduled_ms": 6134.1402552051895, "client_id": "agent-1"}
+{"at_ms": 6136.6405540000005, "event": "attempt_start", "id": "t00338", "number": 1, "client_id": "agent-1"}
+{"at_ms": 6140.703484000001, "error": null, "event": "attempt_end", "id": "t00272", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 6140.826734, "event": "terminal", "id": "t00272", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 6145.4416089999995, "event": "attempt_start", "id": "t00228", "number": 3, "client_id": "agent-2"}
+{"at_ms": 6160.944012, "event": "attempt_start", "id": "t00284", "number": 2, "client_id": "agent-1"}
+{"at_ms": 6161.015262, "error": null, "event": "attempt_end", "id": "t00328", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 6161.218387, "event": "terminal", "id": "t00328", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 6170.867234, "event": "attempt_start", "id": "t00174", "number": 4, "client_id": "agent-2"}
+{"at_ms": 6171.387234, "error": null, "event": "attempt_end", "id": "t00174", "number": 4, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6179.592317, "event": "arrival", "id": "t00340", "scheduled_ms": 6177.857839368198, "client_id": "agent-2"}
+{"at_ms": 6179.754983999999, "event": "attempt_start", "id": "t00340", "number": 1, "client_id": "agent-2"}
+{"at_ms": 6180.359234, "error": null, "event": "attempt_end", "id": "t00340", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6191.5395960000005, "event": "attempt_start", "id": "t00230", "number": 3, "client_id": "agent-1"}
+{"at_ms": 6192.078512, "error": null, "event": "attempt_end", "id": "t00230", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6202.623293000001, "event": "arrival", "id": "t00341", "scheduled_ms": 6200.384150434977, "client_id": "interactive"}
+{"at_ms": 6202.750668000001, "event": "attempt_start", "id": "t00341", "number": 1, "client_id": "interactive"}
+{"at_ms": 6205.653127, "error": null, "event": "attempt_end", "id": "t00331", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 6205.801085, "event": "terminal", "id": "t00331", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 6206.53415, "event": "attempt_start", "id": "t00287", "number": 2, "client_id": "agent-2"}
+{"at_ms": 6206.953775, "error": null, "event": "attempt_end", "id": "t00287", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6223.964679, "event": "arrival", "id": "t00343", "scheduled_ms": 6222.609547543182, "client_id": "agent-1"}
+{"at_ms": 6224.076220999999, "event": "attempt_start", "id": "t00343", "number": 1, "client_id": "agent-1"}
+{"at_ms": 6224.7860120000005, "error": null, "event": "attempt_end", "id": "t00343", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6268.829817000001, "event": "arrival", "id": "t00345", "scheduled_ms": 6267.578445072454, "client_id": "agent-2"}
+{"at_ms": 6269.283442, "event": "attempt_start", "id": "t00345", "number": 1, "client_id": "agent-2"}
+{"at_ms": 6270.253441999999, "error": null, "event": "attempt_end", "id": "t00345", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6295.640859, "event": "attempt_start", "id": "t00291", "number": 2, "client_id": "agent-2"}
+{"at_ms": 6296.870609, "error": null, "event": "attempt_end", "id": "t00291", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6301.521293000001, "event": "arrival", "id": "t00347", "scheduled_ms": 6300.264646622418, "client_id": "interactive"}
+{"at_ms": 6301.70821, "event": "attempt_start", "id": "t00347", "number": 1, "client_id": "interactive"}
+{"at_ms": 6303.024835, "error": null, "event": "attempt_end", "id": "t00336", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 6303.160293, "event": "terminal", "id": "t00336", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 6310.174846, "event": "attempt_start", "id": "t00181", "number": 4, "client_id": "agent-1"}
+{"at_ms": 6310.766221, "error": null, "event": "attempt_end", "id": "t00181", "number": 4, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6312.117053999999, "event": "arrival", "id": "t00348", "scheduled_ms": 6311.412721046399, "client_id": "agent-1"}
+{"at_ms": 6312.202012, "event": "attempt_start", "id": "t00348", "number": 1, "client_id": "agent-1"}
+{"at_ms": 6312.644929, "error": null, "event": "attempt_end", "id": "t00348", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6324.965025, "error": null, "event": "attempt_end", "id": "t00282", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 6325.0609, "event": "terminal", "id": "t00282", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 6327.454137, "error": null, "event": "attempt_end", "id": "t00172", "number": 4, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 6327.550096000001, "event": "terminal", "id": "t00172", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 6338.691596000001, "event": "attempt_start", "id": "t00294", "number": 2, "client_id": "agent-1"}
+{"at_ms": 6339.230804, "error": null, "event": "attempt_end", "id": "t00338", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 6339.544846, "event": "terminal", "id": "t00338", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 6346.863692, "error": null, "event": "attempt_end", "id": "t00228", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 6346.968525, "event": "terminal", "id": "t00228", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 6358.112817, "event": "arrival", "id": "t00350", "scheduled_ms": 6356.1991488700105, "client_id": "agent-2"}
+{"at_ms": 6358.329317, "event": "attempt_start", "id": "t00350", "number": 1, "client_id": "agent-2"}
+{"at_ms": 6359.52115, "event": "attempt_start", "id": "t00184", "number": 4, "client_id": "agent-2"}
+{"at_ms": 6362.397137, "error": null, "event": "attempt_end", "id": "t00284", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 6362.505096, "event": "terminal", "id": "t00284", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 6369.790775, "event": "attempt_start", "id": "t00130", "number": 5, "client_id": "agent-2"}
+{"at_ms": 6386.260316999999, "event": "attempt_start", "id": "t00296", "number": 2, "client_id": "agent-2"}
+{"at_ms": 6394.965304, "event": "attempt_start", "id": "t00186", "number": 4, "client_id": "agent-1"}
+{"at_ms": 6396.134512, "error": null, "event": "attempt_end", "id": "t00186", "number": 4, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6401.289168, "event": "arrival", "id": "t00352", "scheduled_ms": 6400.2664885815075, "client_id": "interactive"}
+{"at_ms": 6401.464002, "event": "attempt_start", "id": "t00352", "number": 1, "client_id": "interactive"}
+{"at_ms": 6403.176346, "event": "arrival", "id": "t00353", "scheduled_ms": 6400.558022445179, "client_id": "agent-1"}
+{"at_ms": 6403.390471, "event": "attempt_start", "id": "t00353", "number": 1, "client_id": "agent-1"}
+{"at_ms": 6404.011929, "error": null, "event": "attempt_end", "id": "t00353", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6404.310918, "error": null, "event": "attempt_end", "id": "t00341", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 6404.4810019999995, "event": "terminal", "id": "t00341", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 6409.043442, "event": "attempt_start", "id": "t00242", "number": 3, "client_id": "agent-2"}
+{"at_ms": 6409.922692, "error": null, "event": "attempt_end", "id": "t00242", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6428.041762000001, "event": "attempt_start", "id": "t00299", "number": 2, "client_id": "agent-1"}
+{"at_ms": 6429.292179, "error": null, "event": "attempt_end", "id": "t00299", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6446.113275, "event": "arrival", "id": "t00355", "scheduled_ms": 6444.449175152535, "client_id": "agent-2"}
+{"at_ms": 6446.265192, "event": "attempt_start", "id": "t00355", "number": 1, "client_id": "agent-2"}
+{"at_ms": 6448.985775, "error": null, "event": "attempt_end", "id": "t00355", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6491.054429, "event": "arrival", "id": "t00357", "scheduled_ms": 6489.328007282239, "client_id": "agent-1"}
+{"at_ms": 6491.477637, "event": "attempt_start", "id": "t00357", "number": 1, "client_id": "agent-1"}
+{"at_ms": 6492.575011999999, "error": null, "event": "attempt_end", "id": "t00357", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6502.737002, "event": "arrival", "id": "t00358", "scheduled_ms": 6500.151777430219, "client_id": "interactive"}
+{"at_ms": 6503.095168, "event": "attempt_start", "id": "t00358", "number": 1, "client_id": "interactive"}
+{"at_ms": 6504.568127, "error": null, "event": "attempt_end", "id": "t00347", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 6504.734668, "event": "terminal", "id": "t00347", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 6516.8648459999995, "event": "attempt_start", "id": "t00304", "number": 2, "client_id": "agent-1"}
+{"at_ms": 6517.957262000001, "error": null, "event": "attempt_end", "id": "t00304", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6535.889109000001, "event": "arrival", "id": "t00360", "scheduled_ms": 6533.977999759556, "client_id": "agent-2"}
+{"at_ms": 6536.138359, "event": "attempt_start", "id": "t00360", "number": 1, "client_id": "agent-2"}
+{"at_ms": 6537.020484000001, "error": null, "event": "attempt_end", "id": "t00360", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6541.856012, "error": null, "event": "attempt_end", "id": "t00294", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 6542.606929, "event": "terminal", "id": "t00294", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 6545.036221, "event": "attempt_start", "id": "t00250", "number": 3, "client_id": "agent-1"}
+{"at_ms": 6562.521192, "event": "attempt_start", "id": "t00306", "number": 2, "client_id": "agent-2"}
+{"at_ms": 6565.3291500000005, "error": null, "event": "attempt_end", "id": "t00350", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 6565.369900000001, "error": null, "event": "attempt_end", "id": "t00184", "number": 4, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 6565.476234, "event": "terminal", "id": "t00350", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 6565.834067, "event": "terminal", "id": "t00184", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 6573.930775, "error": null, "event": "attempt_end", "id": "t00130", "number": 5, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 6574.024734, "event": "terminal", "id": "t00130", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 6582.985679, "event": "arrival", "id": "t00362", "scheduled_ms": 6578.5814520890035, "client_id": "agent-1"}
+{"at_ms": 6583.098096, "event": "attempt_start", "id": "t00362", "number": 1, "client_id": "agent-1"}
+{"at_ms": 6590.714067000001, "event": "attempt_start", "id": "t00252", "number": 3, "client_id": "agent-2"}
+{"at_ms": 6591.472817, "error": null, "event": "attempt_end", "id": "t00296", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 6591.571484, "event": "terminal", "id": "t00296", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 6594.916887, "event": "attempt_start", "id": "t00142", "number": 5, "client_id": "agent-1"}
+{"at_ms": 6602.414627, "event": "arrival", "id": "t00363", "scheduled_ms": 6600.020276507515, "client_id": "interactive"}
+{"at_ms": 6602.951502, "event": "attempt_start", "id": "t00363", "number": 1, "client_id": "interactive"}
+{"at_ms": 6605.134418000001, "error": null, "event": "attempt_end", "id": "t00352", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 6605.29446, "event": "terminal", "id": "t00352", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 6609.595971, "event": "attempt_start", "id": "t00308", "number": 2, "client_id": "agent-1"}
+{"at_ms": 6610.079761999999, "error": null, "event": "attempt_end", "id": "t00308", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6611.659775, "event": "attempt_start", "id": "t00198", "number": 4, "client_id": "agent-2"}
+{"at_ms": 6611.959817, "error": null, "event": "attempt_end", "id": "t00198", "number": 4, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6625.141525, "event": "arrival", "id": "t00365", "scheduled_ms": 6622.833257875257, "client_id": "agent-2"}
+{"at_ms": 6626.001317, "event": "attempt_start", "id": "t00365", "number": 1, "client_id": "agent-2"}
+{"at_ms": 6626.50115, "error": null, "event": "attempt_end", "id": "t00365", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6632.1013459999995, "event": "attempt_start", "id": "t00255", "number": 3, "client_id": "agent-1"}
+{"at_ms": 6632.602637, "error": null, "event": "attempt_end", "id": "t00255", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6650.169234, "event": "attempt_start", "id": "t00311", "number": 2, "client_id": "agent-2"}
+{"at_ms": 6651.9174840000005, "error": null, "event": "attempt_end", "id": "t00311", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6669.137261999999, "event": "arrival", "id": "t00367", "scheduled_ms": 6666.904951451763, "client_id": "agent-1"}
+{"at_ms": 6669.362054, "event": "attempt_start", "id": "t00367", "number": 1, "client_id": "agent-1"}
+{"at_ms": 6680.170304, "error": null, "event": "attempt_end", "id": "t00367", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6700.746835, "event": "arrival", "id": "t00369", "scheduled_ms": 6700.183556789341, "client_id": "interactive"}
+{"at_ms": 6700.861502000001, "event": "attempt_start", "id": "t00369", "number": 1, "client_id": "interactive"}
+{"at_ms": 6705.436377, "error": null, "event": "attempt_end", "id": "t00358", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 6705.541043, "event": "terminal", "id": "t00358", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 6712.805609, "event": "arrival", "id": "t00370", "scheduled_ms": 6711.217003005994, "client_id": "agent-2"}
+{"at_ms": 6713.094025, "event": "attempt_start", "id": "t00370", "number": 1, "client_id": "agent-2"}
+{"at_ms": 6716.926859, "error": null, "event": "attempt_end", "id": "t00370", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6750.296096, "error": null, "event": "attempt_end", "id": "t00250", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 6750.412929, "event": "terminal", "id": "t00250", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 6751.6276370000005, "event": "attempt_start", "id": "t00206", "number": 4, "client_id": "agent-1"}
+{"at_ms": 6757.344512, "event": "arrival", "id": "t00372", "scheduled_ms": 6756.147566208411, "client_id": "agent-1"}
+{"at_ms": 6757.722804, "event": "attempt_start", "id": "t00372", "number": 1, "client_id": "agent-1"}
+{"at_ms": 6758.391012, "error": null, "event": "attempt_end", "id": "t00372", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6767.5431499999995, "event": "attempt_start", "id": "t00262", "number": 3, "client_id": "agent-2"}
+{"at_ms": 6767.916109, "error": null, "event": "attempt_end", "id": "t00306", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 6768.244609, "event": "terminal", "id": "t00306", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 6785.659721, "error": null, "event": "attempt_end", "id": "t00362", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 6785.774637, "event": "terminal", "id": "t00362", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 6785.876429, "event": "attempt_start", "id": "t00318", "number": 2, "client_id": "agent-1"}
+{"at_ms": 6793.265109, "error": null, "event": "attempt_end", "id": "t00252", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 6793.484859, "event": "terminal", "id": "t00252", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 6800.610428999999, "error": null, "event": "attempt_end", "id": "t00142", "number": 5, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 6801.002429, "event": "terminal", "id": "t00142", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 6802.389775, "event": "arrival", "id": "t00374", "scheduled_ms": 6800.1687882441865, "client_id": "agent-2"}
+{"at_ms": 6802.5974, "event": "attempt_start", "id": "t00374", "number": 1, "client_id": "agent-2"}
+{"at_ms": 6802.783418, "event": "arrival", "id": "t00375", "scheduled_ms": 6800.997621989831, "client_id": "interactive"}
+{"at_ms": 6802.948252, "event": "attempt_start", "id": "t00375", "number": 1, "client_id": "interactive"}
+{"at_ms": 6805.4055020000005, "error": null, "event": "attempt_end", "id": "t00363", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 6805.663584999999, "event": "terminal", "id": "t00363", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 6811.3185539999995, "event": "attempt_start", "id": "t00265", "number": 3, "client_id": "agent-1"}
+{"at_ms": 6812.265275, "event": "attempt_start", "id": "t00155", "number": 5, "client_id": "agent-2"}
+{"at_ms": 6812.916567, "error": null, "event": "attempt_end", "id": "t00155", "number": 5, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6813.135192, "event": "terminal", "id": "t00155", "outcome": "failed", "reason": "Operation HTTP status 429", "client_id": "agent-2"}
+{"at_ms": 6827.425192, "event": "attempt_start", "id": "t00321", "number": 2, "client_id": "agent-2"}
+{"at_ms": 6828.23815, "error": null, "event": "attempt_end", "id": "t00321", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6833.908054, "event": "attempt_start", "id": "t00211", "number": 4, "client_id": "agent-1"}
+{"at_ms": 6834.500554, "error": null, "event": "attempt_end", "id": "t00211", "number": 4, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6847.662012, "event": "arrival", "id": "t00377", "scheduled_ms": 6845.114176985247, "client_id": "agent-1"}
+{"at_ms": 6847.802304, "event": "attempt_start", "id": "t00377", "number": 1, "client_id": "agent-1"}
+{"at_ms": 6848.458596, "error": null, "event": "attempt_end", "id": "t00377", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6866.707525, "event": "attempt_start", "id": "t00267", "number": 3, "client_id": "agent-2"}
+{"at_ms": 6868.143567, "error": null, "event": "attempt_end", "id": "t00267", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6874.225679, "event": "attempt_start", "id": "t00323", "number": 2, "client_id": "agent-1"}
+{"at_ms": 6875.120220999999, "error": null, "event": "attempt_end", "id": "t00323", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6892.271484, "event": "arrival", "id": "t00379", "scheduled_ms": 6889.784695770224, "client_id": "agent-2"}
+{"at_ms": 6892.437275, "event": "attempt_start", "id": "t00379", "number": 1, "client_id": "agent-2"}
+{"at_ms": 6893.262692, "error": null, "event": "attempt_end", "id": "t00379", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 6901.881835, "event": "arrival", "id": "t00380", "scheduled_ms": 6900.0102267400325, "client_id": "interactive"}
+{"at_ms": 6902.145335, "event": "attempt_start", "id": "t00380", "number": 1, "client_id": "interactive"}
+{"at_ms": 6903.780127, "error": null, "event": "attempt_end", "id": "t00369", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 6903.98346, "event": "terminal", "id": "t00369", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 6936.000929000001, "event": "arrival", "id": "t00382", "scheduled_ms": 6934.004086401327, "client_id": "agent-1"}
+{"at_ms": 6936.449471, "event": "attempt_start", "id": "t00382", "number": 1, "client_id": "agent-1"}
+{"at_ms": 6937.703054, "error": null, "event": "attempt_end", "id": "t00382", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 6953.717846, "error": null, "event": "attempt_end", "id": "t00206", "number": 4, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 6953.844846, "event": "terminal", "id": "t00206", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 6969.579942, "event": "attempt_start", "id": "t00218", "number": 4, "client_id": "agent-2"}
+{"at_ms": 6969.657109, "error": null, "event": "attempt_end", "id": "t00262", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 6969.823025000001, "event": "terminal", "id": "t00262", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 6979.438859, "event": "arrival", "id": "t00384", "scheduled_ms": 6978.294154396636, "client_id": "agent-2"}
+{"at_ms": 6979.578775, "event": "attempt_start", "id": "t00384", "number": 1, "client_id": "agent-2"}
+{"at_ms": 6988.455137, "error": null, "event": "attempt_end", "id": "t00318", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 6990.400637000001, "event": "terminal", "id": "t00318", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 6990.822804, "event": "attempt_start", "id": "t00274", "number": 3, "client_id": "agent-1"}
+{"at_ms": 7002.904917999999, "event": "arrival", "id": "t00385", "scheduled_ms": 7000.739035501895, "client_id": "interactive"}
+{"at_ms": 7003.129252, "event": "attempt_start", "id": "t00385", "number": 1, "client_id": "interactive"}
+{"at_ms": 7006.214524999999, "error": null, "event": "attempt_end", "id": "t00374", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 7006.409335, "error": null, "event": "attempt_end", "id": "t00375", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 7006.548525, "event": "terminal", "id": "t00374", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 7006.999252, "event": "terminal", "id": "t00375", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 7007.074359, "event": "attempt_start", "id": "t00330", "number": 2, "client_id": "agent-2"}
+{"at_ms": 7014.444595999999, "error": null, "event": "attempt_end", "id": "t00265", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 7014.673596, "event": "terminal", "id": "t00265", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 7024.928471, "event": "arrival", "id": "t00387", "scheduled_ms": 7023.015320220539, "client_id": "agent-1"}
+{"at_ms": 7025.144221, "event": "attempt_start", "id": "t00387", "number": 1, "client_id": "agent-1"}
+{"at_ms": 7049.014512000001, "event": "attempt_start", "id": "t00333", "number": 2, "client_id": "agent-1"}
+{"at_ms": 7049.524221000001, "error": null, "event": "attempt_end", "id": "t00333", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7069.228775, "event": "arrival", "id": "t00389", "scheduled_ms": 7067.538818676713, "client_id": "agent-2"}
+{"at_ms": 7069.411567, "event": "attempt_start", "id": "t00389", "number": 1, "client_id": "agent-2"}
+{"at_ms": 7070.179150000001, "error": null, "event": "attempt_end", "id": "t00389", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7075.661262, "event": "attempt_start", "id": "t00279", "number": 3, "client_id": "agent-1"}
+{"at_ms": 7076.428429, "error": null, "event": "attempt_end", "id": "t00279", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7085.350067, "event": "attempt_start", "id": "t00169", "number": 5, "client_id": "agent-2"}
+{"at_ms": 7086.3009, "error": null, "event": "attempt_end", "id": "t00169", "number": 5, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7086.460734, "event": "terminal", "id": "t00169", "outcome": "failed", "reason": "Operation HTTP status 429", "client_id": "agent-2"}
+{"at_ms": 7092.280900000001, "event": "attempt_start", "id": "t00335", "number": 2, "client_id": "agent-2"}
+{"at_ms": 7092.859817, "error": null, "event": "attempt_end", "id": "t00335", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7102.56396, "event": "arrival", "id": "t00391", "scheduled_ms": 7100.803780851226, "client_id": "interactive"}
+{"at_ms": 7102.701459999999, "event": "attempt_start", "id": "t00391", "number": 1, "client_id": "interactive"}
+{"at_ms": 7104.9813349999995, "error": null, "event": "attempt_end", "id": "t00380", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 7105.331085000001, "event": "terminal", "id": "t00380", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 7116.592971, "event": "arrival", "id": "t00392", "scheduled_ms": 7111.81239396622, "client_id": "agent-1"}
+{"at_ms": 7116.737762, "event": "attempt_start", "id": "t00392", "number": 1, "client_id": "agent-1"}
+{"at_ms": 7117.944887000001, "error": null, "event": "attempt_end", "id": "t00392", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7158.0064840000005, "event": "arrival", "id": "t00394", "scheduled_ms": 7156.324748813566, "client_id": "agent-2"}
+{"at_ms": 7158.101484000001, "event": "attempt_start", "id": "t00394", "number": 1, "client_id": "agent-2"}
+{"at_ms": 7158.458775, "error": null, "event": "attempt_end", "id": "t00394", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7173.9686919999995, "event": "attempt_start", "id": "t00174", "number": 5, "client_id": "agent-2"}
+{"at_ms": 7175.4129, "error": null, "event": "attempt_end", "id": "t00174", "number": 5, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7175.537567, "event": "terminal", "id": "t00174", "outcome": "failed", "reason": "Operation HTTP status 429", "client_id": "agent-2"}
+{"at_ms": 7175.658359, "error": null, "event": "attempt_end", "id": "t00218", "number": 4, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 7175.750067, "event": "terminal", "id": "t00218", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 7183.068025, "event": "attempt_start", "id": "t00340", "number": 2, "client_id": "agent-2"}
+{"at_ms": 7183.852109, "error": null, "event": "attempt_end", "id": "t00384", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 7183.966025, "event": "terminal", "id": "t00384", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 7194.128679, "event": "attempt_start", "id": "t00230", "number": 4, "client_id": "agent-1"}
+{"at_ms": 7194.346512, "error": null, "event": "attempt_end", "id": "t00274", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 7194.463304, "event": "terminal", "id": "t00274", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 7210.721127, "event": "arrival", "id": "t00396", "scheduled_ms": 7200.581159486201, "client_id": "interactive"}
+{"at_ms": 7210.740525, "event": "attempt_start", "id": "t00287", "number": 3, "client_id": "agent-2"}
+{"at_ms": 7210.746887, "event": "arrival", "id": "t00397", "scheduled_ms": 7200.685101638817, "client_id": "agent-1"}
+{"at_ms": 7210.965002, "event": "attempt_start", "id": "t00396", "number": 1, "client_id": "interactive"}
+{"at_ms": 7211.047428999999, "event": "attempt_start", "id": "t00397", "number": 1, "client_id": "agent-1"}
+{"at_ms": 7211.25371, "error": null, "event": "attempt_end", "id": "t00385", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 7211.342942, "error": null, "event": "attempt_end", "id": "t00330", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 7211.454668, "event": "terminal", "id": "t00385", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 7211.763150000001, "event": "terminal", "id": "t00330", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 7227.399054, "event": "attempt_start", "id": "t00343", "number": 2, "client_id": "agent-1"}
+{"at_ms": 7227.991346, "error": null, "event": "attempt_end", "id": "t00343", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7228.239637, "error": null, "event": "attempt_end", "id": "t00387", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 7228.338721, "event": "terminal", "id": "t00387", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 7246.9692749999995, "event": "arrival", "id": "t00399", "scheduled_ms": 7244.75652502386, "client_id": "agent-2"}
+{"at_ms": 7248.777234, "event": "attempt_start", "id": "t00399", "number": 1, "client_id": "agent-2"}
+{"at_ms": 7271.796359, "event": "attempt_start", "id": "t00345", "number": 2, "client_id": "agent-2"}
+{"at_ms": 7273.395359, "error": null, "event": "attempt_end", "id": "t00345", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7290.5934290000005, "event": "arrival", "id": "t00401", "scheduled_ms": 7289.003255528222, "client_id": "agent-1"}
+{"at_ms": 7290.717804, "event": "attempt_start", "id": "t00401", "number": 1, "client_id": "agent-1"}
+{"at_ms": 7291.262971, "error": null, "event": "attempt_end", "id": "t00401", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7302.5696499999995, "event": "attempt_start", "id": "t00291", "number": 3, "client_id": "agent-2"}
+{"at_ms": 7302.935668, "event": "arrival", "id": "t00402", "scheduled_ms": 7300.639305920565, "client_id": "interactive"}
+{"at_ms": 7303.047667999999, "event": "attempt_start", "id": "t00402", "number": 1, "client_id": "interactive"}
+{"at_ms": 7303.230775, "error": null, "event": "attempt_end", "id": "t00291", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7304.835668, "error": null, "event": "attempt_end", "id": "t00391", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 7304.976085, "event": "terminal", "id": "t00391", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 7313.290846, "event": "attempt_start", "id": "t00181", "number": 5, "client_id": "agent-1"}
+{"at_ms": 7315.244511999999, "event": "attempt_start", "id": "t00348", "number": 2, "client_id": "agent-1"}
+{"at_ms": 7315.522262, "error": null, "event": "attempt_end", "id": "t00181", "number": 5, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7315.660346, "event": "terminal", "id": "t00181", "outcome": "failed", "reason": "Operation HTTP status 429", "client_id": "agent-1"}
+{"at_ms": 7315.8404709999995, "error": null, "event": "attempt_end", "id": "t00348", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7336.169817, "event": "arrival", "id": "t00404", "scheduled_ms": 7333.989600295717, "client_id": "agent-2"}
+{"at_ms": 7336.460859, "event": "attempt_start", "id": "t00404", "number": 1, "client_id": "agent-2"}
+{"at_ms": 7337.570774999999, "error": null, "event": "attempt_end", "id": "t00404", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7381.060554000001, "event": "arrival", "id": "t00406", "scheduled_ms": 7378.075355348055, "client_id": "agent-1"}
+{"at_ms": 7381.780637000001, "event": "attempt_start", "id": "t00406", "number": 1, "client_id": "agent-1"}
+{"at_ms": 7382.6270540000005, "error": null, "event": "attempt_end", "id": "t00406", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7385.1657749999995, "error": null, "event": "attempt_end", "id": "t00340", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 7385.43315, "event": "terminal", "id": "t00340", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 7398.986929000001, "event": "attempt_start", "id": "t00186", "number": 5, "client_id": "agent-1"}
+{"at_ms": 7399.481554, "error": null, "event": "attempt_end", "id": "t00230", "number": 4, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 7399.749262, "event": "terminal", "id": "t00230", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 7401.310252, "event": "arrival", "id": "t00408", "scheduled_ms": 7400.348155097005, "client_id": "interactive"}
+{"at_ms": 7401.408502, "event": "attempt_start", "id": "t00408", "number": 1, "client_id": "interactive"}
+{"at_ms": 7406.586304, "event": "attempt_start", "id": "t00353", "number": 2, "client_id": "agent-1"}
+{"at_ms": 7411.5129, "event": "attempt_start", "id": "t00242", "number": 4, "client_id": "agent-2"}
+{"at_ms": 7412.067109, "error": null, "event": "attempt_end", "id": "t00242", "number": 4, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7416.0914, "error": null, "event": "attempt_end", "id": "t00287", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 7416.09196, "error": null, "event": "attempt_end", "id": "t00396", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 7416.139804, "error": null, "event": "attempt_end", "id": "t00397", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 7416.378418, "event": "terminal", "id": "t00396", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 7416.441775, "event": "terminal", "id": "t00287", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 7416.457804000001, "event": "terminal", "id": "t00397", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 7423.538942, "event": "arrival", "id": "t00409", "scheduled_ms": 7422.459177574654, "client_id": "agent-2"}
+{"at_ms": 7423.734066999999, "event": "attempt_start", "id": "t00409", "number": 1, "client_id": "agent-2"}
+{"at_ms": 7432.719596, "event": "attempt_start", "id": "t00299", "number": 3, "client_id": "agent-1"}
+{"at_ms": 7451.221484000001, "event": "attempt_start", "id": "t00355", "number": 2, "client_id": "agent-2"}
+{"at_ms": 7451.979275000001, "error": null, "event": "attempt_end", "id": "t00355", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7452.3592340000005, "error": null, "event": "attempt_end", "id": "t00399", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 7452.4959, "event": "terminal", "id": "t00399", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 7469.329471, "event": "arrival", "id": "t00411", "scheduled_ms": 7466.807990259123, "client_id": "agent-1"}
+{"at_ms": 7469.577096, "event": "attempt_start", "id": "t00411", "number": 1, "client_id": "agent-1"}
+{"at_ms": 7495.245387, "event": "attempt_start", "id": "t00357", "number": 2, "client_id": "agent-1"}
+{"at_ms": 7497.787346, "error": null, "event": "attempt_end", "id": "t00357", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7502.716085, "event": "arrival", "id": "t00413", "scheduled_ms": 7500.719887707624, "client_id": "interactive"}
+{"at_ms": 7503.010335, "event": "attempt_start", "id": "t00413", "number": 1, "client_id": "interactive"}
+{"at_ms": 7511.457085, "error": null, "event": "attempt_end", "id": "t00402", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 7511.636418, "event": "terminal", "id": "t00402", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 7514.927567, "event": "arrival", "id": "t00414", "scheduled_ms": 7511.129710307404, "client_id": "agent-2"}
+{"at_ms": 7515.235609, "event": "attempt_start", "id": "t00414", "number": 1, "client_id": "agent-2"}
+{"at_ms": 7516.021817000001, "error": null, "event": "attempt_end", "id": "t00414", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7523.281262, "event": "attempt_start", "id": "t00304", "number": 3, "client_id": "agent-1"}
+{"at_ms": 7524.3759709999995, "error": null, "event": "attempt_end", "id": "t00304", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7540.568025, "event": "attempt_start", "id": "t00360", "number": 2, "client_id": "agent-2"}
+{"at_ms": 7542.169275, "error": null, "event": "attempt_end", "id": "t00360", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7558.684679, "event": "arrival", "id": "t00416", "scheduled_ms": 7555.679886107646, "client_id": "agent-1"}
+{"at_ms": 7559.097929, "event": "attempt_start", "id": "t00416", "number": 1, "client_id": "agent-1"}
+{"at_ms": 7560.3073460000005, "error": null, "event": "attempt_end", "id": "t00416", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7603.065834999999, "event": "arrival", "id": "t00418", "scheduled_ms": 7600.321725728188, "client_id": "interactive"}
+{"at_ms": 7603.53571, "event": "attempt_start", "id": "t00418", "number": 1, "client_id": "interactive"}
+{"at_ms": 7604.350085, "error": null, "event": "attempt_end", "id": "t00408", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 7604.403762000001, "error": null, "event": "attempt_end", "id": "t00186", "number": 5, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 7604.643793, "event": "terminal", "id": "t00408", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 7604.951679, "event": "terminal", "id": "t00186", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 7606.127692, "event": "arrival", "id": "t00419", "scheduled_ms": 7600.7214932593315, "client_id": "agent-2"}
+{"at_ms": 7606.286984, "event": "attempt_start", "id": "t00419", "number": 1, "client_id": "agent-2"}
+{"at_ms": 7608.838596, "error": null, "event": "attempt_end", "id": "t00353", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 7608.929262000001, "event": "terminal", "id": "t00353", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 7611.278971, "event": "attempt_start", "id": "t00308", "number": 3, "client_id": "agent-1"}
+{"at_ms": 7614.475525, "event": "attempt_start", "id": "t00198", "number": 5, "client_id": "agent-2"}
+{"at_ms": 7614.917234, "error": null, "event": "attempt_end", "id": "t00198", "number": 5, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7615.019775000001, "event": "terminal", "id": "t00198", "outcome": "failed", "reason": "Operation HTTP status 429", "client_id": "agent-2"}
+{"at_ms": 7627.2294839999995, "event": "attempt_start", "id": "t00365", "number": 2, "client_id": "agent-2"}
+{"at_ms": 7627.529817000001, "error": null, "event": "attempt_end", "id": "t00409", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 7627.754734, "event": "terminal", "id": "t00409", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 7634.7855119999995, "event": "attempt_start", "id": "t00255", "number": 4, "client_id": "agent-1"}
+{"at_ms": 7636.015596, "error": null, "event": "attempt_end", "id": "t00255", "number": 4, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7637.068345999999, "error": null, "event": "attempt_end", "id": "t00299", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 7637.498721, "event": "terminal", "id": "t00299", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 7646.933221, "event": "arrival", "id": "t00421", "scheduled_ms": 7644.703024031135, "client_id": "agent-1"}
+{"at_ms": 7648.911846, "event": "attempt_start", "id": "t00421", "number": 1, "client_id": "agent-1"}
+{"at_ms": 7653.660734, "event": "attempt_start", "id": "t00311", "number": 3, "client_id": "agent-2"}
+{"at_ms": 7654.3977749999995, "error": null, "event": "attempt_end", "id": "t00311", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7675.210012, "error": null, "event": "attempt_end", "id": "t00411", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 7676.605262, "event": "terminal", "id": "t00411", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 7682.526387, "event": "attempt_start", "id": "t00367", "number": 2, "client_id": "agent-1"}
+{"at_ms": 7690.705234, "event": "arrival", "id": "t00423", "scheduled_ms": 7689.2168826291245, "client_id": "agent-2"}
+{"at_ms": 7690.945817, "event": "attempt_start", "id": "t00423", "number": 1, "client_id": "agent-2"}
+{"at_ms": 7691.839567, "error": null, "event": "attempt_end", "id": "t00423", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7702.503917999999, "event": "arrival", "id": "t00424", "scheduled_ms": 7700.453248802363, "client_id": "interactive"}
+{"at_ms": 7702.798168, "event": "attempt_start", "id": "t00424", "number": 1, "client_id": "interactive"}
+{"at_ms": 7708.19471, "error": null, "event": "attempt_end", "id": "t00413", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 7708.296042999999, "event": "terminal", "id": "t00413", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 7719.126525, "event": "attempt_start", "id": "t00370", "number": 2, "client_id": "agent-2"}
+{"at_ms": 7720.024442, "error": null, "event": "attempt_end", "id": "t00370", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7736.230804, "event": "arrival", "id": "t00426", "scheduled_ms": 7734.231968559592, "client_id": "agent-1"}
+{"at_ms": 7736.526887, "event": "attempt_start", "id": "t00426", "number": 1, "client_id": "agent-1"}
+{"at_ms": 7737.505221, "error": null, "event": "attempt_end", "id": "t00426", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7759.643554, "event": "attempt_start", "id": "t00372", "number": 2, "client_id": "agent-1"}
+{"at_ms": 7768.068386999999, "error": null, "event": "attempt_end", "id": "t00372", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7784.6802339999995, "event": "arrival", "id": "t00428", "scheduled_ms": 7778.502325936415, "client_id": "agent-2"}
+{"at_ms": 7788.725066999999, "event": "attempt_start", "id": "t00428", "number": 1, "client_id": "agent-2"}
+{"at_ms": 7789.704942, "error": null, "event": "attempt_end", "id": "t00428", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7802.81346, "event": "arrival", "id": "t00430", "scheduled_ms": 7800.824269954595, "client_id": "interactive"}
+{"at_ms": 7808.295085, "error": null, "event": "attempt_end", "id": "t00418", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 7808.872918000001, "event": "attempt_start", "id": "t00430", "number": 1, "client_id": "interactive"}
+{"at_ms": 7808.957502, "event": "terminal", "id": "t00418", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 7809.181942, "error": null, "event": "attempt_end", "id": "t00419", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 7809.367525, "event": "terminal", "id": "t00419", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 7815.333095999999, "error": null, "event": "attempt_end", "id": "t00308", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 7815.419179, "event": "terminal", "id": "t00308", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 7825.524346, "event": "arrival", "id": "t00431", "scheduled_ms": 7822.7714773057005, "client_id": "agent-1"}
+{"at_ms": 7825.622262, "event": "attempt_start", "id": "t00431", "number": 1, "client_id": "agent-1"}
+{"at_ms": 7829.178567, "event": "attempt_start", "id": "t00321", "number": 3, "client_id": "agent-2"}
+{"at_ms": 7829.229609, "error": null, "event": "attempt_end", "id": "t00365", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 7829.332275, "event": "terminal", "id": "t00365", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 7835.152470999999, "event": "attempt_start", "id": "t00211", "number": 5, "client_id": "agent-1"}
+{"at_ms": 7849.161053999999, "event": "attempt_start", "id": "t00377", "number": 2, "client_id": "agent-1"}
+{"at_ms": 7850.022429, "error": null, "event": "attempt_end", "id": "t00377", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7853.195721, "error": null, "event": "attempt_end", "id": "t00421", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 7853.639804, "event": "terminal", "id": "t00421", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 7868.738859, "event": "attempt_start", "id": "t00267", "number": 4, "client_id": "agent-2"}
+{"at_ms": 7869.620317, "event": "arrival", "id": "t00433", "scheduled_ms": 7866.704383791737, "client_id": "agent-2"}
+{"at_ms": 7869.904525, "event": "attempt_start", "id": "t00433", "number": 1, "client_id": "agent-2"}
+{"at_ms": 7870.5664, "error": null, "event": "attempt_end", "id": "t00433", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 7877.770762, "event": "attempt_start", "id": "t00323", "number": 3, "client_id": "agent-1"}
+{"at_ms": 7878.508721, "error": null, "event": "attempt_end", "id": "t00323", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7885.506846, "error": null, "event": "attempt_end", "id": "t00367", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 7885.9060119999995, "event": "terminal", "id": "t00367", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 7894.848984, "event": "attempt_start", "id": "t00379", "number": 2, "client_id": "agent-2"}
+{"at_ms": 7903.254043000001, "event": "arrival", "id": "t00435", "scheduled_ms": 7900.5391821433905, "client_id": "interactive"}
+{"at_ms": 7903.492918, "event": "attempt_start", "id": "t00435", "number": 1, "client_id": "interactive"}
+{"at_ms": 7907.171835, "error": null, "event": "attempt_end", "id": "t00424", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 7907.297627, "event": "terminal", "id": "t00424", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 7913.350179, "event": "arrival", "id": "t00436", "scheduled_ms": 7912.039143372097, "client_id": "agent-1"}
+{"at_ms": 7913.455387, "event": "attempt_start", "id": "t00436", "number": 1, "client_id": "agent-1"}
+{"at_ms": 7914.007179, "error": null, "event": "attempt_end", "id": "t00436", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7943.888471, "event": "attempt_start", "id": "t00382", "number": 2, "client_id": "agent-1"}
+{"at_ms": 7944.597637, "error": null, "event": "attempt_end", "id": "t00382", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 7958.264484, "event": "arrival", "id": "t00438", "scheduled_ms": 7956.396367085209, "client_id": "agent-2"}
+{"at_ms": 7958.533316999999, "event": "attempt_start", "id": "t00438", "number": 1, "client_id": "agent-2"}
+{"at_ms": 7959.40765, "error": null, "event": "attempt_end", "id": "t00438", "number": 1, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 8017.270877, "error": null, "event": "attempt_end", "id": "t00430", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 8017.823835, "event": "terminal", "id": "t00430", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"at_ms": 8028.4080539999995, "error": null, "event": "attempt_end", "id": "t00431", "number": 1, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 8028.673054000001, "event": "terminal", "id": "t00431", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 8032.422984, "error": null, "event": "attempt_end", "id": "t00321", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 8032.686775, "event": "terminal", "id": "t00321", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 8040.062886999999, "error": null, "event": "attempt_end", "id": "t00211", "number": 5, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 8040.331137000001, "event": "terminal", "id": "t00211", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 8051.602220999999, "event": "attempt_start", "id": "t00333", "number": 3, "client_id": "agent-1"}
+{"at_ms": 8073.065858999999, "event": "attempt_start", "id": "t00389", "number": 2, "client_id": "agent-2"}
+{"at_ms": 8074.891525, "error": null, "event": "attempt_end", "id": "t00267", "number": 4, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 8075.140275000001, "event": "terminal", "id": "t00267", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 8078.334179, "event": "attempt_start", "id": "t00279", "number": 4, "client_id": "agent-1"}
+{"at_ms": 8093.643192, "event": "attempt_start", "id": "t00335", "number": 3, "client_id": "agent-2"}
+{"at_ms": 8100.031233999999, "error": null, "event": "attempt_end", "id": "t00379", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 8100.383525, "event": "terminal", "id": "t00379", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 8109.165877, "error": null, "event": "attempt_end", "id": "t00435", "number": 1, "retry_after": null, "status": 200, "client_id": "interactive"}
+{"at_ms": 8109.273209999999, "event": "terminal", "id": "t00435", "outcome": "success", "reason": "completed", "client_id": "interactive"}
+{"active": 0, "at_ms": 8109.34196, "event": "gate_final", "limit": 0, "owner": "demo-owner", "ready": false, "revision": 0, "client_id": "interactive"}
+{"active": 0, "at_ms": 8109.428543, "event": "gate_final", "limit": 0, "owner": "other-owner", "ready": false, "revision": 0, "client_id": "interactive"}
+{"at_ms": 8109.49521, "deadline_reached": false, "event": "run_end", "client_id": "interactive"}
+{"at_ms": 8120.049470999999, "event": "attempt_start", "id": "t00392", "number": 2, "client_id": "agent-1"}
+{"at_ms": 8159.860483999999, "event": "attempt_start", "id": "t00394", "number": 2, "client_id": "agent-2"}
+{"at_ms": 8161.2231919999995, "error": null, "event": "attempt_end", "id": "t00394", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 8231.678136999999, "event": "attempt_start", "id": "t00343", "number": 3, "client_id": "agent-1"}
+{"at_ms": 8233.517096, "error": null, "event": "attempt_end", "id": "t00343", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 8260.118929, "error": null, "event": "attempt_end", "id": "t00333", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 8260.312887, "event": "terminal", "id": "t00333", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 8277.350067000001, "event": "attempt_start", "id": "t00345", "number": 3, "client_id": "agent-2"}
+{"at_ms": 8278.063567000001, "error": null, "event": "attempt_end", "id": "t00389", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 8278.485734, "event": "terminal", "id": "t00389", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 8285.097471000001, "error": null, "event": "attempt_end", "id": "t00279", "number": 4, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 8285.550887, "event": "terminal", "id": "t00279", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 8292.619262, "event": "attempt_start", "id": "t00401", "number": 2, "client_id": "agent-1"}
+{"at_ms": 8296.182442, "error": null, "event": "attempt_end", "id": "t00335", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 8296.504442, "event": "terminal", "id": "t00335", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 8305.9369, "event": "attempt_start", "id": "t00291", "number": 4, "client_id": "agent-2"}
+{"at_ms": 8318.252762, "event": "attempt_start", "id": "t00348", "number": 3, "client_id": "agent-1"}
+{"at_ms": 8325.044221, "error": null, "event": "attempt_end", "id": "t00392", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 8325.189346000001, "event": "terminal", "id": "t00392", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 8340.84415, "event": "attempt_start", "id": "t00404", "number": 2, "client_id": "agent-2"}
+{"at_ms": 8384.831971000001, "event": "attempt_start", "id": "t00406", "number": 2, "client_id": "agent-1"}
+{"at_ms": 8385.592346, "error": null, "event": "attempt_end", "id": "t00406", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 8415.617942, "event": "attempt_start", "id": "t00242", "number": 5, "client_id": "agent-2"}
+{"at_ms": 8416.740484, "error": null, "event": "attempt_end", "id": "t00242", "number": 5, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 8416.977567, "event": "terminal", "id": "t00242", "outcome": "failed", "reason": "Operation HTTP status 429", "client_id": "agent-2"}
+{"at_ms": 8454.317734, "event": "attempt_start", "id": "t00355", "number": 3, "client_id": "agent-2"}
+{"at_ms": 8454.878025, "error": null, "event": "attempt_end", "id": "t00355", "number": 3, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 8481.10215, "error": null, "event": "attempt_end", "id": "t00345", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 8481.2889, "event": "terminal", "id": "t00345", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 8498.367929, "error": null, "event": "attempt_end", "id": "t00401", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 8498.643929, "event": "terminal", "id": "t00401", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 8498.881846, "event": "attempt_start", "id": "t00357", "number": 3, "client_id": "agent-1"}
+{"at_ms": 8510.828692000001, "error": null, "event": "attempt_end", "id": "t00291", "number": 4, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 8511.098484, "event": "terminal", "id": "t00291", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 8518.089609, "event": "attempt_start", "id": "t00414", "number": 2, "client_id": "agent-2"}
+{"at_ms": 8525.636429, "event": "attempt_start", "id": "t00304", "number": 4, "client_id": "agent-1"}
+{"at_ms": 8525.882470999999, "error": null, "event": "attempt_end", "id": "t00348", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 8526.217554, "event": "terminal", "id": "t00348", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 8543.837234, "event": "attempt_start", "id": "t00360", "number": 3, "client_id": "agent-2"}
+{"at_ms": 8545.780109000001, "error": null, "event": "attempt_end", "id": "t00404", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 8546.23665, "event": "terminal", "id": "t00404", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 8563.144429, "event": "attempt_start", "id": "t00416", "number": 2, "client_id": "agent-1"}
+{"at_ms": 8638.851512000001, "event": "attempt_start", "id": "t00255", "number": 5, "client_id": "agent-1"}
+{"at_ms": 8639.485012, "error": null, "event": "attempt_end", "id": "t00255", "number": 5, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 8639.607221, "event": "terminal", "id": "t00255", "outcome": "failed", "reason": "Operation HTTP status 429", "client_id": "agent-1"}
+{"at_ms": 8656.843859, "event": "attempt_start", "id": "t00311", "number": 4, "client_id": "agent-2"}
+{"at_ms": 8658.482941999999, "error": null, "event": "attempt_end", "id": "t00311", "number": 4, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 8693.921234, "event": "attempt_start", "id": "t00423", "number": 2, "client_id": "agent-2"}
+{"at_ms": 8695.337192, "error": null, "event": "attempt_end", "id": "t00423", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 8702.212470999999, "error": null, "event": "attempt_end", "id": "t00357", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 8702.379221, "event": "terminal", "id": "t00357", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 8726.608359, "event": "attempt_start", "id": "t00370", "number": 3, "client_id": "agent-2"}
+{"at_ms": 8727.767484, "error": null, "event": "attempt_end", "id": "t00414", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 8727.890192, "event": "terminal", "id": "t00414", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 8727.968637, "error": null, "event": "attempt_end", "id": "t00304", "number": 4, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 8728.067554000001, "event": "terminal", "id": "t00304", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 8743.347054000002, "event": "attempt_start", "id": "t00426", "number": 2, "client_id": "agent-1"}
+{"at_ms": 8746.140984, "error": null, "event": "attempt_end", "id": "t00360", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 8746.2544, "event": "terminal", "id": "t00360", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 8770.092596, "event": "attempt_start", "id": "t00372", "number": 3, "client_id": "agent-1"}
+{"at_ms": 8770.683012, "error": null, "event": "attempt_end", "id": "t00416", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 8770.893971, "event": "terminal", "id": "t00416", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 8796.371317000001, "event": "attempt_start", "id": "t00428", "number": 2, "client_id": "agent-2"}
+{"at_ms": 8852.377179, "event": "attempt_start", "id": "t00377", "number": 3, "client_id": "agent-1"}
+{"at_ms": 8882.369609, "event": "attempt_start", "id": "t00433", "number": 2, "client_id": "agent-2"}
+{"at_ms": 8882.590971, "event": "attempt_start", "id": "t00323", "number": 4, "client_id": "agent-1"}
+{"at_ms": 8883.029886999999, "error": null, "event": "attempt_end", "id": "t00323", "number": 4, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 8883.070067, "error": null, "event": "attempt_end", "id": "t00433", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-2"}
+{"at_ms": 8916.207511999999, "event": "attempt_start", "id": "t00436", "number": 2, "client_id": "agent-1"}
+{"at_ms": 8916.955971, "error": null, "event": "attempt_end", "id": "t00436", "number": 2, "retry_after": "1", "status": 429, "client_id": "agent-1"}
+{"at_ms": 8929.989192000001, "error": null, "event": "attempt_end", "id": "t00370", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 8930.260942, "event": "terminal", "id": "t00370", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 8947.561387, "event": "attempt_start", "id": "t00382", "number": 3, "client_id": "agent-1"}
+{"at_ms": 8947.727095999999, "error": null, "event": "attempt_end", "id": "t00426", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 8947.882887, "event": "terminal", "id": "t00426", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 8962.5214, "event": "attempt_start", "id": "t00438", "number": 2, "client_id": "agent-2"}
+{"at_ms": 8975.140262, "error": null, "event": "attempt_end", "id": "t00372", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 8975.282179, "event": "terminal", "id": "t00372", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 9003.514442, "error": null, "event": "attempt_end", "id": "t00428", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 9003.764484, "event": "terminal", "id": "t00428", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 9061.972554, "error": null, "event": "attempt_end", "id": "t00377", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 9062.156012000001, "event": "terminal", "id": "t00377", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 9151.405886999999, "error": null, "event": "attempt_end", "id": "t00382", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 9152.046221, "event": "terminal", "id": "t00382", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 9163.267899999999, "event": "attempt_start", "id": "t00394", "number": 3, "client_id": "agent-2"}
+{"at_ms": 9166.909192000001, "error": null, "event": "attempt_end", "id": "t00438", "number": 2, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 9167.895609000001, "event": "terminal", "id": "t00438", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 9235.828304, "event": "attempt_start", "id": "t00343", "number": 4, "client_id": "agent-1"}
+{"at_ms": 9370.059525, "error": null, "event": "attempt_end", "id": "t00394", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 9370.333691999998, "event": "terminal", "id": "t00394", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 9388.168554, "event": "attempt_start", "id": "t00406", "number": 3, "client_id": "agent-1"}
+{"at_ms": 9443.120846, "error": null, "event": "attempt_end", "id": "t00343", "number": 4, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 9443.294387, "event": "terminal", "id": "t00343", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 9455.9579, "event": "attempt_start", "id": "t00355", "number": 4, "client_id": "agent-2"}
+{"at_ms": 9593.297887, "error": null, "event": "attempt_end", "id": "t00406", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 9593.410220999998, "event": "terminal", "id": "t00406", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 9660.7739, "event": "attempt_start", "id": "t00311", "number": 5, "client_id": "agent-2"}
+{"at_ms": 9661.6644, "error": null, "event": "attempt_end", "id": "t00355", "number": 4, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 9661.918109, "event": "terminal", "id": "t00355", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 9697.746317, "event": "attempt_start", "id": "t00423", "number": 3, "client_id": "agent-2"}
+{"at_ms": 9866.429984, "error": null, "event": "attempt_end", "id": "t00311", "number": 5, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 9866.647025, "event": "terminal", "id": "t00311", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 9883.954721, "event": "attempt_start", "id": "t00323", "number": 5, "client_id": "agent-1"}
+{"at_ms": 9885.510275, "event": "attempt_start", "id": "t00433", "number": 3, "client_id": "agent-2"}
+{"at_ms": 9902.817775000001, "error": null, "event": "attempt_end", "id": "t00423", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 9903.120734, "event": "terminal", "id": "t00423", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"at_ms": 9919.509262, "event": "attempt_start", "id": "t00436", "number": 3, "client_id": "agent-1"}
+{"at_ms": 10090.440054, "error": null, "event": "attempt_end", "id": "t00323", "number": 5, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 10090.455775, "error": null, "event": "attempt_end", "id": "t00433", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-2"}
+{"at_ms": 10090.714221, "event": "terminal", "id": "t00323", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"at_ms": 10090.760525, "event": "terminal", "id": "t00433", "outcome": "success", "reason": "completed", "client_id": "agent-2"}
+{"active": 0, "at_ms": 10091.007275, "event": "gate_final", "limit": 5, "owner": "demo-owner", "ready": true, "revision": 1, "client_id": "agent-2"}
+{"active": 0, "at_ms": 10091.202567, "event": "gate_final", "limit": 0, "owner": "other-owner", "ready": false, "revision": 0, "client_id": "agent-2"}
+{"at_ms": 10091.39115, "deadline_reached": false, "event": "run_end", "client_id": "agent-2"}
+{"at_ms": 10125.419971, "error": null, "event": "attempt_end", "id": "t00436", "number": 3, "retry_after": null, "status": 200, "client_id": "agent-1"}
+{"at_ms": 10125.608387, "event": "terminal", "id": "t00436", "outcome": "success", "reason": "completed", "client_id": "agent-1"}
+{"active": 0, "at_ms": 10125.748596, "event": "gate_final", "limit": 5, "owner": "demo-owner", "ready": true, "revision": 1, "client_id": "agent-1"}
+{"active": 0, "at_ms": 10125.892178999999, "event": "gate_final", "limit": 0, "owner": "other-owner", "ready": false, "revision": 0, "client_id": "agent-1"}
+{"at_ms": 10126.032221, "deadline_reached": false, "event": "run_end", "client_id": "agent-1"}

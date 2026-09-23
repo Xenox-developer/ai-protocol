@@ -1,0 +1,200 @@
+[
+  {
+    "scenario": "dynamic",
+    "process_count": 1,
+    "repetition": 1,
+    "difference": "C minus D",
+    "success": 0,
+    "http_429": -77,
+    "attempts": -77,
+    "successful_e2e_p95_ms": 147.24650104614557,
+    "discovery_requests": 10
+  },
+  {
+    "scenario": "dynamic",
+    "process_count": 1,
+    "repetition": 2,
+    "difference": "C minus D",
+    "success": 0,
+    "http_429": -75,
+    "attempts": -75,
+    "successful_e2e_p95_ms": 521.167607439645,
+    "discovery_requests": 10
+  },
+  {
+    "scenario": "dynamic",
+    "process_count": 1,
+    "repetition": 3,
+    "difference": "C minus D",
+    "success": 0,
+    "http_429": -74,
+    "attempts": -74,
+    "successful_e2e_p95_ms": 1074.5118218682987,
+    "discovery_requests": 10
+  },
+  {
+    "scenario": "dynamic",
+    "process_count": 2,
+    "repetition": 1,
+    "difference": "C minus D",
+    "success": -12,
+    "http_429": 21,
+    "attempts": 9,
+    "successful_e2e_p95_ms": 228.41323663699586,
+    "discovery_requests": 22
+  },
+  {
+    "scenario": "dynamic",
+    "process_count": 2,
+    "repetition": 2,
+    "difference": "C minus D",
+    "success": -20,
+    "http_429": 6,
+    "attempts": -14,
+    "successful_e2e_p95_ms": 17.824456062868194,
+    "discovery_requests": 22
+  },
+  {
+    "scenario": "dynamic",
+    "process_count": 2,
+    "repetition": 3,
+    "difference": "C minus D",
+    "success": -15,
+    "http_429": 19,
+    "attempts": 4,
+    "successful_e2e_p95_ms": -305.2219768413597,
+    "discovery_requests": 22
+  },
+  {
+    "scenario": "dynamic",
+    "process_count": 4,
+    "repetition": 1,
+    "difference": "C minus D",
+    "success": -2,
+    "http_429": -4,
+    "attempts": -6,
+    "successful_e2e_p95_ms": 437.8369286532634,
+    "discovery_requests": 40
+  },
+  {
+    "scenario": "dynamic",
+    "process_count": 4,
+    "repetition": 2,
+    "difference": "C minus D",
+    "success": -3,
+    "http_429": 1,
+    "attempts": -2,
+    "successful_e2e_p95_ms": 3.766600127169113,
+    "discovery_requests": 38
+  },
+  {
+    "scenario": "dynamic",
+    "process_count": 4,
+    "repetition": 3,
+    "difference": "C minus D",
+    "success": 0,
+    "http_429": 2,
+    "attempts": 2,
+    "successful_e2e_p95_ms": 6.730871315939112,
+    "discovery_requests": 40
+  },
+  {
+    "scenario": "mixed_overload",
+    "process_count": 1,
+    "repetition": 1,
+    "difference": "C minus D",
+    "success": 0,
+    "http_429": 0,
+    "attempts": 0,
+    "successful_e2e_p95_ms": -452.7134401413541,
+    "discovery_requests": 10
+  },
+  {
+    "scenario": "mixed_overload",
+    "process_count": 1,
+    "repetition": 2,
+    "difference": "C minus D",
+    "success": 0,
+    "http_429": 0,
+    "attempts": 0,
+    "successful_e2e_p95_ms": 190.77575673736283,
+    "discovery_requests": 10
+  },
+  {
+    "scenario": "mixed_overload",
+    "process_count": 1,
+    "repetition": 3,
+    "difference": "C minus D",
+    "success": 0,
+    "http_429": 0,
+    "attempts": 0,
+    "successful_e2e_p95_ms": 15.925363366616693,
+    "discovery_requests": 10
+  },
+  {
+    "scenario": "mixed_overload",
+    "process_count": 2,
+    "repetition": 1,
+    "difference": "C minus D",
+    "success": 24,
+    "http_429": -9,
+    "attempts": 15,
+    "successful_e2e_p95_ms": -136.59092409583172,
+    "discovery_requests": 20
+  },
+  {
+    "scenario": "mixed_overload",
+    "process_count": 2,
+    "repetition": 2,
+    "difference": "C minus D",
+    "success": -8,
+    "http_429": 61,
+    "attempts": 53,
+    "successful_e2e_p95_ms": -674.9459519794482,
+    "discovery_requests": 19
+  },
+  {
+    "scenario": "mixed_overload",
+    "process_count": 2,
+    "repetition": 3,
+    "difference": "C minus D",
+    "success": -1,
+    "http_429": -32,
+    "attempts": -33,
+    "successful_e2e_p95_ms": -149.18659980509528,
+    "discovery_requests": 18
+  },
+  {
+    "scenario": "mixed_overload",
+    "process_count": 4,
+    "repetition": 1,
+    "difference": "C minus D",
+    "success": 8,
+    "http_429": 5,
+    "attempts": 13,
+    "successful_e2e_p95_ms": -5.430825152703619,
+    "discovery_requests": 37
+  },
+  {
+    "scenario": "mixed_overload",
+    "process_count": 4,
+    "repetition": 2,
+    "difference": "C minus D",
+    "success": 0,
+    "http_429": 5,
+    "attempts": 5,
+    "successful_e2e_p95_ms": -4.227708040714788,
+    "discovery_requests": 38
+  },
+  {
+    "scenario": "mixed_overload",
+    "process_count": 4,
+    "repetition": 3,
+    "difference": "C minus D",
+    "success": 5,
+    "http_429": 22,
+    "attempts": 27,
+    "successful_e2e_p95_ms": 5.6874932340979285,
+    "discovery_requests": 39
+  }
+]

@@ -1,0 +1,97 @@
+{
+  "config": {
+    "seed": 20260921,
+    "repetitions": 3,
+    "upstream_delay_ms": 200,
+    "interactive_max_wait_ms": 2000,
+    "agent_max_wait_ms": 10000,
+    "task_timeout_s": 10,
+    "run_timeout_s": 22,
+    "cleanup_timeout_s": 12,
+    "max_pending": 1024,
+    "sample_ms": 50,
+    "scenarios": [
+      {
+        "name": "mixed_overload",
+        "duration_s": 6,
+        "interactive_rps": 15,
+        "agent_rps": 80
+      },
+      {
+        "name": "dynamic",
+        "duration_s": 8,
+        "interactive_rps": 10,
+        "agent_rps": 45,
+        "changes": [
+          {
+            "at_s": 2,
+            "limit": 2
+          },
+          {
+            "at_s": 5,
+            "limit": 5
+          }
+        ]
+      }
+    ],
+    "source_results": "benchmarks/results/stage4-main",
+    "mode_orders": [
+      "CD",
+      "DC",
+      "CD",
+      "DC",
+      "CD",
+      "DC"
+    ]
+  },
+  "commit": "cce8a6394c8df4262b0a48b2ba0a5cd42e41e0ea",
+  "git_status": "M benchmarks/stage4/run.py\n M src/bin/bench_client.rs\n?? benchmarks/results/stage4_1-main/\n?? benchmarks/stage4_1/\n?? src/bin/bench/\n?? tests/test_benchmark_comparison.py",
+  "dirty": true,
+  "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "cargo": "cargo 1.98.1 (797e8a9bc 2026-08-05)",
+  "python": "3.12.1 (v3.12.1:2305ca5144, Dec  7 2023, 17:23:38) [Clang 13.0.0 (clang-1300.0.29.30)]",
+  "httpx": "0.28.1",
+  "os": "Darwin",
+  "os_release": "24.6.0",
+  "architecture": "arm64",
+  "logical_cpus": 10,
+  "machine_model": "MacBookPro18,1",
+  "cpu": "Apple M1 Pro",
+  "memory_bytes": "17179869184",
+  "tokio_worker_threads_per_process": 4,
+  "build_profile": "release",
+  "source_sha256": {
+    "Cargo.toml": "85d7d513041208112eabb6c8b8b00f905ae20a946254734053df7919542cf12a",
+    "Cargo.lock": "d6dccf784fa02d3c21f4932cad98f2a3698d33acd5edfec64d214024f933a780",
+    "src/telemetry.rs": "928ff4409a452be55623dbbb224b7f749f4136960c60f7370164b105c6438d7b",
+    "src/budget.rs": "8b409b45973c3d1dd441b603c1ecd2bca18062f0877b97714362ba7fa0c6543f",
+    "src/dynamic_tests.rs": "d650abd9e24715105ce978313974afa5ced56ae967506fde69ab7f109a5f8196",
+    "src/queue_tests.rs": "41d535632673e87918a78d801d6128b80cf0375484db4f820c8c3c1c6f081055",
+    "src/queue.rs": "04c34f2a0c499912bc3a5bf83880efc2f642895412aa359693ca3674bbe53720",
+    "src/main.rs": "0944dc79e91e15f1e4b95d8971f28fd9de2f93351699d63b6bb732c4220456d3",
+    "src/tests.rs": "e3b57c2b78b3680d098239950d9ae80cfb0faa8137df78fe59576e4021651fde",
+    "src/bin/load_plain.rs": "d258c888ac90dc7fc60582bc81c9a512e037de25e2f8e6a03691377511472b93",
+    "src/bin/load.rs": "b070b04efca53e30053fa0a5d55cbcf612e03de898eecb7d2525c639e2a663a3",
+    "src/bin/bench_client.rs": "912c2e57c8a92b77e341ebc5a7ab525ac2304cbbd9768706e93a522a0eab0e10",
+    "src/bin/bench/tests.rs": "6aca9607f37574fece6409c41efa209563502501dfc992894552dcc30adb54e4",
+    "src/bin/load/control.rs": "ac97d1bc1a2614fe7b33e4a6d2129ce926b72c5ab8fa34e180a23332f751e677",
+    "src/bin/load/tests.rs": "592a6dc27438748dd44af160162005c9c533da42d29d5a78af9d5b4b5b313092",
+    "src/bin/load/retry.rs": "1cb319e02b30601f8a672d1487ee9f100f549e32d55d71feb3528d3a04fed176",
+    "benchmarks/stage4/run.py": "ae614b54abc6f22896237d80b042c45a891166bf9ed0f87c13fbbb0dbdb5dbcc",
+    "benchmarks/stage4/check.py": "8023d299a44c726353a440974c8908e592b25cdd0a3e69384efa4cc9b734ed6f",
+    "benchmarks/stage4/analyze.py": "83e09f93a5e864f987acf8e90b5ad805b7adaa50e22c3111b2a8b059f097f26d",
+    "benchmarks/stage4/config.json": "748c71d7e013d306ac508adc42d9a5c568db4038235ff7ce3d41fc40a5b152c7",
+    "benchmarks/stage4_1/run.py": "18da066e68c2cf21b9806f8b5cb996a6a077b2a0c712c65d3675910486557318",
+    "benchmarks/stage4_1/config.json": "1aa1df83baf2acc06f424265a0854fd96c229049f90147e59e8b4a474ba53f8f",
+    "benchmarks/stage4_1/comparison.py": "5f40ce0a9f2de419a32c0ba4bfb26ac1b429466addfa5b1f55827ffc4ac6e150"
+  },
+  "binary_sha256": {
+    "ai-protocol": "57ee4840bb550faa1ee8ef5258f9f646e729535f99d7303400e6c192d8f06f83",
+    "bench_client": "d570e3cd3b1f1f485842582a5b843ec35baea2efc2cc9e0709abcf16488ccaf3"
+  },
+  "created_utc": "2026-09-22T20:03:07Z",
+  "schedule_sha256": {
+    "mixed_overload-schedule.json": "6e7b9928dca1dc89b4a22c978b9ca53869cee21d683bfa4055e34605980e0b69",
+    "dynamic-schedule.json": "8d76935a2d565dda702e3056d2d9719d4c8266ae743dc7e7a712b8672d4500e9"
+  }
+}

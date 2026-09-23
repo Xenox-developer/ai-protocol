@@ -1,0 +1,134 @@
+[
+  {
+    "scenario": "mixed_overload",
+    "repetition": 1,
+    "class": "interactive",
+    "difference": "C minus D",
+    "success_fraction": 0.0,
+    "successful_e2e_p95_ms": 7.232331974541921,
+    "attempts_per_task": 0.0,
+    "http_429": 0,
+    "discovery_requests": 26
+  },
+  {
+    "scenario": "mixed_overload",
+    "repetition": 1,
+    "class": "agent",
+    "difference": "C minus D",
+    "success_fraction": -0.012500000000000067,
+    "successful_e2e_p95_ms": 243.82038453101268,
+    "attempts_per_task": 0.04791666666666661,
+    "http_429": 27,
+    "discovery_requests": 26
+  },
+  {
+    "scenario": "mixed_overload",
+    "repetition": 2,
+    "class": "interactive",
+    "difference": "C minus D",
+    "success_fraction": 0.0,
+    "successful_e2e_p95_ms": -32.68138094098276,
+    "attempts_per_task": 0.0,
+    "http_429": 0,
+    "discovery_requests": 24
+  },
+  {
+    "scenario": "mixed_overload",
+    "repetition": 2,
+    "class": "agent",
+    "difference": "C minus D",
+    "success_fraction": -0.01041666666666674,
+    "successful_e2e_p95_ms": 536.0813856066006,
+    "attempts_per_task": 0.04166666666666674,
+    "http_429": 24,
+    "discovery_requests": 24
+  },
+  {
+    "scenario": "mixed_overload",
+    "repetition": 3,
+    "class": "interactive",
+    "difference": "C minus D",
+    "success_fraction": 0.0,
+    "successful_e2e_p95_ms": -10.203310378680499,
+    "attempts_per_task": 0.0,
+    "http_429": 0,
+    "discovery_requests": 28
+  },
+  {
+    "scenario": "mixed_overload",
+    "repetition": 3,
+    "class": "agent",
+    "difference": "C minus D",
+    "success_fraction": -0.012500000000000067,
+    "successful_e2e_p95_ms": -39.739071566309576,
+    "attempts_per_task": 0.05624999999999991,
+    "http_429": 31,
+    "discovery_requests": 28
+  },
+  {
+    "scenario": "dynamic",
+    "repetition": 1,
+    "class": "interactive",
+    "difference": "C minus D",
+    "success_fraction": 0.0,
+    "successful_e2e_p95_ms": -1.5329327987176384,
+    "attempts_per_task": 0.0,
+    "http_429": 0,
+    "discovery_requests": 20
+  },
+  {
+    "scenario": "dynamic",
+    "repetition": 1,
+    "class": "agent",
+    "difference": "C minus D",
+    "success_fraction": 0.0,
+    "successful_e2e_p95_ms": -244.44886020326157,
+    "attempts_per_task": -0.46944444444444455,
+    "http_429": -169,
+    "discovery_requests": 20
+  },
+  {
+    "scenario": "dynamic",
+    "repetition": 2,
+    "class": "interactive",
+    "difference": "C minus D",
+    "success_fraction": 0.0,
+    "successful_e2e_p95_ms": -25.745846991839926,
+    "attempts_per_task": 0.0,
+    "http_429": 0,
+    "discovery_requests": 20
+  },
+  {
+    "scenario": "dynamic",
+    "repetition": 2,
+    "class": "agent",
+    "difference": "C minus D",
+    "success_fraction": 0.0,
+    "successful_e2e_p95_ms": 365.27939853479893,
+    "attempts_per_task": -0.46944444444444455,
+    "http_429": -169,
+    "discovery_requests": 20
+  },
+  {
+    "scenario": "dynamic",
+    "repetition": 3,
+    "class": "interactive",
+    "difference": "C minus D",
+    "success_fraction": 0.0,
+    "successful_e2e_p95_ms": -17.575701713846,
+    "attempts_per_task": 0.0,
+    "http_429": 0,
+    "discovery_requests": 20
+  },
+  {
+    "scenario": "dynamic",
+    "repetition": 3,
+    "class": "agent",
+    "difference": "C minus D",
+    "success_fraction": 0.0,
+    "successful_e2e_p95_ms": 71.22487754826489,
+    "attempts_per_task": -0.4666666666666668,
+    "http_429": -168,
+    "discovery_requests": 20
+  }
+]

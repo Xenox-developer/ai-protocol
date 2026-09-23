@@ -1,0 +1,11 @@
+{
+  "pid": 5520,
+  "capacity": 1024,
+  "token_vars": [
+    "AGENT_TOKEN_1",
+    "AGENT_TOKEN_2",
+    "AGENT_TOKEN_3",
+    "AGENT_TOKEN_4"
+  ],
+  "transport": "private_unix_socket"
+}

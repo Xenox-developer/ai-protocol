@@ -5,6 +5,10 @@ This document describes `src/main.rs` and the current example clients.
 
 ## Authentication and permissions
 
+Each gateway instance serves one owner-configured service. The table below
+describes the default catalog; [service integration](service-integration.md)
+defines additional manifests and their manually mapped routes.
+
 All service routes require `Authorization: Bearer <token>`:
 
 | Method | Path | Purpose |
@@ -30,15 +34,17 @@ The demo configuration uses environment variables:
 | --- | --- | --- | --- | --- | --- |
 | `AGENT_TOKEN_1` | Yes | demo-owner | agent | Both | 5 |
 | `AGENT_TOKEN_2` | Yes | demo-owner | agent | Both | Same 5 |
+| `AGENT_TOKEN_3`, `AGENT_TOKEN_4` | No | demo-owner | agent | Both | Same 5 |
 | `PRODUCT_ONLY_TOKEN` | No | demo-owner | agent | get_product | Same 5 |
 | `INTERACTIVE_TOKEN` | Yes | demo-owner | interactive | Both | Separate 10 |
 | `OTHER_AGENT_TOKEN` | No | other-owner | agent | Both | Separate 5 |
 
 Startup fails on missing required, empty, invalid, or duplicate token values.
 There are no default credentials. A separate optional `ADMIN_TOKEN` enables
-administrative updates and must differ from every service token. This fixed demo mapping is separate from the
-scheduler; registration, rotation, revocation, and external identity adapters
-are outside this version.
+administrative updates and must differ from every service token. The demo mapping lives in `services/catalog.json`; `SERVICE_CONFIG` selects a
+different manifest with token environment names, operations and initial budgets.
+Runtime registration, rotation, revocation and external identity adapters remain
+outside this version.
 
 ## Discovery
 
@@ -47,6 +53,7 @@ An authenticated `GET /agent-policy` returns JSON such as:
 ```json
 {
   "version": 3,
+  "service_id": "catalog",
   "policy_revision": 1,
   "refresh_after_ms": 1000,
   "outstanding": 0,
@@ -77,12 +84,22 @@ includes `name`, `description`, `method`, `path`, and `input_schema`.
 All responses passing through authentication, including policy and error
 responses, carry `Cache-Control: no-store`. Tokens are never returned.
 
-The exact budget scope is **one gateway process + principal_id + client_class**.
+`service_id` is an additive field identifying the configured service. Old v3
+clients may ignore it; clients connecting to older v3 servers need not require
+it. It is not a globally unique or authenticated identity independent of the
+configured gateway origin. A dispatcher rejects changes in the ID after startup.
+
+The exact budget scope is **one service gateway process + principal_id + client_class**.
 Read `scope: "principal"` together with `client_class` and this single-process
 restriction. Connections, client processes, operations, and token count do not
-multiply this budget. Discovery does not enqueue catalog work or consume it.
+multiply this budget. Equal owner IDs at different service origins do not merge
+budgets. Discovery does not enqueue upstream work or consume the budget.
 The policy reports a configured ceiling, not currently available slots or a
-reservation. `policy_revision` starts at 1 per principal/class and increments
+reservation. The term `max_in_flight` in the shared-dispatcher design refers to this
+aggregate owner budget, never a personal process quota. The current v3 field
+remains `limits.max_outstanding`; `limits.scope` remains `principal`. The added
+`service_id` does not change these fields or make policy a reservation. See [local dispatcher](dispatcher.md) for
+optional coordination of connected local agents. `policy_revision` starts at 1 per principal/class and increments
 only on an actual limit change. `refresh_after_ms` is 1000 in this demo.
 `outstanding` is an advisory snapshot of accepted work, not a reservation.
 Revision, limit, and outstanding are read together under one budget lock.
@@ -210,7 +227,29 @@ Expiry returns HTTP **503** with integer `Retry-After: 1` and JSON:
 **before execution**. `execution: "not_started"` is used only for this documented
 queue failure, never for an already sent upstream request's network error or timeout.
 
-## Catalog behavior and errors
+## Owner-configured upstream mapping
+
+`SERVICE_CONFIG` selects a manifest with operation names/descriptions, gateway
+POST paths, allowed GET upstream paths, and typed parameter-to-query mappings.
+`UPSTREAM_URL` is a fixed HTTP(S) origin controlled by the service owner. Agents
+cannot submit an upstream URL or replace any route. Parameters are URL-encoded;
+unknown fields are rejected before admission. Published schemas and request
+validation come from the same small parameter model (required strings and
+non-negative u64 integers). Nested/optional parameters, arbitrary JSON Schema,
+response transforms and write operations are not supported by this adapter.
+Upstream mappings and credential definitions are not published in discovery.
+Service credentials are never forwarded upstream, and redirects are disabled.
+Responses preserve upstream JSON structure. Non-200 responses and transport
+errors retain the existing conservative error/retry semantics below.
+
+The support service maps `search_tickets` (`/tickets/search`) to
+`GET /api/tickets/search?text=...` and `get_ticket` (`/tickets/get`) to
+`GET /api/tickets/get?ticket_id=...`. Unknown IDs return `{"ticket":null}`.
+Search matches subject/message substrings case-insensitively. A custom manifest
+requires `UPSTREAM_URL` unless it uses the catalog default. This is manual API
+mapping; see [integration instructions](service-integration.md).
+
+## Default catalog behavior and common upstream errors
 
 The gateway calls the local catalog at `127.0.0.1:4000` by default (configurable
 with `CATALOG_PORT`; `GATEWAY_PORT` changes the default gateway port 3000), with a five-second

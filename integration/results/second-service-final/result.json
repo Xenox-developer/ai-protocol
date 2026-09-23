@@ -1,0 +1,129 @@
+{
+  "passed": true,
+  "service_ids": [
+    "catalog",
+    "support"
+  ],
+  "owner": "demo-owner",
+  "direct": {
+    "catalog": {
+      "products": [
+        {
+          "id": 1,
+          "name": "Black boots",
+          "price": 150
+        },
+        {
+          "id": 2,
+          "name": "Brown boots",
+          "price": 180
+        },
+        {
+          "id": 3,
+          "name": "White sneakers",
+          "price": 120
+        }
+      ]
+    },
+    "support": {
+      "tickets": [
+        {
+          "id": 101,
+          "subject": "Password reset email missing",
+          "message": "The reset link has not arrived in my inbox.",
+          "status": "open"
+        },
+        {
+          "id": 102,
+          "subject": "Invoice address correction",
+          "message": "Please update the address on the latest invoice.",
+          "status": "pending"
+        },
+        {
+          "id": 103,
+          "subject": "Password reset resolved",
+          "message": "The reset email was found in the spam folder.",
+          "status": "closed"
+        }
+      ]
+    }
+  },
+  "dispatched": {
+    "catalog": {
+      "ok": true,
+      "code": "completed",
+      "execution": "completed",
+      "attempts": 1,
+      "status": 200,
+      "body": {
+        "products": [
+          {
+            "id": 1,
+            "name": "Black boots",
+            "price": 150
+          },
+          {
+            "id": 2,
+            "name": "Brown boots",
+            "price": 180
+          },
+          {
+            "id": 3,
+            "name": "White sneakers",
+            "price": 120
+          }
+        ]
+      }
+    },
+    "support": {
+      "ok": true,
+      "code": "completed",
+      "execution": "completed",
+      "attempts": 1,
+      "status": 200,
+      "body": {
+        "tickets": [
+          {
+            "id": 101,
+            "message": "The reset link has not arrived in my inbox.",
+            "status": "open",
+            "subject": "Password reset email missing"
+          },
+          {
+            "id": 102,
+            "message": "Please update the address on the latest invoice.",
+            "status": "pending",
+            "subject": "Invoice address correction"
+          },
+          {
+            "id": 103,
+            "message": "The reset email was found in the spam folder.",
+            "status": "closed",
+            "subject": "Password reset resolved"
+          }
+        ]
+      }
+    }
+  },
+  "restricted_status": 403,
+  "forbidden_upstream_calls": 0,
+  "allowed_ticket": {
+    "ticket": {
+      "id": 101,
+      "message": "The reset link has not arrived in my inbox.",
+      "status": "open",
+      "subject": "Password reset email missing"
+    }
+  },
+  "concurrent_success": 12,
+  "final_limits": {
+    "catalog": 3,
+    "support": 2
+  },
+  "final_outstanding": {
+    "catalog": 0,
+    "support": 0
+  },
+  "admission_violations": 0,
+  "credentials_forwarded_to_upstream": false
+}

@@ -1,0 +1,27 @@
+{"credential_index":0,"event":"discovery_start","purpose":"identity","unix_s":1790110464.2754517}
+{"credential_index":0,"event":"discovery_end","purpose":"identity","success":true,"unix_s":1790110464.2773118}
+{"credential_index":1,"event":"discovery_start","purpose":"identity","unix_s":1790110464.2774537}
+{"credential_index":1,"event":"discovery_end","purpose":"identity","success":true,"unix_s":1790110464.2778294}
+{"credential_index":2,"event":"discovery_start","purpose":"identity","unix_s":1790110464.2780359}
+{"credential_index":2,"event":"discovery_end","purpose":"identity","success":true,"unix_s":1790110464.2784433}
+{"credential_index":3,"event":"discovery_start","purpose":"identity","unix_s":1790110464.278591}
+{"credential_index":3,"event":"discovery_end","purpose":"identity","success":true,"unix_s":1790110464.278926}
+{"event":"discovery_start","purpose":"refresh","unix_s":1790110464.279304}
+{"event":"discovery_end","purpose":"refresh","success":true,"unix_s":1790110464.2800026}
+{"active":0,"event":"policy","limit":5,"owner":"demo-owner","ready":true,"revision":1,"unix_s":1790110464.280592}
+{"event":"attempt_start","id":"agent-1-search","local_active":1,"local_limit":5,"number":1,"unix_s":1790110464.7898688}
+{"event":"attempt_start","id":"agent-2-search","local_active":2,"local_limit":5,"number":1,"unix_s":1790110464.7942512}
+{"event":"attempt_start","id":"agent-3-search","local_active":3,"local_limit":5,"number":1,"unix_s":1790110464.798285}
+{"event":"attempt_start","id":"agent-4-search","local_active":4,"local_limit":5,"number":1,"unix_s":1790110464.8024354}
+{"error":null,"event":"attempt_end","id":"agent-4-search","number":1,"retry_after":null,"status":403,"unix_s":1790110464.803242}
+{"attempts":1,"code":"Operation HTTP status 403","event":"dispatcher_terminal","execution":"not_started","id":"agent-4-search","unix_s":1790110464.8033836}
+{"event":"attempt_start","id":"agent-4-product","local_active":4,"local_limit":5,"number":1,"unix_s":1790110464.807364}
+{"error":null,"event":"attempt_end","id":"agent-1-search","number":1,"retry_after":null,"status":200,"unix_s":1790110464.993942}
+{"attempts":1,"code":"completed","event":"dispatcher_terminal","execution":"completed","id":"agent-1-search","unix_s":1790110464.9940863}
+{"error":null,"event":"attempt_end","id":"agent-2-search","number":1,"retry_after":null,"status":200,"unix_s":1790110464.998941}
+{"attempts":1,"code":"completed","event":"dispatcher_terminal","execution":"completed","id":"agent-2-search","unix_s":1790110464.9991038}
+{"error":null,"event":"attempt_end","id":"agent-3-search","number":1,"retry_after":null,"status":200,"unix_s":1790110465.0002027}
+{"attempts":1,"code":"completed","event":"dispatcher_terminal","execution":"completed","id":"agent-3-search","unix_s":1790110465.0003617}
+{"error":null,"event":"attempt_end","id":"agent-4-product","number":1,"retry_after":null,"status":200,"unix_s":1790110465.0100434}
+{"attempts":1,"code":"completed","event":"dispatcher_terminal","execution":"completed","id":"agent-4-product","unix_s":1790110465.0105708}
+{"active":0,"event":"gate_final","limit":5,"owner":"demo-owner","revision":1,"unix_s":1790110465.09024}
