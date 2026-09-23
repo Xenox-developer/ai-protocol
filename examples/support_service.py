@@ -2,9 +2,11 @@
 import json
 import os
 import threading
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from http.server import BaseHTTPRequestHandler
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
+
+from local_http_server import LocalHTTPServer
 
 TRACE_LOCK = threading.Lock()
 TICKETS = json.loads((Path(__file__).parent / 'support_tickets.json').read_text())
@@ -41,6 +43,6 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    server = ThreadingHTTPServer(('127.0.0.1', int(os.environ.get('SUPPORT_PORT', '4100'))), Handler)
+    server = LocalHTTPServer(('127.0.0.1', int(os.environ.get('SUPPORT_PORT', '4100'))), Handler)
     print(f'Support API listening on {server.server_address[1]}', flush=True)
     server.serve_forever()

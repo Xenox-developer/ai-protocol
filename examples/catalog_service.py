@@ -1,8 +1,9 @@
 import json
 import os
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from http.server import BaseHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
 
+from local_http_server import LocalHTTPServer
 
 PRODUCTS = [
     {"id": 1, "name": "Black boots", "price": 150},
@@ -62,7 +63,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     port = int(os.environ.get("CATALOG_PORT", "4000"))
-    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+    server = LocalHTTPServer(("127.0.0.1", port), Handler)
     print(f"Catalog service started on port {port}", flush=True)
     server.serve_forever()
 

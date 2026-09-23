@@ -21,9 +21,23 @@ A local follow-up makes smoke startup more tolerant and observable: a bounded
 error in failures, and child output/exit status with credential values redacted.
 These are test-harness changes, not protocol or task-timeout changes. A controlled
 12-second delay before starting the actual catalog now passes the complete smoke
-scenario; normal smoke and 32 Python tests also pass. No new hosted run of these
-changes has been performed. The original results below remain historical evidence
-for the prepared snapshot, not evidence that this follow-up has passed hosted CI.
+scenario; normal smoke and 32 Python tests also passed before publishing `917aae9`.
+Its hosted [run 35888609918](https://github.com/Xenox-developer/ai-protocol/actions/runs/35888609918)
+passed Ubuntu but still failed macOS: the gateway started, while the catalog
+process remained alive without its ready message after 30 seconds. Extending the
+startup allowance alone was insufficient.
+
+The next fix removes the synchronous reverse-DNS lookup performed by Python's
+`HTTPServer.server_bind` before listening. Both local fixture services use a small
+shared subclass that records the numeric bound address instead. No handler,
+protocol, gateway or dispatcher behavior changes. A regression check forbids
+`socket.getfqdn` and verifies actual HTTP responses from both handlers. All 33
+Python tests, smoke, quickstart, the manifest exercise and the two-service demo
+passed locally. This removes a blocking startup dependency consistent with the
+observed symptoms; the hosted log did not contain a stack trace proving that DNS
+was the original cause. Hosted results should be checked for the corresponding
+commit. The original results below remain historical evidence for the prepared
+snapshot.
 
 ## What was prepared
 
@@ -119,8 +133,8 @@ bash scripts/verify.sh
 ## What remains unverified or needs an external person
 
 - **At preparation time hosted CI had not run.** See the follow-up above for
-  the subsequent Ubuntu success and macOS startup failure. The local follow-up
-  still needs a hosted run; no claim of a completely green matrix is made.
+  subsequent hosted results and startup follow-ups. Local results alone do not
+  establish that the corresponding commit passes the hosted matrix.
 - Installation on another person's fresh OS, differing package/network policies,
   native tool setup and the hosted Python 3.12 patch version remain to be checked.
   Transitive Python dependencies are not fully locked; the clean report records
