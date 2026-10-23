@@ -5,6 +5,9 @@ cargo fmt --check
 cargo check --locked --all-targets
 cargo build --locked --bins
 cargo test --locked --all-targets
+cargo test --locked --doc
+cargo doc --locked --no-deps --lib
+python scripts/check_rust_library.py
 python -m unittest discover -s tests -v
 python tests/smoke.py
 python examples/quickstart.py

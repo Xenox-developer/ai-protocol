@@ -3,6 +3,41 @@
 //! Start a [`Gateway`] with a [`GatewayConfig`], merge its router into your Axum
 //! application, and keep the gateway alive while serving requests. The standalone
 //! `ai-protocol` executable uses this same library and protocol v3 contract.
+//!
+//! ```no_run
+//! use ai_protocol::{ClientClass, Credential, Gateway, GatewayConfig, Operation};
+//! use axum::Json;
+//! use serde::Deserialize;
+//! use serde_json::json;
+//!
+//! #[derive(Deserialize)]
+//! #[serde(deny_unknown_fields)]
+//! struct EmptyInput {}
+//!
+//! # async fn run() -> Result<(), Box<dyn std::error::Error>> {
+//! let operation = Operation::new(
+//!     "list_documents", "List public document titles.", "/documents",
+//!     json!({"type": "object", "properties": {}, "additionalProperties": false}),
+//!     |_: EmptyInput| async {
+//!         Json(json!({"documents": ["Rust introduction"]}))
+//!     },
+//! )?;
+//! let config = GatewayConfig::native("documents", vec![operation], vec![Credential {
+//!     token: std::env::var("DOCUMENT_TOKEN")?,
+//!     principal_id: "reader".into(),
+//!     client_class: ClientClass::Agent,
+//!     operations: vec!["list_documents".into()],
+//!     max_outstanding: 5,
+//! }])?;
+//! let gateway = Gateway::start(config).await?;
+//! let router = axum::Router::new().merge(gateway.router());
+//! // The application owns its listener and HTTP server lifecycle.
+//! let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await?;
+//! axum::serve(listener, router).await?;
+//! gateway.shutdown().await?;
+//! # Ok(())
+//! # }
+//! ```
 
 use axum::{
     Extension, Json, Router,
@@ -24,6 +59,7 @@ pub use gateway::{ConfigError, Credential, Gateway, GatewayConfig};
 mod operation;
 pub use operation::Operation;
 mod service;
+pub use budget::Snapshot as BudgetSnapshot;
 use budget::{Budget, Permit};
 use tokio::task::JoinSet;
 use tokio::time::{Instant, sleep_until};
@@ -96,6 +132,7 @@ struct AppState {
     queue_settings: QueueSettings,
     trace: Option<Arc<Trace>>,
     active: Arc<std::sync::atomic::AtomicUsize>,
+    closing: AtomicBool,
 }
 
 impl AppState {
@@ -113,14 +150,31 @@ impl AppState {
         )
     }
 
+    #[cfg(test)]
     fn with_queue_settings(
         identities: HashMap<String, ClientIdentity>,
         reject_once: bool,
         admin_token: Option<String>,
         queue_settings: QueueSettings,
     ) -> Arc<Self> {
+        Self::with_service(
+            service::Service::catalog(),
+            identities,
+            reject_once,
+            admin_token,
+            queue_settings,
+        )
+    }
+
+    fn with_service(
+        service: service::Service,
+        identities: HashMap<String, ClientIdentity>,
+        reject_once: bool,
+        admin_token: Option<String>,
+        queue_settings: QueueSettings,
+    ) -> Arc<Self> {
         Arc::new(Self {
-            service: service::Service::catalog(),
+            service,
             queues: Mutex::new(Queues::default()),
             notify: Notify::new(),
             reject_once: AtomicBool::new(reject_once),
@@ -129,7 +183,17 @@ impl AppState {
             queue_settings,
             trace: None,
             active: Arc::new(std::sync::atomic::AtomicUsize::new(0)),
+            closing: AtomicBool::new(false),
         })
+    }
+
+    fn agent_budget(&self, principal_id: &str) -> Option<&Arc<Budget>> {
+        self.identities
+            .values()
+            .find(|identity| {
+                identity.principal_id == principal_id && identity.class == ClientClass::Agent
+            })
+            .map(|identity| &identity.budget)
     }
 }
 
@@ -290,12 +354,10 @@ async fn update_limits(
         )
             .into_response();
     }
-    let Some(identity) = state.identities.values().find(|identity| {
-        identity.principal_id == principal_id && identity.class == ClientClass::Agent
-    }) else {
+    let Some(budget) = state.agent_budget(&principal_id) else {
         return StatusCode::NOT_FOUND.into_response();
     };
-    let budget = identity.budget.set_maximum(update.max_outstanding);
+    let budget = budget.set_maximum(update.max_outstanding);
     Json(serde_json::json!({
         "principal_id": principal_id,
         "client_class": "agent",
@@ -322,6 +384,9 @@ async fn enqueue(state: Arc<AppState>, identity: ClientIdentity, action: TaskAct
     let (sender, receiver) = oneshot::channel();
     {
         let mut queues = state.queues.lock().await;
+        if state.closing.load(Ordering::Relaxed) {
+            return gateway_closed();
+        }
         queues.maintain(Instant::now());
         // A nonblocking acquisition counts both queued and running work.
         let (permit, admitted) = match identity.budget.try_acquire_observed() {
@@ -392,14 +457,33 @@ fn queue_timeout() -> Response {
         .into_response()
 }
 
-async fn scheduler(state: Arc<AppState>, upstream_url: impl Into<Option<String>>) {
-    let upstream_url = upstream_url.into();
-    let client = reqwest::Client::builder()
+fn gateway_closed() -> Response {
+    (
+        StatusCode::SERVICE_UNAVAILABLE,
+        Json(serde_json::json!({"error": {"code": "gateway_closed", "execution": "not_started"}})),
+    )
+        .into_response()
+}
+
+fn upstream_client() -> Result<reqwest::Client, ConfigError> {
+    reqwest::Client::builder()
         .no_proxy()
         .redirect(reqwest::redirect::Policy::none())
         .timeout(Duration::from_secs(5))
         .build()
-        .unwrap();
+        .map_err(|_| ConfigError("Cannot initialize the upstream HTTP client".into()))
+}
+
+#[cfg(test)]
+async fn scheduler(state: Arc<AppState>, upstream_url: String) {
+    scheduler_with_client(state, Some(upstream_url), upstream_client().unwrap()).await;
+}
+
+async fn scheduler_with_client(
+    state: Arc<AppState>,
+    upstream_url: Option<String>,
+    client: reqwest::Client,
+) {
     run_scheduler(state, move |action| {
         let client = client.clone();
         let upstream_url = upstream_url.clone();
@@ -437,6 +521,13 @@ where
                     drop(active);
                     let _ = reply.send(response);
                 });
+            }
+            if state.closing.load(Ordering::Relaxed)
+                && running.is_empty()
+                && queues.interactive.is_empty()
+                && queues.agents.is_empty()
+            {
+                return;
             }
             queues.next_deadline()
         };

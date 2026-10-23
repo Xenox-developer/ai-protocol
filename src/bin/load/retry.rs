@@ -101,6 +101,10 @@ mod tests {
         for (status, body) in [
             (
                 503,
+                r#"{"error":{"code":"gateway_closed","execution":"not_started"}}"#,
+            ),
+            (
+                503,
                 r#"{"error":{"code":"queue_timeout","execution":"started"}}"#,
             ),
             (

@@ -49,7 +49,7 @@ async fn application_embeds_a_manifest_gateway_through_public_interfaces() {
         Ok("test-archive-token".into())
     })
     .unwrap();
-    let gateway = Gateway::start(config).await;
+    let gateway = Gateway::start(config).await.unwrap();
     let server = serve(
         Router::new()
             .route("/health", get(|| async { "ready" }))
@@ -173,7 +173,7 @@ async fn native_handlers_validate_before_admission_and_share_owner_budgets() {
     .unwrap()
     .with_admin_token("test-admin".into())
     .unwrap();
-    let gateway = Gateway::start(config).await;
+    let gateway = Gateway::start(config).await.unwrap();
     let server = serve(gateway.router()).await;
     let http = reqwest::Client::builder()
         .no_proxy()
@@ -336,4 +336,173 @@ fn native_configuration_rejects_invalid_routes_grants_and_shared_limits() {
         )
         .is_err()
     );
+}
+
+async fn exercise_lifecycle(graceful: bool) {
+    let release = Arc::new(tokio::sync::Semaphore::new(0));
+    let gate = release.clone();
+    let (started, mut executions) = tokio::sync::mpsc::unbounded_channel();
+    let operation = Operation::new(
+        "lookup_record",
+        "Read a record.",
+        "/lookup",
+        json!({"type": "object"}),
+        move |_: Value| {
+            let gate = gate.clone();
+            let started = started.clone();
+            async move {
+                started.send(()).unwrap();
+                gate.acquire().await.unwrap().forget();
+                Json(json!({"ok": true}))
+            }
+        },
+    )
+    .unwrap();
+    let config = GatewayConfig::native(
+        "records",
+        vec![operation],
+        vec![Credential {
+            max_outstanding: 20,
+            ..credential("test-lifecycle", "reader", true)
+        }],
+    )
+    .unwrap();
+    let gateway = Gateway::start(config).await.unwrap();
+    let server = serve(gateway.router()).await;
+    let http = reqwest::Client::builder()
+        .no_proxy()
+        .timeout(Duration::from_secs(5))
+        .build()
+        .unwrap();
+    let url = format!("{}/lookup", server.url);
+    let mut requests = Vec::new();
+    for _ in 0..11 {
+        requests.push(tokio::spawn(
+            http.post(&url)
+                .bearer_auth("test-lifecycle")
+                .json(&json!({}))
+                .send(),
+        ));
+    }
+    for _ in 0..10 {
+        tokio::time::timeout(Duration::from_secs(3), executions.recv())
+            .await
+            .unwrap()
+            .unwrap();
+    }
+    let policy_url = format!("{}/agent-policy", server.url);
+    tokio::time::timeout(Duration::from_secs(3), async {
+        loop {
+            let policy: Value = http
+                .get(&policy_url)
+                .bearer_auth("test-lifecycle")
+                .send()
+                .await
+                .unwrap()
+                .json()
+                .await
+                .unwrap();
+            if policy["outstanding"] == 11 {
+                break;
+            }
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .unwrap();
+    let snapshot = gateway.set_agent_limit("reader", 2).unwrap();
+    assert_eq!(snapshot.maximum, 2);
+    assert_eq!(snapshot.outstanding, 11);
+    assert_eq!(snapshot.revision, 2);
+    assert_eq!(gateway.set_agent_limit("reader", 2).unwrap().revision, 2);
+    assert!(gateway.set_agent_limit("missing", 2).is_err());
+    assert!(gateway.set_agent_limit("reader", 0).is_err());
+    assert!(executions.try_recv().is_err());
+
+    let draining = if graceful {
+        gateway.close().await;
+        Some(tokio::spawn(gateway.shutdown()))
+    } else {
+        drop(gateway);
+        None
+    };
+    let rejected = http
+        .post(&url)
+        .bearer_auth("test-lifecycle")
+        .json(&json!({}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(rejected.status(), 503);
+    assert_eq!(rejected.headers()["cache-control"], "no-store");
+    assert_eq!(
+        rejected.json::<Value>().await.unwrap(),
+        json!({"error": {"code": "gateway_closed", "execution": "not_started"}})
+    );
+    if let Some(draining) = draining {
+        assert!(!draining.is_finished());
+        release.add_permits(10);
+        tokio::time::timeout(Duration::from_secs(3), executions.recv())
+            .await
+            .unwrap()
+            .unwrap();
+        assert!(!draining.is_finished());
+        release.add_permits(1);
+        for request in requests {
+            assert_eq!(request.await.unwrap().unwrap().status(), 200);
+        }
+        tokio::time::timeout(Duration::from_secs(3), draining)
+            .await
+            .unwrap()
+            .unwrap()
+            .unwrap();
+    } else {
+        let mut statuses = Vec::new();
+        for request in requests {
+            statuses.push(request.await.unwrap().unwrap().status().as_u16());
+        }
+        assert_eq!(statuses.iter().filter(|&&status| status == 500).count(), 10);
+        assert_eq!(statuses.iter().filter(|&&status| status == 503).count(), 1);
+        assert!(executions.try_recv().is_err());
+    }
+    let policy: Value = http
+        .get(&policy_url)
+        .bearer_auth("test-lifecycle")
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(policy["outstanding"], 0);
+}
+
+#[tokio::test]
+async fn shutdown_drains_accepted_work_after_budget_shrink() {
+    exercise_lifecycle(true).await;
+}
+
+#[tokio::test]
+async fn dropping_gateway_rejects_pending_work_and_closes_a_retained_router() {
+    exercise_lifecycle(false).await;
+}
+
+#[test]
+fn starting_without_a_tokio_runtime_returns_an_error() {
+    use std::{
+        future::Future,
+        task::{Context, Poll, Waker},
+    };
+    let config = GatewayConfig::native(
+        "records",
+        vec![empty_operation("lookup_record", "/lookup").unwrap()],
+        vec![credential("test-one", "reader", true)],
+    )
+    .unwrap();
+    let mut start = Box::pin(Gateway::start(config));
+    let mut context = Context::from_waker(Waker::noop());
+    assert!(matches!(
+        start.as_mut().poll(&mut context),
+        Poll::Ready(Err(_))
+    ));
 }

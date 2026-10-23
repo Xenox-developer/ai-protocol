@@ -126,6 +126,7 @@ class ClientTests(unittest.TestCase):
 
     def test_only_documented_queue_timeout_is_retryable(self):
         for status, body in [
+            (503, {"error": {"code": "gateway_closed", "execution": "not_started"}}),
             (503, {"error": {"code": "queue_timeout", "execution": "started"}}),
             (503, {"error": {"code": "upstream_timeout", "execution": "not_started"}}),
             (503, {"error": {"code": "queue_timeout"}}),

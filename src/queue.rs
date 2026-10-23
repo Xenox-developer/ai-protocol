@@ -78,6 +78,15 @@ pub(crate) struct Queues {
 }
 
 impl Queues {
+    pub fn reject_pending(&mut self) {
+        for queue in [&mut self.interactive, &mut self.agents] {
+            for Job { reply, permit, .. } in queue.drain(..) {
+                drop(permit);
+                let _ = reply.send(super::gateway_closed());
+            }
+        }
+    }
+
     pub fn take_order(&mut self) -> u64 {
         let order = self.next_order;
         self.next_order = order.checked_add(1).expect("Admission sequence exhausted");

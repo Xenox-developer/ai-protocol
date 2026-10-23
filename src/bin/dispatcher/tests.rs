@@ -8,6 +8,26 @@ use axum::{
 use std::sync::atomic::{AtomicUsize, Ordering};
 use tokio::sync::Notify;
 
+#[tokio::test]
+async fn closed_gateway_is_not_started_but_never_automatically_retried() {
+    let mut attempts = 0;
+    let result = retry::run(|| {
+        attempts += 1;
+        async {
+            let response = retry::Response {
+                status: StatusCode::SERVICE_UNAVAILABLE,
+                retry_after: None,
+                body: br#"{"error":{"code":"gateway_closed","execution":"not_started"}}"#.to_vec(),
+            };
+            assert!(not_started(&response));
+            Ok(response)
+        }
+    })
+    .await;
+    assert!(result.is_err());
+    assert_eq!(attempts, 1);
+}
+
 struct Upstream {
     service_id: Mutex<String>,
     limit: AtomicUsize,

@@ -374,7 +374,10 @@ safe retry rules for future writes. Historical benchmarks do not measure v3.
 
 ## Structure
 
-- `src/main.rs`: authentication, policy, admission, and scheduler.
+- `src/lib.rs`: shared authentication, policy, admission, and scheduler.
+- `src/gateway.rs`: public configuration, embedded gateway, budget updates and lifecycle.
+- `src/operation.rs`: typed native read-only handler registration.
+- `src/main.rs`: standalone gateway startup using the public library.
 - `src/budget.rs`: shared dynamic accounting and job guards.
 - `src/queue.rs`: weighted selection, waiting limits, and expiry.
 - `src/queue_tests.rs`: deterministic queue and scheduler tests.
@@ -385,6 +388,7 @@ safe retry rules for future writes. Historical benchmarks do not measure v3.
 - `examples/`: catalog, credential setup, Python clients and shared v3 helper.
 - `tests/`: Python unit tests and real catalog smoke test.
 - `docs/protocol.md`: current contract; `docs/archive/`: historical contract.
+- `docs/rust-library.md`: embedding, public interfaces and external-consumer checks.
 - `benchmarks/`: reproducible stage-4 experiment, report, raw results, and historical measurements.
 
 ## License

@@ -41,9 +41,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             max_outstanding: 5,
         }],
     )?;
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await?;
-    let gateway = Gateway::start(config).await;
-    println!("Native document service listening on 127.0.0.1:3000");
-    axum::serve(listener, gateway.router()).await?;
+    let address = std::env::var("NATIVE_LISTEN_ADDR").unwrap_or_else(|_| "127.0.0.1:3000".into());
+    let listener = tokio::net::TcpListener::bind(&address).await?;
+    let gateway = Gateway::start(config).await?;
+    println!(
+        "Native document service listening on {}",
+        listener.local_addr()?
+    );
+    axum::serve(listener, gateway.router())
+        .with_graceful_shutdown(async {
+            if let Err(error) = tokio::signal::ctrl_c().await {
+                eprintln!("Cannot listen for shutdown: {error}");
+            }
+        })
+        .await?;
+    gateway.shutdown().await?;
     Ok(())
 }

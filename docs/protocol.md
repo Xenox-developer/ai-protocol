@@ -153,6 +153,14 @@ part of this stage. The wire version remains 3 for every limit change.
 
 ## Admission, execution, and cancellation
 
+Embedded applications can explicitly close gateway admission or drain accepted
+work through the [library lifecycle interface](rust-library.md#budget-changes-and-lifecycle).
+After closure, valid new work receives 503 with
+`{"error":{"code":"gateway_closed","execution":"not_started"}}` and no
+Retry-After promise. This does not authorize the existing clients' automatic
+503 retry rule, which remains specific to `queue_timeout`. The standalone
+executable does not invoke this opt-in closure during ordinary operation.
+
 The outstanding count includes every accepted queued or running operation.
 Admission checks and increments the counter without waiting for capacity before
 enqueueing, and gives the job an owning guard. Concurrent

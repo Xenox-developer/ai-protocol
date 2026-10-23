@@ -1,9 +1,13 @@
 use std::sync::{Arc, Mutex};
 
+/// A coherent observation of one owner/class budget within one gateway process.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub(crate) struct Snapshot {
+pub struct Snapshot {
+    /// Configured outstanding-work ceiling, not a reservation of available slots.
     pub maximum: usize,
+    /// Accepted queued and running operations at the observation point.
     pub outstanding: usize,
+    /// Revision incremented only when the configured ceiling actually changes.
     pub revision: u64,
 }
 

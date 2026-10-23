@@ -149,6 +149,10 @@ including the first, respecting integer Retry-After and the original deadline.
 The dispatcher reuses `load/retry.rs`, `load/control.rs` and authenticated HTTP
 transport shared with the benchmark client. No new dependencies are required.
 
+An embedded gateway may return 503 `gateway_closed` with
+`execution=not_started` after its owner closes admission. The dispatcher preserves
+that execution certainty but does not automatically retry the closed gateway.
+
 ## Queue and lifecycle
 
 `DISPATCH_CAPACITY` (1..10000, default 1024) bounds all admitted local connections

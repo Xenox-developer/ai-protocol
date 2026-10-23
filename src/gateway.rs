@@ -2,7 +2,7 @@ use crate::{AppState, QueueSettings, SchedulerMode, app, service, telemetry};
 use std::{collections::HashMap, fmt, sync::Arc, time::Duration};
 use tokio::task::JoinHandle;
 
-/// Invalid gateway configuration. Messages never include credential values.
+/// Gateway configuration or initialization failure, without credential values.
 #[derive(Debug)]
 pub struct ConfigError(pub(crate) String);
 
@@ -230,34 +230,45 @@ impl GatewayConfig {
 ///
 /// Keep this value alive while serving its router. Dropping it aborts its
 /// scheduler and diagnostics task; it does not prove upstream execution stopped.
+#[must_use = "Keep the gateway alive while serving its router"]
 pub struct Gateway {
     state: Arc<AppState>,
+    runtime: tokio::runtime::Handle,
     scheduler: JoinHandle<()>,
     sampler: Option<JoinHandle<()>>,
 }
 
 impl Gateway {
     /// Start one scheduler on the current Tokio runtime without binding a socket.
-    pub async fn start(config: GatewayConfig) -> Self {
-        let mut state = AppState::with_queue_settings(
+    /// Returns an error if no Tokio runtime is active or HTTP client initialization fails.
+    pub async fn start(config: GatewayConfig) -> Result<Self, ConfigError> {
+        let runtime = tokio::runtime::Handle::try_current()
+            .map_err(|_| ConfigError("Gateway::start requires an active Tokio runtime".into()))?;
+        let client = crate::upstream_client()?;
+        let mut state = AppState::with_service(
+            config.service,
             config.identities,
             config.reject_once,
             config.admin_token,
             config.queue_settings,
         );
-        Arc::get_mut(&mut state).unwrap().service = config.service;
         Arc::get_mut(&mut state).unwrap().trace = config.trace;
         state.queues.lock().await.mode = config.mode;
         let sampler = state
             .trace
             .as_ref()
             .map(|_| tokio::spawn(telemetry::sample(state.clone())));
-        let scheduler = tokio::spawn(crate::scheduler(state.clone(), config.upstream_url));
-        Self {
+        let scheduler = tokio::spawn(crate::scheduler_with_client(
+            state.clone(),
+            config.upstream_url,
+            client,
+        ));
+        Ok(Self {
             state,
+            runtime,
             scheduler,
             sampler,
-        }
+        })
     }
 
     /// Return routes sharing this gateway's identities, queues, and budgets.
@@ -267,13 +278,114 @@ impl Gateway {
     pub fn router(&self) -> axum::Router {
         app(self.state.clone())
     }
+
+    /// Change an existing agent owner's ceiling, preserving accepted work.
+    ///
+    /// This is the in-process equivalent of the administrative HTTP update. It
+    /// requires no admin token because the host application already owns this
+    /// gateway. Unknown agent owners and limits outside 1..=1000 return an error.
+    pub fn set_agent_limit(
+        &self,
+        principal_id: &str,
+        maximum: usize,
+    ) -> Result<crate::BudgetSnapshot, ConfigError> {
+        if !(1..=1000).contains(&maximum) {
+            return Err(ConfigError(
+                "max_outstanding must be an integer from 1 to 1000".into(),
+            ));
+        }
+        let budget = self
+            .state
+            .agent_budget(principal_id)
+            .ok_or_else(|| ConfigError("Unknown agent principal".into()))?;
+        Ok(budget.set_maximum(maximum))
+    }
+
+    /// Stop admitting new work while allowing accepted jobs to finish or expire.
+    ///
+    /// The admission lock orders closure with concurrent submissions. Discovery
+    /// and administrative routes remain available to the host until it stops HTTP.
+    pub async fn close(&self) {
+        let _queues = self.state.queues.lock().await;
+        self.state
+            .closing
+            .store(true, std::sync::atomic::Ordering::Relaxed);
+        self.state.notify.notify_one();
+    }
+
+    /// Close admission, drain accepted work, and stop owned background tasks.
+    ///
+    /// Accepted queued work retains its original waiting deadline. Running work
+    /// retains its permit. Native handlers must finish for draining to complete;
+    /// callers can bound this future with `tokio::time::timeout`. Cancellation of
+    /// this future drops the gateway and performs abrupt local cleanup instead.
+    /// A scheduler task failure is returned as `JoinError`.
+    pub async fn shutdown(mut self) -> Result<(), tokio::task::JoinError> {
+        self.close().await;
+        (&mut self.scheduler).await?;
+        if let Some(sampler) = self.sampler.take() {
+            sampler.abort();
+            let _ = sampler.await;
+        }
+        Ok(())
+    }
 }
 
 impl Drop for Gateway {
     fn drop(&mut self) {
+        self.state
+            .closing
+            .store(true, std::sync::atomic::Ordering::Relaxed);
         self.scheduler.abort();
         if let Some(sampler) = &self.sampler {
             sampler.abort();
         }
+        // A retained router must not keep queued reply channels and permits alive
+        // after its owner disappears. Critical sections contain no I/O or awaits.
+        if let Ok(mut queues) = self.state.queues.try_lock() {
+            queues.reject_pending();
+        } else {
+            let state = self.state.clone();
+            self.runtime
+                .spawn(async move { state.queues.lock().await.reject_pending() });
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{Job, TaskAction};
+
+    #[tokio::test]
+    async fn drop_outside_runtime_cleans_pending_work_when_the_queue_lock_is_busy() {
+        let config = GatewayConfig::from_manifest(
+            include_str!("../services/catalog.json"),
+            "http://127.0.0.1:1",
+            |name| Ok(format!("test-{name}")),
+        )
+        .unwrap();
+        let gateway = Gateway::start(config).await.unwrap();
+        let state = gateway.state.clone();
+        let budget = state.identities["test-AGENT_TOKEN_1"].budget.clone();
+        let mut queues = state.queues.lock().await;
+        let (reply, receiver) = tokio::sync::oneshot::channel();
+        queues.agents.push_back(Job {
+            reply,
+            action: TaskAction::GetProduct(1),
+            permit: budget.try_acquire().unwrap(),
+            accepted_at: tokio::time::Instant::now(),
+            max_wait: Duration::from_secs(10),
+            order: 0,
+        });
+        std::thread::spawn(move || drop(gateway)).join().unwrap();
+        drop(queues);
+        let response = tokio::time::timeout(Duration::from_secs(3), receiver)
+            .await
+            .unwrap()
+            .unwrap();
+        assert_eq!(response.status(), 503);
+        assert_eq!(budget.snapshot().outstanding, 0);
+        assert!(state.queues.lock().await.agents.is_empty());
     }
 }
