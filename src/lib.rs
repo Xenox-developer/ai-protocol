@@ -20,7 +20,9 @@ use tokio::sync::{Mutex, Notify, oneshot};
 
 mod budget;
 mod gateway;
-pub use gateway::{ConfigError, Gateway, GatewayConfig};
+pub use gateway::{ConfigError, Credential, Gateway, GatewayConfig};
+mod operation;
+pub use operation::Operation;
 mod service;
 use budget::{Budget, Permit};
 use tokio::task::JoinSet;
@@ -34,10 +36,13 @@ use telemetry::Trace;
 const EXECUTION_LIMIT: usize = 10;
 const QUEUE_LIMIT: usize = 32;
 
-#[derive(Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
+/// Server-assigned scheduling class; callers cannot select it through HTTP headers.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "lowercase")]
-enum ClientClass {
+pub enum ClientClass {
+    /// Background agent work.
     Agent,
+    /// Interactive work with weighted selection preference.
     Interactive,
 }
 
@@ -59,6 +64,7 @@ fn identities_from(
 
 enum TaskAction {
     Mapped(service::UpstreamRequest),
+    Native(operation::Execution),
     #[cfg(test)]
     Search(String),
     #[cfg(test)]
@@ -365,6 +371,12 @@ async fn work(
         .iter()
         .find(|op| op.path == uri.path())
         .unwrap();
+    if let Some(native) = &operation.native {
+        return match native.prepare(params) {
+            Ok(execution) => enqueue(state, identity, TaskAction::Native(execution)).await,
+            Err(response) => response,
+        };
+    }
     match operation.request(&params) {
         Ok(request) => enqueue(state, identity, TaskAction::Mapped(request)).await,
         Err(error) => (StatusCode::UNPROCESSABLE_ENTITY, error).into_response(),
@@ -380,7 +392,8 @@ fn queue_timeout() -> Response {
         .into_response()
 }
 
-async fn scheduler(state: Arc<AppState>, upstream_url: String) {
+async fn scheduler(state: Arc<AppState>, upstream_url: impl Into<Option<String>>) {
+    let upstream_url = upstream_url.into();
     let client = reqwest::Client::builder()
         .no_proxy()
         .redirect(reqwest::redirect::Policy::none())
@@ -390,7 +403,7 @@ async fn scheduler(state: Arc<AppState>, upstream_url: String) {
     run_scheduler(state, move |action| {
         let client = client.clone();
         let upstream_url = upstream_url.clone();
-        async move { call_upstream(client, &upstream_url, action).await }
+        async move { call_upstream(client, upstream_url.as_deref(), action).await }
     })
     .await;
 }
@@ -442,10 +455,18 @@ where
 
 async fn call_upstream(
     client: reqwest::Client,
-    upstream_url: &str,
+    upstream_url: Option<&str>,
     action: TaskAction,
 ) -> Response {
+    let action = match action {
+        TaskAction::Native(execution) => return execution.await,
+        action => action,
+    };
+    let Some(upstream_url) = upstream_url else {
+        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+    };
     let request = match action {
+        TaskAction::Native(_) => unreachable!("Native work was handled before HTTP mapping"),
         TaskAction::Mapped(request) => client
             .get(format!("{upstream_url}{}", request.path))
             .query(&request.query),

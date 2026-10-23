@@ -6,6 +6,10 @@ and local JSON fixtures. Integration uses **manual API mapping**, not automatic
 API discovery or an OpenAPI importer. No service-specific branch was added to
 any agent client.
 
+For a service embedded in Rust, the [public library](rust-library.md) also
+supports typed native read-only handlers without an upstream HTTP mapping.
+The manifest restrictions below apply to the standalone HTTP adapter.
+
 ## What the service owner supplies
 
 1. Run the upstream HTTP service. The example is `examples/support_service.py`,

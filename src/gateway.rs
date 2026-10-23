@@ -1,5 +1,5 @@
 use crate::{AppState, QueueSettings, SchedulerMode, app, service, telemetry};
-use std::{fmt, sync::Arc, time::Duration};
+use std::{collections::HashMap, fmt, sync::Arc, time::Duration};
 use tokio::task::JoinHandle;
 
 /// Invalid gateway configuration. Messages never include credential values.
@@ -20,13 +20,84 @@ impl From<String> for ConfigError {
     }
 }
 
+/// One host-provided bearer credential and its authorization grant.
+///
+/// Tokens of the same owner and class must have the same initial budget. The
+/// gateway creates one shared counter for them, not one counter per credential.
+/// This type intentionally does not implement `Debug` to avoid exposing tokens.
+pub struct Credential {
+    /// Secret bearer credential. Never include it in logs or discovery output.
+    pub token: String,
+    /// Owner identifier used for shared budget accounting.
+    pub principal_id: String,
+    /// Trusted, server-assigned scheduling class.
+    pub client_class: crate::ClientClass,
+    /// Names of operations this credential may invoke.
+    pub operations: Vec<String>,
+    /// Initial outstanding-work limit, from 1 through 1000.
+    pub max_outstanding: usize,
+}
+
+pub(crate) fn valid_token(token: &str) -> bool {
+    !token.is_empty()
+        && token
+            .bytes()
+            .all(|b| b.is_ascii_alphanumeric() || b"-._~+/=".contains(&b))
+}
+
+pub(crate) fn identities(
+    credentials: Vec<Credential>,
+    operations: &[service::Operation],
+) -> Result<HashMap<String, crate::ClientIdentity>, String> {
+    let mut identities = HashMap::new();
+    let mut budgets: HashMap<_, Arc<crate::Budget>> = HashMap::new();
+    for credential in credentials {
+        if !valid_token(&credential.token) {
+            return Err("Invalid bearer token".into());
+        }
+        if credential.principal_id.is_empty()
+            || !(1..=1000).contains(&credential.max_outstanding)
+            || credential
+                .operations
+                .iter()
+                .any(|name| !operations.iter().any(|op| &op.name == name))
+        {
+            return Err("Invalid credential or permission mapping".into());
+        }
+        let budget = budgets
+            .entry((credential.principal_id.clone(), credential.client_class))
+            .or_insert_with(|| crate::Budget::new(credential.max_outstanding));
+        if budget.snapshot().maximum != credential.max_outstanding {
+            return Err("Tokens of one owner and class must specify the same budget".into());
+        }
+        if identities
+            .insert(
+                credential.token,
+                crate::ClientIdentity {
+                    principal_id: credential.principal_id,
+                    class: credential.client_class,
+                    operations: credential.operations,
+                    budget: budget.clone(),
+                },
+            )
+            .is_some()
+        {
+            return Err("Token values must be distinct".into());
+        }
+    }
+    if identities.is_empty() {
+        return Err("At least one credential is required".into());
+    }
+    Ok(identities)
+}
+
 /// Validated service, credentials, and queue configuration for one gateway.
 ///
 /// Configuration owns secrets and intentionally does not implement `Debug`.
 pub struct GatewayConfig {
     service: service::Service,
     identities: std::collections::HashMap<String, crate::ClientIdentity>,
-    upstream_url: String,
+    upstream_url: Option<String>,
     admin_token: Option<String>,
     queue_settings: QueueSettings,
     mode: SchedulerMode,
@@ -35,6 +106,28 @@ pub struct GatewayConfig {
 }
 
 impl GatewayConfig {
+    /// Configure read-only native handlers with application-owned credentials.
+    ///
+    /// This path does not read the environment or require an upstream HTTP API.
+    pub fn native(
+        service_id: &str,
+        operations: Vec<crate::Operation>,
+        credentials: Vec<Credential>,
+    ) -> Result<Self, ConfigError> {
+        let service = service::Service::native(service_id, operations)?;
+        let identities = identities(credentials, &service.operations)?;
+        Ok(Self {
+            service,
+            identities,
+            upstream_url: None,
+            admin_token: None,
+            queue_settings: QueueSettings::default(),
+            mode: SchedulerMode::default(),
+            reject_once: false,
+            trace: None,
+        })
+    }
+
     /// Parse the existing service manifest and resolve its token environment names.
     ///
     /// The resolver can read an application-owned credential store instead of the
@@ -62,7 +155,7 @@ impl GatewayConfig {
         Ok(Self {
             service,
             identities,
-            upstream_url,
+            upstream_url: Some(upstream_url),
             admin_token: None,
             queue_settings: QueueSettings::default(),
             mode: SchedulerMode::default(),

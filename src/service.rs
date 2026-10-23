@@ -1,5 +1,5 @@
 //! Owner-managed read API mapping. No request can choose an upstream origin or route.
-use super::{Budget, ClientClass, ClientIdentity};
+use super::{ClientClass, ClientIdentity};
 use serde::Deserialize;
 use serde_json::{Value, json};
 use std::collections::{BTreeMap, HashMap, HashSet};
@@ -19,6 +19,8 @@ pub struct Operation {
     pub path: String,
     upstream_path: String,
     parameters: BTreeMap<String, Parameter>,
+    #[serde(skip)]
+    pub native: Option<crate::Operation>,
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -47,7 +49,7 @@ pub struct UpstreamRequest {
     pub path: String,
     pub query: Vec<(String, String)>,
 }
-fn identifier(value: &str) -> bool {
+pub(crate) fn identifier(value: &str) -> bool {
     !value.is_empty()
         && value
             .bytes()
@@ -57,6 +59,9 @@ fn route(value: &str) -> bool {
     value
         .strip_prefix('/')
         .is_some_and(|path| path.split('/').all(identifier))
+}
+pub(crate) fn operation_path(value: &str) -> bool {
+    route(value) && value != "/agent-policy" && value != "/admin" && !value.starts_with("/admin/")
 }
 pub fn upstream_origin(value: String) -> Result<String, &'static str> {
     let url = reqwest::Url::parse(&value).map_err(|_| "Invalid upstream origin")?;
@@ -103,11 +108,8 @@ impl Service {
             let mut parameters = HashSet::new();
             if !identifier(&op.name)
                 || !names.insert(&op.name)
-                || !route(&op.path)
+                || !operation_path(&op.path)
                 || !paths.insert(&op.path)
-                || op.path == "/agent-policy"
-                || op.path == "/admin"
-                || op.path.starts_with("/admin/")
                 || !route(&op.upstream_path)
                 || op.parameters.iter().any(|(name, p)| {
                     !identifier(name) || !identifier(&p.upstream) || !parameters.insert(&p.upstream)
@@ -140,48 +142,61 @@ impl Service {
         &self,
         mut read: impl FnMut(&str) -> Result<String, std::env::VarError>,
     ) -> Result<HashMap<String, ClientIdentity>, String> {
-        let mut identities = HashMap::new();
-        let mut budgets = HashMap::new();
+        let mut credentials = Vec::new();
         for c in &self.credentials {
             let token = match read(&c.token_env) {
                 Ok(token) => token,
                 Err(std::env::VarError::NotPresent) if !c.required => continue,
                 Err(_) => return Err(format!("Missing or invalid {}", c.token_env)),
             };
-            if token.is_empty()
-                || !token
-                    .bytes()
-                    .all(|b| b.is_ascii_alphanumeric() || b"-._~+/=".contains(&b))
-            {
+            if !crate::gateway::valid_token(&token) {
                 return Err(format!("Invalid bearer token in {}", c.token_env));
             }
-            let budget = budgets
-                .entry((&c.principal_id, c.client_class))
-                .or_insert_with(|| Budget::new(c.max_outstanding))
-                .clone();
-            if identities
-                .insert(
-                    token,
-                    ClientIdentity {
-                        principal_id: c.principal_id.clone(),
-                        class: c.client_class,
-                        operations: c.operations.clone(),
-                        budget,
-                    },
-                )
-                .is_some()
-            {
-                return Err("Token values must be distinct".into());
+            credentials.push(crate::Credential {
+                token,
+                principal_id: c.principal_id.clone(),
+                client_class: c.client_class,
+                operations: c.operations.clone(),
+                max_outstanding: c.max_outstanding,
+            });
+        }
+        crate::gateway::identities(credentials, &self.operations)
+    }
+
+    pub fn native(service_id: &str, operations: Vec<crate::Operation>) -> Result<Self, String> {
+        let mut names = HashSet::new();
+        let mut paths = HashSet::new();
+        if !identifier(service_id) || operations.is_empty() {
+            return Err("Service requires an ID and operations".into());
+        }
+        for op in &operations {
+            if !names.insert(&op.name) || !paths.insert(&op.path) {
+                return Err("Duplicate operation name or path".into());
             }
         }
-        if identities.is_empty() {
-            return Err("At least one credential is required".into());
-        }
-        Ok(identities)
+        Ok(Self {
+            service_id: service_id.into(),
+            operations: operations
+                .into_iter()
+                .map(|op| Operation {
+                    name: op.name.clone(),
+                    description: op.description.clone(),
+                    path: op.path.clone(),
+                    upstream_path: String::new(),
+                    parameters: BTreeMap::new(),
+                    native: Some(op),
+                })
+                .collect(),
+            credentials: Vec::new(),
+        })
     }
 }
 impl Operation {
     pub fn descriptor(&self) -> Value {
+        if let Some(native) = &self.native {
+            return json!({"name": self.name, "description": self.description, "method": "POST",
+                "path": self.path, "input_schema": native.input_schema});
+        }
         let properties: BTreeMap<_, _> = self
             .parameters
             .iter()

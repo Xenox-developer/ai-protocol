@@ -4,6 +4,12 @@ Status: a local, single-process prototype over HTTP, not a public standard.
 This document describes `src/lib.rs` (used by the standalone gateway in
 `src/main.rs`) and the current example clients.
 
+The library can also publish native read-only operations with owner-supplied
+schemas and typed Serde input validation. These use the same v3 discovery,
+authorization, budgets and queue rules. The routes and flat parameter mapping
+below describe the default catalog and HTTP adapter; native handler schemas may
+describe additional JSON input shapes. See [Rust integration](rust-library.md).
+
 ## Authentication and permissions
 
 Each gateway instance serves one owner-configured service. The table below

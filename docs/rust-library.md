@@ -36,6 +36,47 @@ cargo test --locked --test library
 cargo doc --locked --no-deps
 ```
 
-The manifest mapper remains limited to the read-only API shape documented in
-[service integration](service-integration.md). Native handler registration and
-draining shutdown are the next parts of the library extraction stage.
+## Native read-only handlers
+
+`Operation::new(name, description, path, input_schema, handler)` registers an
+async handler whose input type implements `Deserialize` and whose result
+implements Axum's `IntoResponse`. `GatewayConfig::native(service_id, operations,
+credentials)` builds a service without a manifest, environment access or upstream
+HTTP server. `Credential` contains a bearer token, owner, class, operation grants
+and initial budget. Supply values from the application's own configuration or
+credential store. Credentials remain a startup snapshot; runtime token rotation
+and external per-request authentication adapters are not provided yet.
+
+The complete [native document service](../examples/native_service.rs) uses only
+public interfaces. It searches local, read-only document titles, without an LLM.
+Set `NATIVE_AGENT_TOKEN` to a privately generated token, then run:
+
+```sh
+cargo run --locked --example native_service
+```
+
+It listens on `127.0.0.1:3000`. Use a free port; do not stop another service to
+make room. For example, an application client can discover `/agent-policy` and
+call `POST /documents/find` with `{"query":"rust"}` and its bearer credential.
+It receives `{"documents":["Rust introduction"]}`.
+
+Authorization runs before body validation. Serde deserialization runs before
+admission, and failures return 422 without consuming budget. The handler is
+called only after scheduler selection, so both queued and running handlers count
+against the same owner budget. Handlers must be nonblocking and read-only; the
+framework does not infer side effects or make arbitrary work safely retryable.
+Native handlers have no implicit execution timeout. The application must bound
+their execution, for example with `tokio::time::timeout`.
+
+The owner supplies the discovery schema and keeps it consistent with the input
+type. Nested structures, arrays, booleans and optional fields work through Serde.
+Use `#[serde(deny_unknown_fields)]` where the schema rejects additional properties.
+Constraints such as string patterns or numeric ranges require corresponding
+Serde/custom application validation; the library does not automatically enforce
+arbitrary JSON Schema keywords. Avoid secret values in schemas or descriptions.
+
+Native handlers and mapped upstream operations use the same queue, permits,
+authorization, admin budget updates, deadlines and scheduler. The standalone
+manifest mapper retains its existing, narrower API shape documented in
+[service integration](service-integration.md); its manifests and wire responses
+remain compatible. Draining shutdown is the next part of the extraction stage.
