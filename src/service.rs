@@ -61,7 +61,12 @@ fn route(value: &str) -> bool {
         .is_some_and(|path| path.split('/').all(identifier))
 }
 pub(crate) fn operation_path(value: &str) -> bool {
-    route(value) && value != "/agent-policy" && value != "/admin" && !value.starts_with("/admin/")
+    route(value)
+        && value != "/healthz"
+        && value != "/readyz"
+        && value != "/agent-policy"
+        && value != "/admin"
+        && !value.starts_with("/admin/")
 }
 pub fn upstream_origin(value: String) -> Result<String, &'static str> {
     let url = reqwest::Url::parse(&value).map_err(|_| "Invalid upstream origin")?;

@@ -55,7 +55,9 @@ use tokio::sync::{Mutex, Notify, oneshot};
 
 mod budget;
 mod gateway;
-pub use gateway::{ConfigError, Credential, Gateway, GatewayConfig};
+pub use gateway::{AccessGrant, ConfigError, Credential, Gateway, GatewayConfig};
+mod settings;
+pub use settings::RuntimeSettings;
 mod operation;
 pub use operation::Operation;
 mod service;
@@ -69,7 +71,7 @@ pub use queue::{QueueSettings, SchedulerMode};
 mod telemetry;
 use telemetry::Trace;
 
-const EXECUTION_LIMIT: usize = 10;
+#[cfg(test)]
 const QUEUE_LIMIT: usize = 32;
 
 /// Server-assigned scheduling class; callers cannot select it through HTTP headers.
@@ -133,6 +135,11 @@ struct AppState {
     trace: Option<Arc<Trace>>,
     active: Arc<std::sync::atomic::AtomicUsize>,
     closing: AtomicBool,
+    settings: RuntimeSettings,
+    authenticator: Option<gateway::Authenticator>,
+    log_requests: bool,
+    requests: std::sync::atomic::AtomicU64,
+    failures: std::sync::atomic::AtomicU64,
 }
 
 impl AppState {
@@ -184,6 +191,11 @@ impl AppState {
             trace: None,
             active: Arc::new(std::sync::atomic::AtomicUsize::new(0)),
             closing: AtomicBool::new(false),
+            settings: RuntimeSettings::default(),
+            authenticator: None,
+            log_requests: false,
+            requests: std::sync::atomic::AtomicU64::new(0),
+            failures: std::sync::atomic::AtomicU64::new(0),
         })
     }
 
@@ -232,6 +244,7 @@ fn app(state: Arc<AppState>) -> Router {
             "/admin/principals/{principal_id}/limits",
             patch(update_limits),
         )
+        .route("/admin/metrics", get(metrics))
         .route_layer(middleware::from_fn_with_state(
             state.clone(),
             authenticate_admin,
@@ -243,7 +256,55 @@ fn app(state: Arc<AppState>) -> Router {
     router
         .route_layer(middleware::from_fn_with_state(state.clone(), authenticate))
         .merge(admin)
+        .route(
+            "/healthz",
+            get(|| async { Json(serde_json::json!({"status": "ok"})) }),
+        )
+        .route("/readyz", get(readiness))
+        .layer(axum::extract::DefaultBodyLimit::max(
+            state.settings.max_request_bytes,
+        ))
+        .layer(middleware::from_fn_with_state(state.clone(), observe))
         .with_state(state)
+}
+
+async fn readiness(State(state): State<Arc<AppState>>) -> Response {
+    if state.closing.load(Ordering::Relaxed) {
+        protocol_error(
+            StatusCode::SERVICE_UNAVAILABLE,
+            "gateway_closed",
+            "not_started",
+        )
+    } else {
+        Json(serde_json::json!({"status": "ready"})).into_response()
+    }
+}
+
+async fn metrics(State(state): State<Arc<AppState>>) -> Json<serde_json::Value> {
+    let queues = state.queues.lock().await;
+    Json(serde_json::json!({
+        "requests_total": state.requests.load(Ordering::Relaxed),
+        "failures_total": state.failures.load(Ordering::Relaxed),
+        "active": state.active.load(Ordering::Relaxed),
+        "queued_agent": queues.agents.len(), "queued_interactive": queues.interactive.len(),
+        "closing": state.closing.load(Ordering::Relaxed)
+    }))
+}
+
+async fn observe(State(state): State<Arc<AppState>>, request: Request, next: Next) -> Response {
+    let started = Instant::now();
+    state.requests.fetch_add(1, Ordering::Relaxed);
+    let response = next.run(request).await;
+    if !response.status().is_success() {
+        state.failures.fetch_add(1, Ordering::Relaxed);
+    }
+    if state.log_requests {
+        eprintln!(
+            "{}",
+            serde_json::json!({"event": "request_completed", "status": response.status().as_u16(), "elapsed_ms": started.elapsed().as_millis()})
+        );
+    }
+    response
 }
 
 async fn authenticate(
@@ -251,7 +312,23 @@ async fn authenticate(
     mut request: Request,
     next: Next,
 ) -> Response {
-    let identity = bearer_token(&request).and_then(|token| state.identities.get(token));
+    let identity = if let Some(authenticate) = &state.authenticator {
+        match bearer_token(&request).filter(|token| state.admin_token.as_deref() != Some(*token)) {
+            Some(token) => {
+                tokio::time::timeout(Duration::from_secs(1), authenticate(token.to_owned()))
+                    .await
+                    .ok()
+                    .flatten()
+                    .and_then(|id| state.identities.get(&id))
+                    .cloned()
+            }
+            None => None,
+        }
+    } else {
+        bearer_token(&request)
+            .and_then(|token| state.identities.get(token))
+            .cloned()
+    };
 
     let mut response = if let Some(identity) = identity {
         let operation = state
@@ -398,7 +475,7 @@ async fn enqueue(state: Arc<AppState>, identity: ClientIdentity, action: TaskAct
             ClientClass::Agent => &mut queues.agents,
             ClientClass::Interactive => &mut queues.interactive,
         };
-        if queue.len() >= QUEUE_LIMIT {
+        if queue.len() >= state.settings.queue_capacity {
             return overloaded("Queue is full", "1");
         }
         queue.push_back(Job {
@@ -448,6 +525,14 @@ async fn work(
     }
 }
 
+fn protocol_error(status: StatusCode, code: &'static str, execution: &'static str) -> Response {
+    (
+        status,
+        Json(serde_json::json!({"error": {"code": code, "execution": execution}})),
+    )
+        .into_response()
+}
+
 fn queue_timeout() -> Response {
     (
         StatusCode::SERVICE_UNAVAILABLE,
@@ -465,6 +550,7 @@ fn gateway_closed() -> Response {
         .into_response()
 }
 
+#[cfg(test)]
 fn upstream_client() -> Result<reqwest::Client, ConfigError> {
     reqwest::Client::builder()
         .no_proxy()
@@ -484,10 +570,35 @@ async fn scheduler_with_client(
     upstream_url: Option<String>,
     client: reqwest::Client,
 ) {
+    let settings = state.settings;
     run_scheduler(state, move |action| {
         let client = client.clone();
         let upstream_url = upstream_url.clone();
-        async move { call_upstream(client, upstream_url.as_deref(), action).await }
+        async move {
+            tokio::time::timeout(settings.execution_timeout, async {
+                let response = call_upstream(
+                    client,
+                    upstream_url.as_deref(),
+                    action,
+                    settings.max_response_bytes,
+                )
+                .await;
+                let (mut parts, body) = response.into_parts();
+                match axum::body::to_bytes(body, settings.max_response_bytes).await {
+                    Ok(body) => {
+                        parts.headers.remove(header::CONTENT_LENGTH);
+                        Response::from_parts(parts, axum::body::Body::from(body))
+                    }
+                    Err(_) => {
+                        protocol_error(StatusCode::BAD_GATEWAY, "response_too_large", "unknown")
+                    }
+                }
+            })
+            .await
+            .unwrap_or_else(|_| {
+                protocol_error(StatusCode::GATEWAY_TIMEOUT, "execution_timeout", "unknown")
+            })
+        }
     })
     .await;
 }
@@ -503,7 +614,7 @@ where
         let deadline = {
             let mut queues = state.queues.lock().await;
             queues.maintain(Instant::now());
-            while running.len() < EXECUTION_LIMIT {
+            while running.len() < state.settings.execution_limit {
                 let Some(job) = queues.pop_next() else { break };
                 let Job {
                     reply,
@@ -548,6 +659,7 @@ async fn call_upstream(
     client: reqwest::Client,
     upstream_url: Option<&str>,
     action: TaskAction,
+    max_response_bytes: usize,
 ) -> Response {
     let action = match action {
         TaskAction::Native(execution) => return execution.await,
@@ -580,15 +692,37 @@ async fn call_upstream(
                 return (StatusCode::BAD_GATEWAY, "Upstream returned an error").into_response();
             }
 
-            match response.bytes().await {
-                Ok(body) => {
-                    (StatusCode::OK, [("Content-Type", "application/json")], body).into_response()
-                }
-
-                Err(_) => {
-                    (StatusCode::BAD_GATEWAY, "Cannot read upstream response").into_response()
+            let mut response = response;
+            if response
+                .content_length()
+                .is_some_and(|size| size > max_response_bytes as u64)
+            {
+                return protocol_error(StatusCode::BAD_GATEWAY, "response_too_large", "unknown");
+            }
+            let mut body = Vec::new();
+            loop {
+                match response.chunk().await {
+                    Ok(Some(chunk)) if chunk.len() <= max_response_bytes - body.len() => {
+                        body.extend_from_slice(&chunk)
+                    }
+                    Ok(Some(_)) => {
+                        return protocol_error(
+                            StatusCode::BAD_GATEWAY,
+                            "response_too_large",
+                            "unknown",
+                        );
+                    }
+                    Ok(None) => break,
+                    Err(_) => {
+                        return protocol_error(
+                            StatusCode::BAD_GATEWAY,
+                            "upstream_body_error",
+                            "unknown",
+                        );
+                    }
                 }
             }
+            (StatusCode::OK, [("Content-Type", "application/json")], body).into_response()
         }
 
         Err(error) => {

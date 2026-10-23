@@ -50,8 +50,9 @@ Startup fails on missing required, empty, invalid, or duplicate token values.
 There are no default credentials. A separate optional `ADMIN_TOKEN` enables
 administrative updates and must differ from every service token. The demo mapping lives in `services/catalog.json`; `SERVICE_CONFIG` selects a
 different manifest with token environment names, operations and initial budgets.
-Runtime registration, rotation, revocation and external identity adapters remain
-outside this version.
+The Rust library can verify requests through an application-owned authentication
+callback and preconfigured grants; see [Rust integration](rust-library.md).
+Static environment credentials are reloaded by restarting the standalone gateway.
 
 ## Discovery
 

@@ -506,3 +506,201 @@ fn starting_without_a_tokio_runtime_returns_an_error() {
         Poll::Ready(Err(_))
     ));
 }
+
+#[tokio::test]
+async fn external_authentication_is_live_and_uses_server_owned_grants() {
+    use ai_protocol::AccessGrant;
+    use std::sync::atomic::{AtomicBool, Ordering};
+    let enabled = Arc::new(AtomicBool::new(true));
+    let operation = Operation::new(
+        "read",
+        "Read records.",
+        "/records",
+        json!({"type": "object"}),
+        |_: Value| async { Json(json!({"ok": true})) },
+    )
+    .unwrap();
+    let check = enabled.clone();
+    let config = GatewayConfig::native_authenticated(
+        "auth_demo",
+        vec![operation],
+        vec![AccessGrant {
+            id: "readers".into(),
+            principal_id: "owner".into(),
+            client_class: ClientClass::Agent,
+            operations: vec!["read".into()],
+            max_outstanding: 2,
+        }],
+        move |token| {
+            let check = check.clone();
+            async move {
+                (token == "session-token" && check.load(Ordering::Relaxed))
+                    .then(|| "readers".into())
+            }
+        },
+    )
+    .unwrap();
+    let gateway = Gateway::start(config).await.unwrap();
+    let server = serve(gateway.router()).await;
+    let http = reqwest::Client::builder().no_proxy().build().unwrap();
+    for (token, status) in [("readers", 401), ("session-token", 200)] {
+        assert_eq!(
+            http.get(format!("{}/agent-policy", server.url))
+                .bearer_auth(token)
+                .send()
+                .await
+                .unwrap()
+                .status(),
+            status
+        );
+    }
+    enabled.store(false, Ordering::Relaxed);
+    assert_eq!(
+        http.post(format!("{}/records", server.url))
+            .bearer_auth("session-token")
+            .json(&json!({}))
+            .send()
+            .await
+            .unwrap()
+            .status(),
+        401
+    );
+    gateway.shutdown().await.unwrap();
+}
+
+#[tokio::test]
+async fn execution_limits_response_bounds_health_and_metrics_are_enforced() {
+    use ai_protocol::RuntimeSettings;
+    let operation = Operation::new(
+        "read",
+        "Read records.",
+        "/records",
+        json!({"type": "object"}),
+        |params: Value| async move {
+            if params["slow"] == true {
+                tokio::time::sleep(Duration::from_secs(1)).await;
+            }
+            Json(json!({"value": "x".repeat(128)}))
+        },
+    )
+    .unwrap();
+    let config = GatewayConfig::native(
+        "bounds",
+        vec![operation],
+        vec![Credential {
+            token: "reader-token".into(),
+            principal_id: "owner".into(),
+            client_class: ClientClass::Agent,
+            operations: vec!["read".into()],
+            max_outstanding: 5,
+        }],
+    )
+    .unwrap()
+    .with_admin_token("admin-secret".into())
+    .unwrap()
+    .with_runtime_settings(RuntimeSettings {
+        execution_limit: 1,
+        queue_capacity: 1,
+        execution_timeout: Duration::from_millis(100),
+        max_response_bytes: 64,
+        max_request_bytes: 64,
+    })
+    .unwrap();
+    let gateway = Gateway::start(config).await.unwrap();
+    let server = serve(gateway.router()).await;
+    let http = reqwest::Client::builder().no_proxy().build().unwrap();
+    assert_eq!(
+        http.get(format!("{}/healthz", server.url))
+            .send()
+            .await
+            .unwrap()
+            .status(),
+        200
+    );
+    assert_eq!(
+        http.get(format!("{}/admin/metrics", server.url))
+            .send()
+            .await
+            .unwrap()
+            .status(),
+        401
+    );
+    for (params, code, status) in [
+        (json!({}), "response_too_large", 502),
+        (json!({"slow": true}), "execution_timeout", 504),
+    ] {
+        let result = http
+            .post(format!("{}/records", server.url))
+            .bearer_auth("reader-token")
+            .json(&params)
+            .send()
+            .await
+            .unwrap();
+        assert_eq!(result.status(), status);
+        assert_eq!(result.json::<Value>().await.unwrap()["error"]["code"], code);
+    }
+    let metrics: Value = http
+        .get(format!("{}/admin/metrics", server.url))
+        .bearer_auth("admin-secret")
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(metrics["active"], 0);
+    assert!(metrics["failures_total"].as_u64().unwrap() >= 3);
+    gateway.close().await;
+    assert_eq!(
+        http.get(format!("{}/readyz", server.url))
+            .send()
+            .await
+            .unwrap()
+            .status(),
+        503
+    );
+    gateway.shutdown().await.unwrap();
+}
+
+#[tokio::test]
+async fn mapped_upstream_credential_is_separate_and_response_is_bounded() {
+    let upstream = serve(Router::new().route(
+        "/api/records",
+        get(|headers: axum::http::HeaderMap| async move {
+            assert_eq!(headers["authorization"], "Bearer upstream-secret");
+            Json(json!({"value": "x".repeat(128)}))
+        }),
+    ))
+    .await;
+    let manifest = json!({"service_id": "archive", "operations": [{"name": "read", "description": "Read records.", "path": "/records", "upstream_path": "/api/records", "parameters": {}}],
+        "credentials": [{"token_env": "READER", "required": true, "principal_id": "owner", "client_class": "agent", "operations": ["read"], "max_outstanding": 1}]});
+    let config = GatewayConfig::from_manifest(&manifest.to_string(), &upstream.url, |_| {
+        Ok("reader-secret".into())
+    })
+    .unwrap()
+    .with_upstream_bearer_token("upstream-secret".into())
+    .unwrap()
+    .with_runtime_settings(ai_protocol::RuntimeSettings {
+        max_response_bytes: 64,
+        ..Default::default()
+    })
+    .unwrap();
+    let gateway = Gateway::start(config).await.unwrap();
+    let server = serve(gateway.router()).await;
+    let result = reqwest::Client::builder()
+        .no_proxy()
+        .build()
+        .unwrap()
+        .post(format!("{}/records", server.url))
+        .bearer_auth("reader-secret")
+        .json(&json!({}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(result.status(), 502);
+    assert_eq!(
+        result.json::<Value>().await.unwrap()["error"]["code"],
+        "response_too_large"
+    );
+    gateway.shutdown().await.unwrap();
+}

@@ -45,14 +45,15 @@ manifest generates the published JSON Schema and the gateway validation from
 the same parameter definitions. This small adapter supports POST JSON objects
 mapped to GET query parameters, with unchanged upstream JSON response bodies.
 It does not support optional/nested fields, arbitrary schema keywords, path
-parameter substitution, response transformations, writes or upstream credentials.
+parameter substitution, response transformations or writes. A separate owner-supplied
+`UPSTREAM_BEARER_TOKEN` (or library builder) supports upstream bearer authentication.
 Those APIs would require extending the adapter or providing a service-owned
 translation endpoint. Invalid/reserved routes, inconsistent budgets, unknown
 permissions and unsupported manifest fields fail startup.
 
 Parameters are URL-encoded; their values cannot replace the configured origin
 or route. Redirects are disabled. Service tokens are checked by the gateway and
-are not forwarded to the upstream. The five-second upstream timeout remains
+are not forwarded to the upstream. The configurable execution timeout (five seconds by default) remains
 separate from accepted queue waiting time and the original client task deadline.
 
 ## Run support alongside the catalog

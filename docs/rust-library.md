@@ -23,7 +23,7 @@ they do not multiply owner budgets. Configuration errors are returned as
 Optional configuration methods set the separate admin token, queue waiting
 deadlines and scheduler mode. Queue waits must be whole milliseconds from 1
 through 3600000. Execution capacity remains ten, queue capacity remains 32 per
-class, and the upstream timeout remains five seconds.
+class, and the execution timeout defaults to five seconds. Resource bounds are configurable.
 
 The host application owns its HTTP listener and server lifecycle. The gateway
 does not install signal handlers or choose a listen address for an embedded app.
@@ -67,8 +67,8 @@ admission, and failures return 422 without consuming budget. The handler is
 called only after scheduler selection, so both queued and running handlers count
 against the same owner budget. Handlers must be nonblocking and read-only; the
 framework does not infer side effects or make arbitrary work safely retryable.
-Native handlers have no implicit execution timeout. The application must bound
-their execution, for example with `tokio::time::timeout`.
+Native handlers and response materialization use the configured execution timeout
+(five seconds by default). The application must also bound its own allocations.
 
 The owner supplies the discovery schema and keeps it consistent with the input
 type. Nested structures, arrays, booleans and optional fields work through Serde.
@@ -117,8 +117,8 @@ handed to an executor may already have started. A retained router remains closed
 Already started operations can have unknown outcomes, especially upstream HTTP
 requests; local cancellation does not prove downstream execution stopped.
 Use explicit shutdown for draining and, when needed, wrap it in an
-application-selected `tokio::time::timeout`. Native handlers have no implicit
-execution timeout, so the application must bound them for bounded shutdown.
+application-selected `tokio::time::timeout`. Native handlers use the configured
+execution timeout; the application must also bound the whole HTTP shutdown.
 
 ## Use from a separate application
 
@@ -145,3 +145,36 @@ binds a free loopback port, checks discovery and a native call, then sends Ctrl+
 only to its own child and verifies successful exit. It proves source integration,
 not installation of a published crate. Both this check and Rust documentation
 checks are included in the regular Unix verification script.
+
+## Resource bounds and existing authentication
+
+`GatewayConfig::with_runtime_settings(RuntimeSettings { ..Default::default() })`
+sets execution slots, per-class waiting capacity, execution deadline and request/
+response byte bounds. `with_upstream_bearer_token` configures a separate secret for
+mapped HTTP operations. `with_request_logging(true)` enables safe JSON summaries.
+See [operations](operations.md) for defaults, signals, probes and metrics.
+
+`GatewayConfig::native_authenticated` accepts `Vec<AccessGrant>` and an async
+`Fn(String) -> Future<Output = Option<String>>`. The callback receives the supplied
+bearer token and returns a configured grant ID only after your session/token
+store verifies it. A missing/unknown ID or one-second callback timeout returns
+401. Callback failures should return `None`. Grant IDs are non-secret labels;
+they cannot authenticate requests themselves. Each grant declares owner, trusted
+class, allowed operations and initial shared budget. No unbounded caller-created
+budget registry is created. Revocation affects new HTTP attempts; accepted work
+retains its permit and is not retroactively cancelled. The admin token remains a
+separate static credential and is never sent to this callback.
+
+```rust,ignore
+let sessions = std::sync::Arc::new(your_session_store);
+let config = GatewayConfig::native_authenticated(
+    "documents", operations, grants,
+    move |bearer| {
+        let sessions = sessions.clone();
+        async move { sessions.verify_and_find_grant(bearer).await }
+    },
+)?;
+```
+
+This sketch adapts your existing store; `tests/library.rs` contains a runnable
+revocation test. Static `Credential` constructors retain their existing behavior.

@@ -1,6 +1,21 @@
 use crate::{AppState, QueueSettings, SchedulerMode, app, service, telemetry};
 use std::{collections::HashMap, fmt, sync::Arc, time::Duration};
+use std::{future::Future, pin::Pin};
 use tokio::task::JoinHandle;
+
+pub(crate) type Authenticator =
+    Arc<dyn Fn(String) -> Pin<Box<dyn Future<Output = Option<String>> + Send>> + Send + Sync>;
+
+/// A named authorization grant selected by the host authenticator.
+/// Several grants can share one owner/class budget.
+pub struct AccessGrant {
+    /// Non-secret lookup key returned by the authenticator.
+    pub id: String,
+    pub principal_id: String,
+    pub client_class: crate::ClientClass,
+    pub operations: Vec<String>,
+    pub max_outstanding: usize,
+}
 
 /// Gateway configuration or initialization failure, without credential values.
 #[derive(Debug)]
@@ -101,6 +116,10 @@ pub struct GatewayConfig {
     admin_token: Option<String>,
     queue_settings: QueueSettings,
     mode: SchedulerMode,
+    settings: crate::RuntimeSettings,
+    authenticator: Option<Authenticator>,
+    upstream_token: Option<String>,
+    log_requests: bool,
     reject_once: bool,
     trace: Option<Arc<telemetry::Trace>>,
 }
@@ -123,9 +142,67 @@ impl GatewayConfig {
             admin_token: None,
             queue_settings: QueueSettings::default(),
             mode: SchedulerMode::default(),
+            settings: crate::RuntimeSettings::default(),
+            authenticator: None,
+            upstream_token: None,
+            log_requests: false,
             reject_once: false,
             trace: None,
         })
+    }
+
+    /// Use an application-owned authentication source instead of static tokens.
+    ///
+    /// The callback receives the bearer token and returns a configured grant ID.
+    /// It is evaluated on every request with a one-second timeout, failing closed.
+    /// Grant IDs themselves are never accepted as bearer credentials.
+    pub fn native_authenticated<F, Fut>(
+        service_id: &str,
+        operations: Vec<crate::Operation>,
+        grants: Vec<AccessGrant>,
+        authenticate: F,
+    ) -> Result<Self, ConfigError>
+    where
+        F: Fn(String) -> Fut + Send + Sync + 'static,
+        Fut: Future<Output = Option<String>> + Send + 'static,
+    {
+        let credentials = grants
+            .into_iter()
+            .map(|grant| Credential {
+                token: grant.id,
+                principal_id: grant.principal_id,
+                client_class: grant.client_class,
+                operations: grant.operations,
+                max_outstanding: grant.max_outstanding,
+            })
+            .collect();
+        let mut config = Self::native(service_id, operations, credentials)?;
+        config.authenticator = Some(Arc::new(move |token| Box::pin(authenticate(token))));
+        Ok(config)
+    }
+
+    /// Apply validated process-wide execution, queue and memory bounds.
+    pub fn with_runtime_settings(
+        mut self,
+        settings: crate::RuntimeSettings,
+    ) -> Result<Self, ConfigError> {
+        self.settings = settings.validate()?;
+        Ok(self)
+    }
+
+    /// Set a separate upstream bearer credential. Redirects are never followed.
+    pub fn with_upstream_bearer_token(mut self, token: String) -> Result<Self, ConfigError> {
+        if !valid_token(&token) {
+            return Err(ConfigError("Invalid upstream bearer token".into()));
+        }
+        self.upstream_token = Some(token);
+        Ok(self)
+    }
+
+    /// Emit safe JSON request summaries to stderr, without paths, tokens or bodies.
+    pub fn with_request_logging(mut self, enabled: bool) -> Self {
+        self.log_requests = enabled;
+        self
     }
 
     /// Parse the existing service manifest and resolve its token environment names.
@@ -159,6 +236,10 @@ impl GatewayConfig {
             admin_token: None,
             queue_settings: QueueSettings::default(),
             mode: SchedulerMode::default(),
+            settings: crate::RuntimeSettings::default(),
+            authenticator: None,
+            upstream_token: None,
+            log_requests: false,
             reject_once: false,
             trace: None,
         })
@@ -190,6 +271,22 @@ impl GatewayConfig {
         config.admin_token =
             crate::admin_token_from(std::env::var("ADMIN_TOKEN"), &config.identities)?;
         config.queue_settings = QueueSettings::from_env()?;
+        config.settings = crate::RuntimeSettings::from_env()?;
+        if let Ok(token) = std::env::var("UPSTREAM_BEARER_TOKEN") {
+            config = config.with_upstream_bearer_token(token)?;
+        } else if std::env::var_os("UPSTREAM_BEARER_TOKEN").is_some() {
+            return Err(ConfigError("Invalid upstream bearer token".into()));
+        }
+        config.log_requests = match std::env::var("GATEWAY_LOG_REQUESTS") {
+            Ok(value) if value == "true" => true,
+            Ok(value) if value == "false" => false,
+            Err(std::env::VarError::NotPresent) => false,
+            _ => {
+                return Err(ConfigError(
+                    "GATEWAY_LOG_REQUESTS must be true or false".into(),
+                ));
+            }
+        };
         config.mode = SchedulerMode::from_env()?;
         config.reject_once = std::env::var_os("TEST_429").is_some();
         config.trace = telemetry::Trace::from_env().map_err(|_| {
@@ -244,7 +341,20 @@ impl Gateway {
     pub async fn start(config: GatewayConfig) -> Result<Self, ConfigError> {
         let runtime = tokio::runtime::Handle::try_current()
             .map_err(|_| ConfigError("Gateway::start requires an active Tokio runtime".into()))?;
-        let client = crate::upstream_client()?;
+        let mut headers = reqwest::header::HeaderMap::new();
+        if let Some(token) = config.upstream_token {
+            let mut value = reqwest::header::HeaderValue::from_str(&format!("Bearer {token}"))
+                .map_err(|_| ConfigError("Invalid upstream bearer token".into()))?;
+            value.set_sensitive(true);
+            headers.insert(reqwest::header::AUTHORIZATION, value);
+        }
+        let client = reqwest::Client::builder()
+            .no_proxy()
+            .redirect(reqwest::redirect::Policy::none())
+            .timeout(config.settings.execution_timeout)
+            .default_headers(headers)
+            .build()
+            .map_err(|_| ConfigError("Cannot initialize the upstream HTTP client".into()))?;
         let mut state = AppState::with_service(
             config.service,
             config.identities,
@@ -252,7 +362,11 @@ impl Gateway {
             config.admin_token,
             config.queue_settings,
         );
-        Arc::get_mut(&mut state).unwrap().trace = config.trace;
+        let shared = Arc::get_mut(&mut state).unwrap();
+        shared.trace = config.trace;
+        shared.settings = config.settings;
+        shared.authenticator = config.authenticator;
+        shared.log_requests = config.log_requests;
         state.queues.lock().await.mode = config.mode;
         let sampler = state
             .trace
