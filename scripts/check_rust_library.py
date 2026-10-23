@@ -71,6 +71,8 @@ def main():
             assert policy["operations"][0]["name"] == "find_documents"
             assert request("/documents/find", {"query": "rust"}) == {"documents": ["Rust introduction"]}
             assert request("/agent-policy")["outstanding"] == 0
+            from ai_protocol.conformance import check_service
+            assert check_service(origin, token, operation="find_documents", params={"query": "rust"})["version"] == 3
             process.send_signal(signal.SIGINT)
             assert process.wait(timeout=10) == 0
         finally:

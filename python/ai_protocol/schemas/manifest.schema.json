@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ai-protocol:manifest:1",
+  "title": "Read-only HTTP adapter manifest v1",
+  "type": "object",
+  "required": [
+    "service_id",
+    "operations",
+    "credentials"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "service_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "path",
+          "upstream_path",
+          "parameters"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "description": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^/[A-Za-z0-9_-]+(/[A-Za-z0-9_-]+)*$"
+          },
+          "upstream_path": {
+            "type": "string",
+            "pattern": "^/[A-Za-z0-9_-]+(/[A-Za-z0-9_-]+)*$"
+          },
+          "parameters": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "required": [
+                "type",
+                "upstream"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "enum": [
+                    "string",
+                    "integer"
+                  ]
+                },
+                "upstream": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]+$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "credentials": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "token_env",
+          "required",
+          "principal_id",
+          "client_class",
+          "operations",
+          "max_outstanding"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "token_env": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "principal_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "client_class": {
+            "enum": [
+              "agent",
+              "interactive"
+            ]
+          },
+          "operations": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          },
+          "max_outstanding": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          }
+        }
+      }
+    }
+  }
+}

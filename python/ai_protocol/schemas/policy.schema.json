@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ai-protocol:policy:3",
+  "title": "Protocol v3 policy",
+  "type": "object",
+  "required": [
+    "version",
+    "principal_id",
+    "client_class",
+    "policy_revision",
+    "refresh_after_ms",
+    "outstanding",
+    "limits",
+    "queue",
+    "operations"
+  ],
+  "properties": {
+    "version": {
+      "const": 3
+    },
+    "service_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "principal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "client_class": {
+      "enum": [
+        "agent",
+        "interactive"
+      ]
+    },
+    "policy_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "refresh_after_ms": {
+      "type": "integer",
+      "minimum": 100,
+      "maximum": 60000
+    },
+    "outstanding": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "limits": {
+      "type": "object",
+      "required": [
+        "scope",
+        "max_outstanding"
+      ],
+      "properties": {
+        "scope": {
+          "const": "principal"
+        },
+        "max_outstanding": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        }
+      }
+    },
+    "queue": {
+      "type": "object",
+      "required": [
+        "max_wait_ms"
+      ],
+      "properties": {
+        "max_wait_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3600000
+        }
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:ai-protocol:operation:3"
+      }
+    }
+  },
+  "additionalProperties": true
+}

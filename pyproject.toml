@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = "Apache-2.0"
 authors = [{name = "Nikita Chindin"}]
-dependencies = ["httpx==0.28.1", "jsonschema==4.24.0"]
+dependencies = ["httpx==0.28.1", "jsonschema==4.24.0", "referencing==0.37.0"]
 
 [project.optional-dependencies]
 llm = ["openai==1.109.1"]
@@ -22,3 +22,6 @@ Issues = "https://github.com/Xenox-developer/ai-protocol/issues"
 
 [tool.setuptools.packages.find]
 where = ["python"]
+
+[tool.setuptools.package-data]
+ai_protocol = ["schemas/*.json"]

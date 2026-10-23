@@ -704,3 +704,81 @@ async fn mapped_upstream_credential_is_separate_and_response_is_bounded() {
     );
     gateway.shutdown().await.unwrap();
 }
+
+#[tokio::test]
+async fn generated_errors_are_structured_and_started_failures_cannot_authorize_retry() {
+    let operation = Operation::new(
+        "fail",
+        "Demonstrate an execution failure.",
+        "/fail",
+        json!({"type": "object"}),
+        |_: Value| async {
+            (
+                axum::http::StatusCode::TOO_MANY_REQUESTS,
+                "private-handler-detail",
+            )
+        },
+    )
+    .unwrap();
+    let config = GatewayConfig::native(
+        "errors",
+        vec![operation],
+        vec![Credential {
+            token: "reader-token".into(),
+            principal_id: "owner".into(),
+            client_class: ClientClass::Agent,
+            operations: vec!["fail".into()],
+            max_outstanding: 1,
+        }],
+    )
+    .unwrap()
+    .with_runtime_settings(ai_protocol::RuntimeSettings {
+        max_request_bytes: 16,
+        ..Default::default()
+    })
+    .unwrap();
+    let gateway = Gateway::start(config).await.unwrap();
+    let server = serve(gateway.router()).await;
+    let http = reqwest::Client::builder().no_proxy().build().unwrap();
+    for (request, status, code, execution) in [
+        (
+            http.get(format!("{}/agent-policy", server.url)),
+            401,
+            "unauthorized",
+            "not_started",
+        ),
+        (
+            http.post(format!("{}/fail", server.url))
+                .bearer_auth("reader-token")
+                .header("content-type", "application/json")
+                .body("not-json"),
+            400,
+            "invalid_json",
+            "not_started",
+        ),
+        (
+            http.post(format!("{}/fail", server.url))
+                .bearer_auth("reader-token")
+                .json(&json!({"large": "x".repeat(100)})),
+            413,
+            "request_too_large",
+            "not_started",
+        ),
+        (
+            http.post(format!("{}/fail", server.url))
+                .bearer_auth("reader-token")
+                .json(&json!({})),
+            502,
+            "operation_failed",
+            "unknown",
+        ),
+    ] {
+        let result = request.send().await.unwrap();
+        assert_eq!(result.status(), status);
+        assert_eq!(
+            result.json::<Value>().await.unwrap(),
+            json!({"error": {"code": code, "execution": execution}})
+        );
+    }
+    gateway.shutdown().await.unwrap();
+}

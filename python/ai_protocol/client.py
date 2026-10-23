@@ -6,13 +6,12 @@ import math
 import re
 import time
 from contextlib import suppress
-from urllib.parse import urlsplit
 
 import httpx
 import jsonschema
 
 from .dispatcher import DispatcherClient
-from .protocol import safe_to_retry, validate_operation
+from .protocol import safe_to_retry, validate_operation, validate_origin
 
 
 class ProtocolError(ValueError):
@@ -82,10 +81,10 @@ class AsyncClient:
 
     def __init__(self, origin, token, *, dispatcher_socket=None, transport=None,
                  max_response_bytes=16 * 1024 * 1024):
-        url = urlsplit(origin)
-        if (url.scheme not in ("http", "https") or not url.hostname or url.username is not None
-                or url.password is not None or url.path not in ("", "/") or url.query or url.fragment):
-            raise ProtocolError("Service URL must be an HTTP(S) origin without credentials or a path")
+        try:
+            origin = validate_origin(origin)
+        except ValueError as error:
+            raise ProtocolError(str(error)) from None
         if not isinstance(token, str) or not re.fullmatch(r"[A-Za-z0-9._~+/=-]+", token):
             raise ProtocolError("Invalid bearer credential")
         if type(max_response_bytes) is not int or max_response_bytes < 1:

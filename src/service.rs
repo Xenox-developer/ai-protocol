@@ -4,9 +4,15 @@ use serde::Deserialize;
 use serde_json::{Value, json};
 use std::collections::{BTreeMap, HashMap, HashSet};
 
+fn manifest_version() -> u32 {
+    1
+}
+
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Service {
+    #[serde(default = "manifest_version")]
+    format_version: u32,
     pub service_id: String,
     pub operations: Vec<Operation>,
     credentials: Vec<Credential>,
@@ -99,8 +105,16 @@ impl Service {
         }
     }
     pub fn parse(text: &str) -> Result<Self, String> {
-        let service: Self =
-            serde_json::from_str(text).map_err(|_| "Invalid service manifest JSON")?;
+        let service: Self = serde_json::from_str(text).map_err(|error| {
+            format!(
+                "Invalid service manifest JSON at line {}, column {}; check field names and types",
+                error.line(),
+                error.column()
+            )
+        })?;
+        if service.format_version != 1 {
+            return Err("Unsupported manifest format_version; expected 1".into());
+        }
         let mut names = HashSet::new();
         let mut paths = HashSet::new();
         if !identifier(&service.service_id)
@@ -109,7 +123,7 @@ impl Service {
         {
             return Err("Service requires an ID, operations and credentials".into());
         }
-        for op in &service.operations {
+        for (index, op) in service.operations.iter().enumerate() {
             let mut parameters = HashSet::new();
             if !identifier(&op.name)
                 || !names.insert(&op.name)
@@ -120,19 +134,23 @@ impl Service {
                     !identifier(name) || !identifier(&p.upstream) || !parameters.insert(&p.upstream)
                 })
             {
-                return Err("Invalid or duplicate operation mapping".into());
+                return Err(format!(
+                    "Invalid or duplicate operations[{index}] mapping; check names, reserved paths and parameter mappings"
+                ));
             }
         }
         let mut budgets = HashMap::new();
         let mut envs = HashSet::new();
-        for c in &service.credentials {
+        for (index, c) in service.credentials.iter().enumerate() {
             if !identifier(&c.token_env)
                 || !envs.insert(&c.token_env)
                 || c.principal_id.is_empty()
                 || !(1..=1000).contains(&c.max_outstanding)
                 || c.operations.iter().any(|name| !names.contains(name))
             {
-                return Err("Invalid credential or permission mapping".into());
+                return Err(format!(
+                    "Invalid credentials[{index}]; check environment name, principal, grants and max_outstanding"
+                ));
             }
             if budgets
                 .insert((&c.principal_id, c.client_class), c.max_outstanding)
@@ -180,6 +198,7 @@ impl Service {
             }
         }
         Ok(Self {
+            format_version: 1,
             service_id: service_id.into(),
             operations: operations
                 .into_iter()

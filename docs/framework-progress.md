@@ -7,7 +7,7 @@ public release are outside the task. The external developer trial remains skippe
 - [x] Public Rust library, native handlers and lifecycle, with external consumer.
 - [x] Installable adaptive Python SDK and dispatcher connector.
 - [x] Practical service integration and owner-controlled upstream credentials.
-- [ ] Machine-readable contracts, structured errors and compatibility checks.
+- [x] Machine-readable contracts, structured errors and compatibility checks.
 - [x] Operational configuration, bounded responses, shutdown, metrics and auth integration.
 - [ ] Compact Rust/Python distributions and isolated installation checks.
 - [ ] Open-source README, contribution/security/versioning/operations documentation.

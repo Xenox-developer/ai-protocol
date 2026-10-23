@@ -158,3 +158,30 @@ class SDKTests(unittest.IsolatedAsyncioTestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+    async def test_background_refresher_runs_and_stops_with_context(self):
+        polls = asyncio.Queue()
+        def handle(request):
+            polls.put_nowait(True)
+            return httpx.Response(200, json=policy())
+        async with AsyncClient("https://records.test", "test-sdk", transport=httpx.MockTransport(handle)) as client:
+            await polls.get()
+            await asyncio.wait_for(polls.get(), 1)
+            self.assertTrue(client.ready)
+        self.assertIsNone(client._refresher)
+
+    async def test_dispatcher_unknown_outcome_is_typed_and_submitted_once(self):
+        import time
+        from unittest.mock import AsyncMock
+        def handle(request):
+            self.assertEqual(request.url.path, "/agent-policy")
+            return httpx.Response(200, json=policy())
+        async with AsyncClient("https://records.test", "test-sdk", dispatcher_socket="/unused",
+                               transport=httpx.MockTransport(handle)) as client:
+            client._dispatcher.call = AsyncMock(return_value=dict(ok=False, code="dispatcher_response_lost", execution="unknown", attempts=None))
+            deadline = int((time.time() + 10) * 1000)
+            with self.assertRaises(OperationError) as result:
+                await client.call("lookup", {"id": 1}, deadline_unix_ms=deadline)
+            self.assertEqual(result.exception.execution, "unknown")
+            client._dispatcher.call.assert_awaited_once()
+            self.assertEqual(client._dispatcher.call.call_args.kwargs["deadline_unix_ms"], deadline)

@@ -82,3 +82,18 @@ fn owner_mapping_validates_routes_schemas_permissions_and_shared_budgets() {
     full.budget.set_maximum(2);
     assert_eq!(catalog["test-AGENT_TOKEN_1"].budget.snapshot().maximum, 5);
 }
+
+#[test]
+fn manifest_version_is_explicit_and_legacy_manifests_remain_valid() {
+    let mut manifest: serde_json::Value =
+        serde_json::from_str(include_str!("../services/catalog.json")).unwrap();
+    manifest["format_version"] = json!(1);
+    assert!(service::Service::parse(&manifest.to_string()).is_ok());
+    manifest["format_version"] = json!(2);
+    assert!(
+        service::Service::parse(&manifest.to_string())
+            .err()
+            .unwrap()
+            .contains("format_version")
+    );
+}

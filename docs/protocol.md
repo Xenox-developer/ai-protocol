@@ -160,14 +160,15 @@ After closure, valid new work receives 503 with
 `{"error":{"code":"gateway_closed","execution":"not_started"}}` and no
 Retry-After promise. This does not authorize the existing clients' automatic
 503 retry rule, which remains specific to `queue_timeout`. The standalone
-executable does not invoke this opt-in closure during ordinary operation.
+executable closes admission during SIGINT/SIGTERM shutdown.
 
 The outstanding count includes every accepted queued or running operation.
 Admission checks and increments the counter without waiting for capacity before
 enqueueing, and gives the job an owning guard. Concurrent
 requests cannot admit more than the owner/class maximum. Agent budgets start at 5 and are administratively adjustable;
-interactive budgets remain 10. Both waiting queues are bounded to 32 jobs; at most
-10 jobs execute across both classes and all principals.
+interactive budgets default to 10. Waiting queues default to 32 jobs per class;
+at most 10 jobs execute across all principals by default. Process resource bounds
+are configurable; see [operations](operations.md).
 
 If the owner budget is exhausted or the applicable queue is full, the gateway
 returns `429` with `Retry-After: 1` before admission. The rejected attempt never
@@ -202,7 +203,7 @@ Within each class, surviving jobs keep FIFO order across all principals. If one
 class is empty, the other uses every available executor; such selections reset
 the bounded streak rather than accumulating credits. Completed executors are
 refilled while any ready work remains. Running work is never preempted and total
-execution remains capped at ten.
+execution remains capped at the configured executor count (ten by default).
 
 In weighted mode, the 3:1 rule is a guarantee about **selection order**, not completion order,
 upstream HTTP arrival order, CPU shares, or exact response time. Concurrent jobs
@@ -218,7 +219,7 @@ Each job records monotonic time at admission. Its waiting interval ends when the
 scheduler removes it for handoff to an executor. At `now >= accepted_at + max_wait`,
 a still-waiting job expires. This interval excludes client-side waiting, request
 parsing before admission, and execution after handoff. It is independent of the
-five-second upstream timeout. Already selected work never receives queue_timeout,
+configured execution timeout (five seconds by default). Already selected work never receives queue_timeout,
 even if it finishes after its former queue deadline.
 
 Removal for expiry and selection share the queue lock and a final deadline check
@@ -240,8 +241,9 @@ Expiry returns HTTP **503** with integer `Retry-After: 1` and JSON:
 ```
 
 429 means rejected **before admission**. queue_timeout means accepted, then removed
-**before execution**. `execution: "not_started"` is used only for this documented
-queue failure, never for an already sent upstream request's network error or timeout.
+**before execution**. `execution: "not_started"` identifies pre-execution failures, including auth,
+validation, admission, queue expiry and closure. It is never used for an already
+sent upstream request's network error or timeout.
 
 ## Owner-configured upstream mapping
 
@@ -388,3 +390,28 @@ by default. See the [controlled comparison methodology](../benchmarks/stage4/REA
 See [setup and checks](../README.md) and the
 [archived synthetic v1 experiment](archive/protocol-v1.md). Historical latency
 results are not measurements of this v3 implementation.
+
+## Structured errors and schemas
+
+Gateway-generated failures use `{"error":{"code":"...","execution":"..."}}`.
+`execution` is `not_started` before execution or `unknown` after handoff.
+
+| HTTP | Codes | Execution |
+| --- | --- | --- |
+| 400 | `invalid_json` | not_started |
+| 401 / 403 | `unauthorized` / `forbidden` | not_started |
+| 404 / 405 | `not_found` / `method_not_allowed` | not_started |
+| 413 / 415 / 422 | `request_too_large` / `unsupported_media_type` / `invalid_parameters` | not_started |
+| 429 | `budget_exhausted`, `queue_full`, test-only `test_rejection` | not_started |
+| 503 | `queue_timeout`, `gateway_closed` | not_started |
+| 500 | `internal_error` | unknown |
+| 502 | `upstream_status`, `upstream_unavailable`, `upstream_body_error`, `response_too_large`, `operation_failed` | unknown |
+| 504 | `execution_timeout` | unknown |
+
+Only 429 and the documented queue_timeout 503 are automatically retryable. Native
+non-success handler responses become 502 operation_failed, so a handler cannot
+accidentally authorize replay through 429. Application/proxy failures outside the
+gateway may not use this shape and must be treated conservatively. Reserved paths
+include `/agent-policy`, `/admin` and descendants, `/healthz` and `/readyz`.
+See [versioning and reusable conformance checks](compatibility.md) for the shipped
+JSON Schema contracts and migration rules.

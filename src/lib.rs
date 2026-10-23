@@ -41,7 +41,7 @@
 
 use axum::{
     Extension, Json, Router,
-    extract::{OriginalUri, Path, Request, State},
+    extract::{OriginalUri, Path, Request, State, rejection::JsonRejection},
     http::{HeaderValue, StatusCode, header},
     middleware::{self, Next},
     response::{IntoResponse, Response},
@@ -256,6 +256,14 @@ fn app(state: Arc<AppState>) -> Router {
     router
         .route_layer(middleware::from_fn_with_state(state.clone(), authenticate))
         .merge(admin)
+        .fallback(|| async { protocol_error(StatusCode::NOT_FOUND, "not_found", "not_started") })
+        .method_not_allowed_fallback(|| async {
+            protocol_error(
+                StatusCode::METHOD_NOT_ALLOWED,
+                "method_not_allowed",
+                "not_started",
+            )
+        })
         .route(
             "/healthz",
             get(|| async { Json(serde_json::json!({"status": "ok"})) }),
@@ -294,7 +302,10 @@ async fn metrics(State(state): State<Arc<AppState>>) -> Json<serde_json::Value> 
 async fn observe(State(state): State<Arc<AppState>>, request: Request, next: Next) -> Response {
     let started = Instant::now();
     state.requests.fetch_add(1, Ordering::Relaxed);
-    let response = next.run(request).await;
+    let mut response = next.run(request).await;
+    response
+        .headers_mut()
+        .insert(header::CACHE_CONTROL, HeaderValue::from_static("no-store"));
     if !response.status().is_success() {
         state.failures.fetch_add(1, Ordering::Relaxed);
     }
@@ -337,18 +348,13 @@ async fn authenticate(
             .iter()
             .find(|op| op.path == request.uri().path());
         if operation.is_some_and(|op| !identity.operations.contains(&op.name)) {
-            (StatusCode::FORBIDDEN, "Operation is not permitted").into_response()
+            protocol_error(StatusCode::FORBIDDEN, "forbidden", "not_started")
         } else {
             request.extensions_mut().insert(identity.clone());
             next.run(request).await
         }
     } else {
-        (
-            StatusCode::UNAUTHORIZED,
-            [(header::WWW_AUTHENTICATE, "Bearer")],
-            "A valid bearer token is required",
-        )
-            .into_response()
+        unauthorized()
     };
     response
         .headers_mut()
@@ -396,16 +402,12 @@ async fn authenticate_admin(
 ) -> Response {
     let token = bearer_token(&request);
     let mut response = match (&state.admin_token, token) {
-        (None, _) => StatusCode::NOT_FOUND.into_response(),
+        (None, _) => protocol_error(StatusCode::NOT_FOUND, "not_found", "not_started"),
         (Some(admin), Some(token)) if token == admin => next.run(request).await,
         (_, Some(token)) if state.identities.contains_key(token) => {
-            StatusCode::FORBIDDEN.into_response()
+            protocol_error(StatusCode::FORBIDDEN, "forbidden", "not_started")
         }
-        _ => (
-            StatusCode::UNAUTHORIZED,
-            [(header::WWW_AUTHENTICATE, "Bearer")],
-        )
-            .into_response(),
+        _ => unauthorized(),
     };
     response
         .headers_mut()
@@ -422,17 +424,21 @@ struct LimitsUpdate {
 async fn update_limits(
     State(state): State<Arc<AppState>>,
     Path(principal_id): Path<String>,
-    Json(update): Json<LimitsUpdate>,
+    update: Result<Json<LimitsUpdate>, JsonRejection>,
 ) -> Response {
+    let Json(update) = match update {
+        Ok(update) => update,
+        Err(error) => return invalid_json(error),
+    };
     if !(1..=1000).contains(&update.max_outstanding) {
-        return (
+        return protocol_error(
             StatusCode::UNPROCESSABLE_ENTITY,
-            "max_outstanding must be an integer from 1 to 1000",
-        )
-            .into_response();
+            "invalid_parameters",
+            "not_started",
+        );
     }
     let Some(budget) = state.agent_budget(&principal_id) else {
-        return StatusCode::NOT_FOUND.into_response();
+        return protocol_error(StatusCode::NOT_FOUND, "not_found", "not_started");
     };
     let budget = budget.set_maximum(update.max_outstanding);
     Json(serde_json::json!({
@@ -445,18 +451,35 @@ async fn update_limits(
     .into_response()
 }
 
-fn overloaded(message: &'static str, delay: &'static str) -> Response {
-    (
-        StatusCode::TOO_MANY_REQUESTS,
-        [(header::RETRY_AFTER, delay)],
-        message,
-    )
-        .into_response()
+fn unauthorized() -> Response {
+    let mut response = protocol_error(StatusCode::UNAUTHORIZED, "unauthorized", "not_started");
+    response
+        .headers_mut()
+        .insert(header::WWW_AUTHENTICATE, HeaderValue::from_static("Bearer"));
+    response
+}
+
+fn overloaded(code: &'static str, delay: &'static str) -> Response {
+    let mut response = protocol_error(StatusCode::TOO_MANY_REQUESTS, code, "not_started");
+    response
+        .headers_mut()
+        .insert(header::RETRY_AFTER, HeaderValue::from_static(delay));
+    response
+}
+
+fn invalid_json(error: JsonRejection) -> Response {
+    let code = match error.status() {
+        StatusCode::PAYLOAD_TOO_LARGE => "request_too_large",
+        StatusCode::UNSUPPORTED_MEDIA_TYPE => "unsupported_media_type",
+        StatusCode::UNPROCESSABLE_ENTITY => "invalid_parameters",
+        _ => "invalid_json",
+    };
+    protocol_error(error.status(), code, "not_started")
 }
 
 async fn enqueue(state: Arc<AppState>, identity: ClientIdentity, action: TaskAction) -> Response {
     if identity.class == ClientClass::Agent && state.reject_once.swap(false, Ordering::Relaxed) {
-        return overloaded("Test rejection", "2");
+        return overloaded("test_rejection", "2");
     }
     let (sender, receiver) = oneshot::channel();
     {
@@ -468,7 +491,7 @@ async fn enqueue(state: Arc<AppState>, identity: ClientIdentity, action: TaskAct
         // A nonblocking acquisition counts both queued and running work.
         let (permit, admitted) = match identity.budget.try_acquire_observed() {
             Some(admission) => admission,
-            None => return overloaded("Owner budget exhausted", "1"),
+            None => return overloaded("budget_exhausted", "1"),
         };
         let order = queues.take_order();
         let queue = match identity.class {
@@ -476,7 +499,7 @@ async fn enqueue(state: Arc<AppState>, identity: ClientIdentity, action: TaskAct
             ClientClass::Interactive => &mut queues.interactive,
         };
         if queue.len() >= state.settings.queue_capacity {
-            return overloaded("Queue is full", "1");
+            return overloaded("queue_full", "1");
         }
         queue.push_back(Job {
             reply: sender,
@@ -496,17 +519,25 @@ async fn enqueue(state: Arc<AppState>, identity: ClientIdentity, action: TaskAct
         }
     }
     state.notify.notify_one();
-    receiver
-        .await
-        .unwrap_or_else(|_| StatusCode::INTERNAL_SERVER_ERROR.into_response())
+    receiver.await.unwrap_or_else(|_| {
+        protocol_error(
+            StatusCode::INTERNAL_SERVER_ERROR,
+            "internal_error",
+            "unknown",
+        )
+    })
 }
 
 async fn work(
     State(state): State<Arc<AppState>>,
     Extension(identity): Extension<ClientIdentity>,
     OriginalUri(uri): OriginalUri,
-    Json(params): Json<serde_json::Value>,
+    params: Result<Json<serde_json::Value>, JsonRejection>,
 ) -> Response {
+    let Json(params) = match params {
+        Ok(params) => params,
+        Err(error) => return invalid_json(error),
+    };
     let operation = state
         .service
         .operations
@@ -521,7 +552,11 @@ async fn work(
     }
     match operation.request(&params) {
         Ok(request) => enqueue(state, identity, TaskAction::Mapped(request)).await,
-        Err(error) => (StatusCode::UNPROCESSABLE_ENTITY, error).into_response(),
+        Err(_) => protocol_error(
+            StatusCode::UNPROCESSABLE_ENTITY,
+            "invalid_parameters",
+            "not_started",
+        ),
     }
 }
 
@@ -662,11 +697,23 @@ async fn call_upstream(
     max_response_bytes: usize,
 ) -> Response {
     let action = match action {
-        TaskAction::Native(execution) => return execution.await,
+        TaskAction::Native(execution) => {
+            let response = execution.await;
+            // Only admission failures may expose automatic-retry statuses.
+            return if response.status().is_success() {
+                response
+            } else {
+                protocol_error(StatusCode::BAD_GATEWAY, "operation_failed", "unknown")
+            };
+        }
         action => action,
     };
     let Some(upstream_url) = upstream_url else {
-        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+        return protocol_error(
+            StatusCode::INTERNAL_SERVER_ERROR,
+            "internal_error",
+            "unknown",
+        );
     };
     let request = match action {
         TaskAction::Native(_) => unreachable!("Native work was handled before HTTP mapping"),
@@ -689,7 +736,7 @@ async fn call_upstream(
         Ok(response) => {
             // Treat an upstream error as a failure of the upstream service.
             if response.status() != reqwest::StatusCode::OK {
-                return (StatusCode::BAD_GATEWAY, "Upstream returned an error").into_response();
+                return protocol_error(StatusCode::BAD_GATEWAY, "upstream_status", "unknown");
             }
 
             let mut response = response;
@@ -727,9 +774,9 @@ async fn call_upstream(
 
         Err(error) => {
             if error.is_timeout() {
-                (StatusCode::GATEWAY_TIMEOUT, "Upstream timeout").into_response()
+                protocol_error(StatusCode::GATEWAY_TIMEOUT, "execution_timeout", "unknown")
             } else {
-                (StatusCode::BAD_GATEWAY, "Upstream unavailable").into_response()
+                protocol_error(StatusCode::BAD_GATEWAY, "upstream_unavailable", "unknown")
             }
         }
     }

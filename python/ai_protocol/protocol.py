@@ -3,11 +3,20 @@
 import os
 import re
 import time
+from urllib.parse import urlsplit
 
 import httpx
 import jsonschema
 
 BASE_URL = os.environ.get("SERVICE_URL", f"http://127.0.0.1:{int(os.environ.get('GATEWAY_PORT', '3000'))}").rstrip("/")
+
+
+def validate_origin(origin):
+    url = urlsplit(origin)
+    if (url.scheme not in ("http", "https") or not url.hostname or url.username is not None
+            or url.password is not None or url.path not in ("", "/") or url.query or url.fragment):
+        raise ValueError("Service URL must be an HTTP(S) origin without credentials or a path")
+    return origin.rstrip("/")
 
 
 def service_client(token=None):

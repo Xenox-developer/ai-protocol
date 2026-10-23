@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ai-protocol:operation:3",
+  "title": "Protocol v3 operation descriptor",
+  "type": "object",
+  "required": [
+    "name",
+    "description",
+    "method",
+    "path",
+    "input_schema"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "description": {
+      "type": "string"
+    },
+    "method": {
+      "const": "POST"
+    },
+    "path": {
+      "type": "string",
+      "pattern": "^/[A-Za-z0-9_-]+(/[A-Za-z0-9_-]+)*$"
+    },
+    "input_schema": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

@@ -62,11 +62,11 @@ impl Operation {
             input_schema,
             prepare: Arc::new(move |params| {
                 let params = serde_json::from_value::<P>(params).map_err(|_| {
-                    (
+                    crate::protocol_error(
                         StatusCode::UNPROCESSABLE_ENTITY,
-                        "Invalid operation parameters",
+                        "invalid_parameters",
+                        "not_started",
                     )
-                        .into_response()
                 })?;
                 let handler = handler.clone();
                 Ok(Box::pin(
