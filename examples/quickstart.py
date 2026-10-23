@@ -13,7 +13,7 @@ import time
 
 import httpx
 
-from protocol_client import discover, execute, service_client
+from ai_protocol import discover, execute, service_client
 from service_integration_demo import free_port, until
 from setup_demo import TOKENS
 

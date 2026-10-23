@@ -23,3 +23,8 @@ AGENTS.md
 
 # Logs
 *.log
+
+# Distribution outputs
+/dist/
+/build/
+*.egg-info/

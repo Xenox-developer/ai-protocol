@@ -4,7 +4,7 @@ import sys
 from getpass import getpass
 
 from openai import OpenAI
-from protocol_client import discover, execute, service_client
+from ai_protocol import discover, execute, service_client
 
 
 def main():

@@ -14,8 +14,8 @@ import time
 
 import httpx
 
-from dispatch_client import DispatcherClient
-from protocol_client import discover, execute, service_client
+from ai_protocol import DispatcherClient
+from ai_protocol import discover, execute, service_client
 
 ROOT = Path(__file__).resolve().parents[1]
 
