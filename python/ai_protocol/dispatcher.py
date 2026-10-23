@@ -57,8 +57,7 @@ class DispatcherClient:
             reply = json.loads(raw)
             if not isinstance(reply, dict) or not isinstance(reply.get('ok'), bool) or not isinstance(reply.get('code'), str) or reply.get('execution') not in ('completed', 'not_started', 'unknown'):
                 raise ValueError('Invalid dispatcher reply')
-            if (not re.fullmatch(r"[a-z][a-z0-9_]{0,63}", reply["code"])
-                    or reply.get("attempts") is not None and (type(reply["attempts"]) is not int or reply["attempts"] < 0)
+            if (reply.get("attempts") is not None and (type(reply["attempts"]) is not int or reply["attempts"] < 0)
                     or reply["ok"] and (reply["execution"] != "completed" or "body" not in reply or reply.get("status") != 200)
                     or not reply["ok"] and reply["execution"] == "completed"):
                 raise ValueError('Inconsistent dispatcher reply')

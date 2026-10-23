@@ -22,11 +22,11 @@ class OperationError(Exception):
     """An operation failed; attributes contain no credentials or input values."""
 
     def __init__(self, code, execution, *, status=None, attempts=0):
-        self.code = code
+        self.code = code if isinstance(code, str) and re.fullmatch(r"[a-z][a-z0-9_]{0,63}", code) else "http_error"
         self.execution = execution
         self.status = status
         self.attempts = attempts
-        super().__init__(f"{code} (execution={execution}, status={status}, attempts={attempts})")
+        super().__init__(f"{self.code} (execution={execution}, status={status}, attempts={attempts})")
 
 
 class DeadlineExceeded(OperationError):

@@ -54,6 +54,14 @@ class DispatchConnector(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result['code'], 'dispatcher_queue_full')
         self.assertEqual(len(self.calls), 1)
 
+    async def test_legacy_http_failure_preserves_status_attempts_and_certainty(self):
+        expected = dict(ok=False, code='Operation HTTP status 403', execution='not_started', attempts=1, status=403,
+                        body={'error': {'code': 'forbidden', 'execution': 'not_started'}})
+        self.payload = json.dumps(expected).encode() + b'\n'
+        result = await self.client.call('search', {'query': 'x'})
+        self.assertEqual(result, expected)
+        self.assertEqual(len(self.calls), 1)
+
     async def test_unavailable_expired_and_malformed_reply_are_explicit(self):
         missing = DispatcherClient(self.path + '-missing', 'restricted-test-token')
         self.assertEqual((await missing.call('search', {}))['code'], 'dispatcher_unavailable')
