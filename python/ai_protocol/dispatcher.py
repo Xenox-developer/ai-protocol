@@ -58,7 +58,7 @@ class DispatcherClient:
             if not isinstance(reply, dict) or not isinstance(reply.get('ok'), bool) or not isinstance(reply.get('code'), str) or reply.get('execution') not in ('completed', 'not_started', 'unknown'):
                 raise ValueError('Invalid dispatcher reply')
             if (reply.get("attempts") is not None and (type(reply["attempts"]) is not int or reply["attempts"] < 0)
-                    or reply["ok"] and (reply["execution"] != "completed" or "body" not in reply or reply.get("status") != 200)
+                    or reply["ok"] and (reply["execution"] != "completed" or "body" not in reply or not (type(reply.get("status")) is int and 200 <= reply["status"] < 300))
                     or not reply["ok"] and reply["execution"] == "completed"):
                 raise ValueError('Inconsistent dispatcher reply')
             return reply

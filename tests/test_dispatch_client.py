@@ -62,6 +62,12 @@ class DispatchConnector(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result, expected)
         self.assertEqual(len(self.calls), 1)
 
+    async def test_successful_http_status_range_is_preserved(self):
+        expected = dict(ok=True, code='completed', execution='completed', attempts=1, status=203, body={'record': 1})
+        self.payload = json.dumps(expected).encode() + b'\n'
+        self.assertEqual(await self.client.call('read', {}), expected)
+        self.assertEqual(len(self.calls), 1)
+
     async def test_unavailable_expired_and_malformed_reply_are_explicit(self):
         missing = DispatcherClient(self.path + '-missing', 'restricted-test-token')
         self.assertEqual((await missing.call('search', {}))['code'], 'dispatcher_unavailable')
