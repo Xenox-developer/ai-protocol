@@ -7,9 +7,9 @@ A Rust framework and Python SDK for cooperative agent access to HTTP services.
 Publish permitted read operations, enforce shared owner budgets, and let clients
 adapt to changing capacity through protocol v3 discovery.
 
-**Status:** experimental 0.1.0, prepared for source/local-package use. Packages
-have not been published to crates.io or PyPI. AI Protocol is a project contract,
-not a public standard. Supported scope is one in-memory gateway process per
+**Status:** experimental 0.1.0. The [release page](https://github.com/Xenox-developer/ai-protocol/releases/tag/v0.1.0)
+provides verified archives and the current crates.io/PyPI publication status.
+AI Protocol is a project contract, not a public standard. Supported scope is one in-memory gateway process per
 service, read-only operations, and Linux/macOS for the optional dispatcher.
 
 ## What it provides
@@ -59,7 +59,7 @@ only its own credential.
 
 ## Add a service in Rust
 
-Add this checkout as a path dependency in your application until publication:
+For source integration, add this checkout as a path dependency in your application:
 
 ```toml
 [dependencies]
@@ -90,7 +90,7 @@ authentication, resource bounds, budget updates and lifecycle semantics.
 ## Call it from Python
 
 Install with `python -m pip install -e .` from the checkout, or install a verified
-local wheel. The distribution is `ai-protocol-client`; the import is `ai_protocol`.
+release wheel. The distribution is `ai-protocol-client`; the import is `ai_protocol`.
 Use a separate client per service/credential and share it across concurrent tasks:
 
 ```python

@@ -8,7 +8,8 @@
 | Manifest `format_version` | `1` | Owner-managed read-only HTTP mapping |
 | `policy_revision` | starts at `1` | Per-process owner/class budget revision, not a protocol version |
 
-Packages are prepared locally; publication to crates.io/PyPI is a separate action.
+The [0.1.0 release page](https://github.com/Xenox-developer/ai-protocol/releases/tag/v0.1.0)
+records verified archives and current registry availability.
 The tested Rust minimum and pinned toolchain are 1.98.1. Linux and macOS are the
 supported dispatcher platforms. The SDK requires protocol v3 and rejects other
 versions. Old v1/v2 clients must migrate; no v2 compatibility shim is promised.

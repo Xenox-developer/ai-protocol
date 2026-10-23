@@ -1,5 +1,8 @@
 # Framework preparation verification
 
+This historical report covers preparation before the first release. For current
+publication status, see [release 0.1.0](https://github.com/Xenox-developer/ai-protocol/releases/tag/v0.1.0).
+
 Date: 2026-10-24. Scope: experimental 0.1.0 source/local-package framework,
 protocol v3, manifest v1, Linux/macOS, single-process read-only operation.
 No registry publication, deployment or public GitHub release was performed.

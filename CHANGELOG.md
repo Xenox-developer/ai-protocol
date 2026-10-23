@@ -2,9 +2,12 @@
 
 All notable user-facing changes are recorded here. This project uses pre-1.0
 Semantic Versioning for packages; protocol and manifest versions are independent.
-See [compatibility](docs/compatibility.md). No registry release has been published.
+See [compatibility](docs/compatibility.md). Registry availability is recorded on the
+[release page](https://github.com/Xenox-developer/ai-protocol/releases/tag/v0.1.0).
 
-## Unreleased — 0.1.0 framework preparation
+## 0.1.0 — 2026-10-24
+
+First experimental release of the Rust framework and Python SDK.
 
 ### Added
 
