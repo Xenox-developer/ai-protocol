@@ -108,14 +108,16 @@ struct Dispatcher {
 
 // Only these responses establish that the gateway did not start the operation.
 fn not_started(response: &retry::Response) -> bool {
-    matches!(response.status.as_u16(), 400 | 401 | 403 | 422 | 429)
-        || (response.status.as_u16() == 503
-            && serde_json::from_slice::<Value>(&response.body).is_ok_and(|v| {
-                matches!(
-                    v["error"]["code"].as_str(),
-                    Some("queue_timeout" | "gateway_closed")
-                ) && v["error"]["execution"] == "not_started"
-            }))
+    matches!(
+        response.status.as_u16(),
+        400 | 401 | 403 | 404 | 405 | 413 | 415 | 422 | 429
+    ) || (response.status.as_u16() == 503
+        && serde_json::from_slice::<Value>(&response.body).is_ok_and(|v| {
+            matches!(
+                v["error"]["code"].as_str(),
+                Some("queue_timeout" | "gateway_closed")
+            ) && v["error"]["execution"] == "not_started"
+        }))
 }
 
 #[derive(serde::Deserialize)]

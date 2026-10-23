@@ -3,7 +3,7 @@
 Python 3.12 or newer is required. Install from the checkout with
 `python -m pip install .`, or install a built wheel. The distribution name is
 `ai-protocol-client`; the import name is `ai_protocol`. No PyPI publication is
-claimed. The ordinary SDK depends on httpx and jsonschema. OpenAI is optional:
+claimed. The ordinary SDK depends on httpx, jsonschema and its local schema-reference registry. OpenAI is optional:
 `python -m pip install '.[llm]'` for the separate LLM example.
 
 ## Adaptive calls

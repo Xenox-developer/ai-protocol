@@ -22,8 +22,8 @@ they do not multiply owner budgets. Configuration errors are returned as
 
 Optional configuration methods set the separate admin token, queue waiting
 deadlines and scheduler mode. Queue waits must be whole milliseconds from 1
-through 3600000. Execution capacity remains ten, queue capacity remains 32 per
-class, and the execution timeout defaults to five seconds. Resource bounds are configurable.
+through 3600000. Execution capacity defaults to ten, queue capacity to 32 per
+class, and execution timeout to five seconds. Resource bounds are configurable.
 
 The host application owns its HTTP listener and server lifecycle. The gateway
 does not install signal handlers or choose a listen address for an embedded app.
@@ -45,8 +45,8 @@ implements Axum's `IntoResponse`. `GatewayConfig::native(service_id, operations,
 credentials)` builds a service without a manifest, environment access or upstream
 HTTP server. `Credential` contains a bearer token, owner, class, operation grants
 and initial budget. Supply values from the application's own configuration or
-credential store. Credentials remain a startup snapshot; runtime token rotation
-and external per-request authentication adapters are not provided yet.
+credential store. These credentials are a startup snapshot. For live authentication and revocation,
+use `native_authenticated` as described below.
 
 The complete [native document service](../examples/native_service.rs) uses only
 public interfaces. It searches local, read-only document titles, without an LLM.
@@ -107,8 +107,8 @@ Valid new operation calls after closure return 503 and:
 
 There is no promised restart delay and no automatic retry authorization for this
 error. Existing clients retain their queue_timeout-only 503 retry rule. The
-standalone executable does not call these new lifecycle methods; its normal
-operation, protocol version and existing responses remain unchanged.
+standalone executable closes admission and drains on SIGINT/SIGTERM with a
+configurable whole-server grace deadline.
 
 Dropping a gateway, or cancelling its consuming `shutdown()` future, performs
 abrupt cleanup: new work is rejected, work still queued at cleanup is rejected

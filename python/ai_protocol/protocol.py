@@ -8,7 +8,7 @@ from urllib.parse import urlsplit
 import httpx
 import jsonschema
 
-BASE_URL = os.environ.get("SERVICE_URL", f"http://127.0.0.1:{int(os.environ.get('GATEWAY_PORT', '3000'))}").rstrip("/")
+BASE_URL = os.environ.get("SERVICE_URL", f"http://127.0.0.1:{os.environ.get('GATEWAY_PORT', '3000')}").rstrip("/")
 
 
 def validate_origin(origin):

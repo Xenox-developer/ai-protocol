@@ -1,8 +1,8 @@
 # AI Protocol — experimental v3 contract
 
-Status: a local, single-process prototype over HTTP, not a public standard.
+Status: an experimental single-process framework contract over HTTP, not a public standard.
 This document describes `src/lib.rs` (used by the standalone gateway in
-`src/main.rs`) and the current example clients.
+`src/main.rs`) and the installed Python SDK and example clients.
 
 The library can also publish native read-only operations with owner-supplied
 schemas and typed Serde input validation. These use the same v3 discovery,

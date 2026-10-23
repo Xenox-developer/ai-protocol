@@ -782,3 +782,103 @@ async fn generated_errors_are_structured_and_started_failures_cannot_authorize_r
     }
     gateway.shutdown().await.unwrap();
 }
+
+#[tokio::test]
+async fn configured_executor_and_queue_capacity_bound_real_http_work() {
+    let release = Arc::new(tokio::sync::Semaphore::new(0));
+    let (started, mut starts) = tokio::sync::mpsc::unbounded_channel();
+    let operation = Operation::new(
+        "read",
+        "Read records.",
+        "/records",
+        json!({"type": "object"}),
+        {
+            let release = release.clone();
+            move |_: Value| {
+                let release = release.clone();
+                let started = started.clone();
+                async move {
+                    started.send(()).unwrap();
+                    release.acquire().await.unwrap().forget();
+                    Json(json!({"ok": true}))
+                }
+            }
+        },
+    )
+    .unwrap();
+    let gateway = Gateway::start(
+        GatewayConfig::native(
+            "capacity",
+            vec![operation],
+            vec![Credential {
+                token: "reader-token".into(),
+                principal_id: "owner".into(),
+                client_class: ClientClass::Agent,
+                operations: vec!["read".into()],
+                max_outstanding: 5,
+            }],
+        )
+        .unwrap()
+        .with_admin_token("admin-secret".into())
+        .unwrap()
+        .with_runtime_settings(ai_protocol::RuntimeSettings {
+            execution_limit: 1,
+            queue_capacity: 1,
+            ..Default::default()
+        })
+        .unwrap(),
+    )
+    .await
+    .unwrap();
+    let server = serve(gateway.router()).await;
+    let http = reqwest::Client::builder().no_proxy().build().unwrap();
+    let submit = || {
+        tokio::spawn(
+            http.post(format!("{}/records", server.url))
+                .bearer_auth("reader-token")
+                .json(&json!({}))
+                .send(),
+        )
+    };
+    let first = submit();
+    tokio::time::timeout(Duration::from_secs(2), starts.recv())
+        .await
+        .unwrap()
+        .unwrap();
+    let second = submit();
+    tokio::time::timeout(Duration::from_secs(2), async {
+        loop {
+            let metrics: Value = http
+                .get(format!("{}/admin/metrics", server.url))
+                .bearer_auth("admin-secret")
+                .send()
+                .await
+                .unwrap()
+                .json()
+                .await
+                .unwrap();
+            assert_eq!(metrics["active"], 1);
+            if metrics["queued_agent"] == 1 {
+                break;
+            }
+        }
+    })
+    .await
+    .unwrap();
+    let rejected = submit().await.unwrap().unwrap();
+    assert_eq!(rejected.status(), 429);
+    assert_eq!(
+        rejected.json::<Value>().await.unwrap()["error"]["code"],
+        "queue_full"
+    );
+    assert!(starts.try_recv().is_err());
+    release.add_permits(1);
+    assert_eq!(first.await.unwrap().unwrap().status(), 200);
+    tokio::time::timeout(Duration::from_secs(2), starts.recv())
+        .await
+        .unwrap()
+        .unwrap();
+    release.add_permits(1);
+    assert_eq!(second.await.unwrap().unwrap().status(), 200);
+    gateway.shutdown().await.unwrap();
+}

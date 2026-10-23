@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security vulnerability privately
+    url: https://github.com/Xenox-developer/ai-protocol/security/advisories/new
+    about: Use the private security reporting route; never post tokens publicly.

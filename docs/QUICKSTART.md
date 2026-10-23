@@ -1,15 +1,15 @@
-# First external trial (Unix, no LLM)
+# Quickstart (Linux/macOS, no LLM)
 
-Run from the root of the provided `ai-protocol` source checkout/archive. Start a
-timer now if you will send [feedback](trial/FEEDBACK.md). Do not use a historical
-commit that lacks the trial files; the preparation report identifies the tested
-working snapshot. No API account, service key or existing `.env` is needed.
+Run from the root of the current `ai-protocol` source checkout. No API account,
+service key or existing `.env` is needed. This is the maintained first-run recipe;
+the separate external developer trial remains skipped. Its optional exercise and
+feedback material remain available under `docs/trial/` as historical preparation.
 
 ## 1. Tools and dependencies
 
 Use **Rust/Cargo 1.98.1** (pinned by `rust-toolchain.toml`), **Python 3.12**, Bash
-and Git on macOS or Linux. This is the trial recipe, not a proven minimum-version
-matrix. Native Windows is not supported by the Unix-socket dispatcher. Install
+and Git on macOS or Linux. Rust 1.98.1 is the declared and tested minimum; newer Python versions have not
+been exhaustively tested. Native Windows is not supported by the Unix-socket dispatcher. Install
 Python/Rust with your usual OS tooling; Rust installation needs `rustup`.
 Native dependencies need a C/C++ compiler and build tools. On macOS install Xcode
 Command Line Tools (`xcode-select --install`) and CMake; on Ubuntu install

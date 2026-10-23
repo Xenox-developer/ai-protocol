@@ -241,7 +241,7 @@ class AsyncClient:
                         error = response.json().get("error", {})
                     except (ValueError, AttributeError):
                         error = {}
-                    known = response.status_code in (400, 401, 403, 422, 429) or (
+                    known = response.status_code in (400, 401, 403, 404, 405, 413, 415, 422, 429) or (
                         response.status_code == 503 and isinstance(error, dict)
                         and error.get("code") in ("queue_timeout", "gateway_closed") and error.get("execution") == "not_started")
                     may_have_executed = not known

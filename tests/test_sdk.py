@@ -182,6 +182,18 @@ class SDKTests(unittest.IsolatedAsyncioTestCase):
             client._dispatcher.call.assert_awaited_once()
             self.assertEqual(client._dispatcher.call.call_args.kwargs["deadline_unix_ms"], deadline)
 
+    async def test_preexecution_body_error_is_typed_without_retry(self):
+        def handle(request):
+            if request.url.path == "/agent-policy":
+                return httpx.Response(200, json=policy())
+            return httpx.Response(413, json={"error": {"code": "request_too_large", "execution": "not_started"}})
+        async with AsyncClient("https://records.test", "test-sdk", transport=httpx.MockTransport(handle)) as client:
+            with self.assertRaises(OperationError) as error:
+                await client.call("lookup", {"id": 1})
+            self.assertEqual((error.exception.code, error.exception.execution, error.exception.attempts),
+                             ("request_too_large", "not_started", 1))
+
+
 
 if __name__ == "__main__":
     unittest.main()

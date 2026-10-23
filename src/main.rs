@@ -4,21 +4,23 @@ use std::{net::SocketAddr, time::Duration};
 fn configuration() -> Result<(GatewayConfig, SocketAddr, Duration), Box<dyn std::error::Error>> {
     let config = GatewayConfig::from_env()?;
     let address = match std::env::var("GATEWAY_LISTEN_ADDR") {
-        Ok(value) => value.parse()?,
+        Ok(value) => value
+            .parse()
+            .map_err(|_| "Invalid GATEWAY_LISTEN_ADDR; expected IP:port")?,
         Err(std::env::VarError::NotPresent) => {
-            let port = std::env::var("GATEWAY_PORT")
-                .unwrap_or_else(|_| "3000".into())
-                .parse::<u16>()?;
+            let port = setting("GATEWAY_PORT", "3000")?
+                .parse::<u16>()
+                .map_err(|_| "GATEWAY_PORT must be from 1 to 65535")?;
             if port == 0 {
                 return Err("GATEWAY_PORT must be from 1 to 65535".into());
             }
             SocketAddr::from(([127, 0, 0, 1], port))
         }
-        Err(error) => return Err(error.into()),
+        Err(_) => return Err("Invalid GATEWAY_LISTEN_ADDR".into()),
     };
-    let grace = std::env::var("GATEWAY_SHUTDOWN_GRACE_MS")
-        .unwrap_or_else(|_| "30000".into())
-        .parse::<u64>()?;
+    let grace = setting("GATEWAY_SHUTDOWN_GRACE_MS", "30000")?
+        .parse::<u64>()
+        .map_err(|_| "GATEWAY_SHUTDOWN_GRACE_MS must be an integer")?;
     if !(1..=3600000).contains(&grace) {
         return Err("Invalid GATEWAY_SHUTDOWN_GRACE_MS".into());
     }
@@ -39,8 +41,19 @@ async fn shutdown_signal() -> std::io::Result<()> {
     tokio::signal::ctrl_c().await
 }
 
-async fn run() -> Result<(), Box<dyn std::error::Error>> {
-    let (config, address, grace) = configuration()?;
+fn setting(name: &str, default: &str) -> Result<String, Box<dyn std::error::Error>> {
+    match std::env::var(name) {
+        Ok(value) => Ok(value),
+        Err(std::env::VarError::NotPresent) => Ok(default.into()),
+        Err(_) => Err(format!("Invalid {name}").into()),
+    }
+}
+
+async fn run(
+    config: GatewayConfig,
+    address: SocketAddr,
+    grace: Duration,
+) -> Result<(), Box<dyn std::error::Error>> {
     let listener = tokio::net::TcpListener::bind(address).await?;
     let port = listener.local_addr()?.port();
     let gateway = Gateway::start(config).await?;
@@ -70,7 +83,12 @@ async fn run() -> Result<(), Box<dyn std::error::Error>> {
 
 #[tokio::main]
 async fn main() {
-    if run().await.is_err() {
+    let (config, address, grace) = configuration().unwrap_or_else(|error| {
+        // Configuration errors deliberately contain field names, never values.
+        eprintln!("{}", serde_json::json!({"event": "gateway_configuration_failed", "message": error.to_string()}));
+        std::process::exit(1);
+    });
+    if run(config, address, grace).await.is_err() {
         // Environment and I/O errors may contain credentials; keep startup failures generic.
         eprintln!(
             "{}",

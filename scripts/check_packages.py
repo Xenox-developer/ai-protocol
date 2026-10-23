@@ -1,5 +1,6 @@
 """Build compact unpublished distributions and verify isolated Rust/Python consumers."""
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -66,7 +67,11 @@ def main():
         run(str(python), "-m", "pip", "install", "--disable-pip-version-check", "--quiet", str(wheel), cwd=temporary)
         run(sys.executable, str(ROOT / "scripts/check_rust_library.py"), "--crate-root", str(crate_root),
             "--python", str(python), "--minimal-sdk", cwd=temporary)
-        report = {"version": version, "artifacts": {path.name: path.stat().st_size for path in artifacts.iterdir()},
+        report = {"version": version,
+                  "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+                  "working_tree_dirty": bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True)),
+                  "sha256": {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in artifacts.iterdir()},
+                  "artifacts": {path.name: path.stat().st_size for path in artifacts.iterdir()},
                   "checks": ["crate all-target check", "external Rust application", "wheel built from sdist",
                              "fresh Python installation", "installed SDK without OpenAI", "real HTTP conformance/native call"]}
         print(json.dumps(report, indent=2))
