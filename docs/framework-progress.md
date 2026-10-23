@@ -11,9 +11,13 @@ public release are outside the task. The external developer trial remains skippe
 - [x] Operational configuration, bounded responses, shutdown, metrics and auth integration.
 - [x] Compact Rust/Python distributions and isolated installation checks.
 - [x] Open-source README, contribution/security/versioning/operations documentation.
-- [ ] Final developer-journey verification and hosted Linux/macOS checks.
+- [x] Final developer-journey verification and hosted Linux/macOS checks.
 
 Supported release scope: one in-memory gateway process per service, read-only
 operations, Linux/macOS dispatcher, HTTPS through a reverse proxy. Distributed
 coordination, durable recovery, writes, native Windows dispatcher, a UI and API
 importers remain deferred. Passing checks is not a production-security claim.
+
+All authorized preparation stages are complete. See the [verification report](FRAMEWORK_REPORT.md)
+for observed checks and explicit release limits. Registry publication remains a
+separate maintainer action.

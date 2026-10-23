@@ -54,10 +54,12 @@ are excluded. Package preparation does not establish registry acceptance.
 
 ## Hosted verification
 
-The final documentation/verification commit is awaiting its Ubuntu/macOS workflow
-result. This section will record the verified source commit and workflow after
-completion. Intermediate CI caught a connector compatibility regression: valid
-legacy text HTTP error codes were rejected. A focused test and the two-service
+The full implementation at `afaa88b1a67f60f71fade35820aa5b6c5b8c4a65` passed
+both Ubuntu and macOS jobs in [workflow run 40030861663](https://github.com/Xenox-developer/ai-protocol/actions/runs/40030861663).
+Each job ran the complete verification script, including artifact installation.
+The subsequent completion record changes documentation only and is checked by
+the same workflow. Intermediate CI caught a connector compatibility regression:
+valid legacy text HTTP error codes were rejected. A focused test and the two-service
 scenario now cover the corrected behavior; retries were not broadened. Hosted
 verification also exposed a live JSONL reader race. The reader now waits for
 newline completion, including partial UTF-8 tails, and still rejects corrupt
