@@ -9,6 +9,8 @@ description = "Adaptive clients for cooperative agent access to HTTP services"
 readme = "README.md"
 requires-python = ">=3.12"
 license = "Apache-2.0"
+license-files = ["LICENSE"]
+keywords = ["agents", "http", "gateway", "scheduling"]
 authors = [{name = "Nikita Chindin"}]
 dependencies = ["httpx==0.28.1", "jsonschema==4.24.0", "referencing==0.37.0"]
 

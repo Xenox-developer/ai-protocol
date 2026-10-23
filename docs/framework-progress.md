@@ -9,7 +9,7 @@ public release are outside the task. The external developer trial remains skippe
 - [x] Practical service integration and owner-controlled upstream credentials.
 - [x] Machine-readable contracts, structured errors and compatibility checks.
 - [x] Operational configuration, bounded responses, shutdown, metrics and auth integration.
-- [ ] Compact Rust/Python distributions and isolated installation checks.
+- [x] Compact Rust/Python distributions and isolated installation checks.
 - [ ] Open-source README, contribution/security/versioning/operations documentation.
 - [ ] Final developer-journey verification and hosted Linux/macOS checks.
 

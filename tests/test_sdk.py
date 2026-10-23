@@ -155,10 +155,6 @@ class SDKTests(unittest.IsolatedAsyncioTestCase):
                 await client.call("lookup", {"id": 1}, timeout=0.05)
             self.assertEqual(error.exception.execution, "not_started")
 
-
-if __name__ == "__main__":
-    unittest.main()
-
     async def test_background_refresher_runs_and_stops_with_context(self):
         polls = asyncio.Queue()
         def handle(request):
@@ -185,3 +181,7 @@ if __name__ == "__main__":
             self.assertEqual(result.exception.execution, "unknown")
             client._dispatcher.call.assert_awaited_once()
             self.assertEqual(client._dispatcher.call.call_args.kwargs["deadline_unix_ms"], deadline)
+
+
+if __name__ == "__main__":
+    unittest.main()

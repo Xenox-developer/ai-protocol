@@ -3,6 +3,14 @@ name = "ai-protocol"
 version = "0.1.0"
 edition = "2024"
 license = "Apache-2.0"
+rust-version = "1.98.1"
+description = "Cooperative agent access to HTTP services with shared workload budgets"
+authors = ["Nikita Chindin"]
+repository = "https://github.com/Xenox-developer/ai-protocol"
+readme = "README.md"
+keywords = ["agents", "http", "gateway", "scheduling"]
+categories = ["web-programming::http-server", "asynchronous"]
+include = ["/src/**", "/services/*.json", "/examples/native_service.rs", "/tests/library.rs", "/Cargo.lock", "/rust-toolchain.toml", "/README.md", "/LICENSE", "/CHANGELOG.md", "/docs/*.md", "/python/ai_protocol/schemas/*.json"]
 
 [dependencies]
 axum = "0.8.9"

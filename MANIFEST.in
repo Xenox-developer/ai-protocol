@@ -1,0 +1,8 @@
+include LICENSE README.md pyproject.toml
+recursive-include python/ai_protocol *.py *.json
+prune tests
+prune benchmarks
+prune integration
+prune examples
+prune target
+global-exclude __pycache__ *.py[cod]
