@@ -1,7 +1,8 @@
 # AI Protocol — experimental v3 contract
 
 Status: a local, single-process prototype over HTTP, not a public standard.
-This document describes `src/main.rs` and the current example clients.
+This document describes `src/lib.rs` (used by the standalone gateway in
+`src/main.rs`) and the current example clients.
 
 ## Authentication and permissions
 

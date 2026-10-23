@@ -3,9 +3,12 @@ use std::collections::VecDeque;
 use std::time::Duration;
 use tokio::time::Instant;
 
+/// Maximum time accepted work may wait before execution.
 #[derive(Clone, Copy)]
-pub(crate) struct QueueSettings {
+pub struct QueueSettings {
+    /// Waiting deadline for interactive work.
     pub interactive: Duration,
+    /// Waiting deadline for agent work.
     pub agent: Duration,
 }
 
@@ -19,14 +22,14 @@ impl Default for QueueSettings {
 }
 
 impl QueueSettings {
-    pub fn for_class(self, class: ClientClass) -> Duration {
+    pub(crate) fn for_class(self, class: ClientClass) -> Duration {
         match class {
             ClientClass::Interactive => self.interactive,
             ClientClass::Agent => self.agent,
         }
     }
 
-    pub fn from_env() -> Result<Self, String> {
+    pub(crate) fn from_env() -> Result<Self, String> {
         let read = |name: &str, default: u64| {
             let value = match std::env::var(name) {
                 Ok(value) => value.parse::<u64>().ok(),
@@ -45,15 +48,18 @@ impl QueueSettings {
     }
 }
 
+/// Selection order for accepted jobs; neither mode preempts running work.
 #[derive(Clone, Copy, Default, PartialEq, Eq)]
-pub(crate) enum SchedulerMode {
+pub enum SchedulerMode {
     #[default]
+    /// Select up to three interactive jobs before one agent job under competition.
     Weighted,
+    /// Select jobs in global admission order across both classes.
     Fifo,
 }
 
 impl SchedulerMode {
-    pub fn from_env() -> Result<Self, String> {
+    pub(crate) fn from_env() -> Result<Self, String> {
         match std::env::var("SCHEDULER_MODE").as_deref() {
             Ok("weighted") | Err(std::env::VarError::NotPresent) => Ok(Self::Weighted),
             Ok("fifo") => Ok(Self::Fifo),

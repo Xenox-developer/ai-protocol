@@ -7,6 +7,10 @@ configured HTTP upstream. The included catalog and support-ticket service use
 the same gateway, discovery client and local dispatcher. This is a local MVP,
 not a public standard or production platform.
 
+The same gateway is also available as a Rust library for embedding in an Axum
+application. See [Rust library integration](docs/rust-library.md) for the public
+configuration and lifecycle interfaces.
+
 ## First external developer trial
 
 Start with the [short Unix quickstart](docs/QUICKSTART.md), then try the
