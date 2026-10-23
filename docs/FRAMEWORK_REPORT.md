@@ -31,8 +31,8 @@ No registry publication, deployment or public GitHub release was performed.
 | Rust tests across all targets | 66 passed, 0 failed |
 | Rust documentation example | 1 compiled, passed (`no_run`, not executed) |
 | Rust public API documentation | Built without dependency docs |
-| Python tests | 46 passed, 0 failed |
-| Current local documentation links/anchors | 15 documents passed |
+| Python tests | 48 passed, 0 failed |
+| Current local documentation links/anchors | 16 documents passed |
 | Standalone operations | Safe configuration error, SIGTERM drain, grace expiry, JSON log checks passed |
 | External Rust consumer | Separate Cargo application, real HTTP policy/native calls, zero outstanding, Ctrl+C cleanup |
 | Smoke/quickstart/manifest | Passed, including three independent dispatcher clients |
@@ -58,7 +58,10 @@ The final documentation/verification commit is awaiting its Ubuntu/macOS workflo
 result. This section will record the verified source commit and workflow after
 completion. Intermediate CI caught a connector compatibility regression: valid
 legacy text HTTP error codes were rejected. A focused test and the two-service
-scenario now cover the corrected behavior; retries were not broadened.
+scenario now cover the corrected behavior; retries were not broadened. Hosted
+verification also exposed a live JSONL reader race. The reader now waits for
+newline completion, including partial UTF-8 tails, and still rejects corrupt
+complete records; focused tests reproduce and cover this case.
 
 ## Explicit limits
 

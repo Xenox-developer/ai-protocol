@@ -40,6 +40,13 @@ def until(check, processes):
     raise TimeoutError('Demo startup or cleanup deadline exceeded')
 
 
+def rows(path):
+    if not path.exists():
+        return []
+    # A concurrent writer may expose a partial JSON value or UTF-8 character.
+    return [json.loads(line) for line in path.read_bytes().split(b'\n')[:-1]]
+
+
 async def run(output):
     processes, logs = [], []
     base_env = {'PATH': os.environ['PATH'], 'PYTHONUNBUFFERED': '1'}
@@ -56,8 +63,6 @@ async def run(output):
         p = subprocess.Popen(command, cwd=ROOT, env=base_env | env, stdout=log, stderr=log)
         processes.append(p)
         return p
-    def rows(path):
-        return [json.loads(line) for line in path.read_text().splitlines()] if path.exists() else []
     with tempfile.TemporaryDirectory(prefix='services-demo-') as private:
         sockets = {name: str(Path(private) / f'{name}.sock') for name in origins}
         try:
