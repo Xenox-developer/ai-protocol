@@ -3,6 +3,8 @@
 ![AI Protocol: cooperative agent access to HTTP services](https://raw.githubusercontent.com/Xenox-developer/ai-protocol/3b2dbb0e3bf0fe2486c5db76f576d76273d8d37b/docs/assets/readme-cover-v2.png)
 
 [![Unix checks](https://github.com/Xenox-developer/ai-protocol/actions/workflows/checks.yml/badge.svg)](https://github.com/Xenox-developer/ai-protocol/actions/workflows/checks.yml)
+[![crates.io](https://img.shields.io/crates/v/ai-protocol.svg)](https://crates.io/crates/ai-protocol)
+[![PyPI](https://img.shields.io/pypi/v/ai-protocol-client.svg)](https://pypi.org/project/ai-protocol-client/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 
 A Rust framework and Python SDK for cooperative agent access to HTTP services.
@@ -50,10 +52,24 @@ dispatcher; the gateway remains responsible for admitting requests.
 
 ## Installation
 
-Version 0.1.0 is not yet published to crates.io or PyPI. Use a source checkout
-for the local demo and development, or download the verified artifacts from
+Version **0.1.0** is available on [crates.io](https://crates.io/crates/ai-protocol/0.1.0)
+and [PyPI](https://pypi.org/project/ai-protocol-client/0.1.0/).
+
+With Rust/Cargo **1.98.1+**, add the library from your Rust application's directory:
+
+```sh
+cargo add ai-protocol@=0.1.0
+```
+
+With Python **3.12+**, install the SDK in an activated virtual environment:
+
+```sh
+python -m pip install ai-protocol-client==0.1.0
+```
+
+Use a source checkout for the full local demo and development, or download the
+verified archives and checksums from
 [GitHub Releases](https://github.com/Xenox-developer/ai-protocol/releases/tag/v0.1.0).
-That page tracks registry publication status.
 
 ### Try it locally
 
@@ -96,12 +112,16 @@ checkout; use the source recipe above to run `examples/quickstart.py`.
 
 ## Add a service in Rust
 
-For source integration, add this checkout as a path dependency in your application:
+Add the published library to your application's `Cargo.toml`, or use the
+`cargo add` command in [Installation](#installation):
 
 ```toml
 [dependencies]
-ai-protocol = { path = "../ai-protocol" }
+ai-protocol = "=0.1.0"
 ```
+
+For development against a local checkout, use
+`ai-protocol = { path = "../ai-protocol" }` instead.
 
 Register read-only handlers with `Operation::new` and give callers `Credential`
 grants. This function embeds those operations in an Axum server:
@@ -144,9 +164,9 @@ use a [service manifest](docs/service-integration.md).
 
 ## Call it from Python
 
-Install the SDK using either recipe above. The distribution is
-`ai-protocol-client`; the import is `ai_protocol`. With the native Rust example
-running, open another terminal, activate your SDK environment and set
+Install the SDK from PyPI or use one of the source/artifact recipes above. The
+distribution is `ai-protocol-client`; the import is `ai_protocol`. With the native
+Rust example running, open another terminal, activate your SDK environment and set
 `SERVICE_URL=http://127.0.0.1:3000` and `AGENT_TOKEN_1` to that server's
 `NATIVE_AGENT_TOKEN` value. Keep the credential private.
 
