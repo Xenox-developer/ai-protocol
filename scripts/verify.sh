@@ -17,4 +17,8 @@ python tests/trial_manifest.py
 trial_results="$(mktemp -d /tmp/ai-verify.XXXXXX)"
 trap 'rm -rf "$trial_results"' EXIT
 python examples/service_integration_demo.py --output "$trial_results/integration"
-python scripts/check_packages.py
+if [[ -n "${PACKAGE_OUTPUT_DIR:-}" ]]; then
+  python scripts/check_packages.py --output "$PACKAGE_OUTPUT_DIR"
+else
+  python scripts/check_packages.py
+fi

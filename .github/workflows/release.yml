@@ -1,0 +1,143 @@
+name: Publish release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Published stable release tag (vMAJOR.MINOR.PATCH)
+        required: true
+        type: string
+      publish:
+        description: Publish after verification (leave false for a dry run)
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: registry-release-${{ github.event.release.tag_name || inputs.tag }}
+  cancel-in-progress: false
+
+env:
+  RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
+
+jobs:
+  validate:
+    if: github.repository == 'Xenox-developer/ai-protocol' && (github.event_name == 'workflow_dispatch' || !github.event.release.prerelease)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.source.outputs.version }}
+      commit: ${{ steps.source.outputs.commit }}
+      tag: ${{ steps.source.outputs.tag }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - run: python -m pip install httpx==0.28.1
+      - name: Validate tag syntax before checkout
+        run: python scripts/release.py tag --tag "$RELEASE_TAG"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/${{ env.RELEASE_TAG }}
+          path: release-source
+          persist-credentials: false
+      - name: Validate published release, source and package versions
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/release.py validate --source release-source --tag "$RELEASE_TAG"
+
+  verify:
+    needs: validate
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.validate.outputs.commit }}
+          path: release-source
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Install toolchain and development dependencies
+        working-directory: release-source
+        run: |
+          rustup toolchain install 1.98.1 --profile minimal --component rustfmt
+          python -m pip install -r requirements.txt
+      - name: Test release orchestration
+        run: python -m unittest discover -s tests -p test_release.py -v
+      - name: Test source and isolated packages without publishing credentials
+        env:
+          PACKAGE_OUTPUT_DIR: ${{ runner.temp }}/built-release
+        run: bash release-source/scripts/verify.sh
+      - name: Export artifacts for tags predating release automation
+        if: runner.os == 'Linux'
+        run: |
+          if [[ ! -d "$RUNNER_TEMP/built-release" ]]; then
+            python release-source/scripts/check_packages.py --output "$RUNNER_TEMP/built-release"
+          fi
+      - name: Preserve existing release bytes or prepare new verified bundle
+        if: runner.os == 'Linux'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/release.py prepare --source release-source --tag "$RELEASE_TAG" --built "$RUNNER_TEMP/built-release" --artifacts "$RUNNER_TEMP/release-assets"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: runner.os == 'Linux'
+        with:
+          name: release-${{ needs.validate.outputs.version }}
+          path: ${{ runner.temp }}/release-assets/*
+          if-no-files-found: error
+          retention-days: 90
+
+  publish:
+    needs: [validate, verify]
+    if: github.event_name == 'release' || inputs.publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: release
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.validate.outputs.commit }}
+          path: release-source
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Install publishing tools
+        run: |
+          rustup toolchain install 1.98.1 --profile minimal
+          python -m pip install httpx==0.28.1 twine==7.0.0
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-${{ needs.validate.outputs.version }}
+          path: ${{ runner.temp }}/release-assets
+      - name: Publish missing packages, verify registries and update release status
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        run: python scripts/release.py publish --source release-source --tag "$RELEASE_TAG" --artifacts "$RUNNER_TEMP/release-assets"

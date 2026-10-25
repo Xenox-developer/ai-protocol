@@ -238,6 +238,10 @@ from the source distribution and tested without OpenAI outside the checkout.
 See [contributing](CONTRIBUTING.md), the [release procedure](docs/releasing.md),
 and the [framework verification report](docs/FRAMEWORK_REPORT.md).
 
+Publishing a stable GitHub Release automatically verifies and publishes matching
+Rust/Python versions through [GitHub Actions](.github/workflows/release.yml).
+See the [release procedure](docs/releasing.md) for versioning, credentials and retries.
+
 Historical measurements and their limitations are documented in the
 [benchmark overview](benchmarks/README.md) and [framework report](docs/FRAMEWORK_REPORT.md).
 
