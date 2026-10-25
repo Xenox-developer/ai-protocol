@@ -10,7 +10,7 @@ repository = "https://github.com/Xenox-developer/ai-protocol"
 readme = "README.md"
 keywords = ["agents", "http", "gateway", "scheduling"]
 categories = ["web-programming::http-server", "asynchronous"]
-include = ["/src/**", "/services/*.json", "/examples/native_service.rs", "/tests/library.rs", "/Cargo.lock", "/rust-toolchain.toml", "/README.md", "/LICENSE", "/CHANGELOG.md", "/CONTRIBUTING.md", "/SECURITY.md", "/CODE_OF_CONDUCT.md", "/docs/*.md", "/python/ai_protocol/schemas/*.json"]
+include = ["/src/**", "/services/*.json", "/examples/native_service.rs", "/tests/library.rs", "/Cargo.lock", "/rust-toolchain.toml", "/README.md", "/LICENSE", "/CHANGELOG.md", "/CONTRIBUTING.md", "/SECURITY.md", "/CODE_OF_CONDUCT.md", "/docs/*.md", "/docs/assets/readme-cover-v2.png", "/python/ai_protocol/schemas/*.json"]
 
 [dependencies]
 axum = "0.8.9"

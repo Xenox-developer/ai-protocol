@@ -20,10 +20,12 @@ def run(*command, cwd=ROOT, env=None):
     subprocess.run(command, cwd=cwd, env=env, check=True, timeout=300)
 
 
-def inspect(names):
+def inspect(names, *, source=False):
     forbidden = {"target", "benchmarks", "integration", ".env", ".env.demo", ".git", ".venv", "__pycache__"}
     if any(forbidden.intersection(Path(name).parts) for name in names):
         raise RuntimeError("Distribution contains development outputs or private files")
+    if source and not any(name.endswith("/docs/assets/readme-cover-v2.png") for name in names):
+        raise RuntimeError("Source distribution is missing the README cover")
 
 
 def main():
@@ -46,7 +48,7 @@ def main():
         shutil.copy2(crate, artifacts / crate.name)
         with tarfile.open(crate) as archive:
             names = archive.getnames()
-            inspect(names)
+            inspect(names, source=True)
             archive.extractall(temporary / "rust", filter="data")
         crate_root = temporary / "rust" / f"ai-protocol-{version}"
         environment = os.environ.copy()
@@ -58,7 +60,7 @@ def main():
             inspect(archive.namelist())
             assert len([name for name in archive.namelist() if name.endswith(".schema.json")]) == 4
         with tarfile.open(sdist) as archive:
-            inspect(archive.getnames())
+            inspect(archive.getnames(), source=True)
             assert not any("/tests/" in name for name in archive.getnames())
         if any(path.stat().st_size > 5 * 1024 * 1024 for path in (crate, wheel, sdist)):
             raise RuntimeError("Unexpectedly large release artifact")
@@ -72,7 +74,7 @@ def main():
                   "working_tree_dirty": bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True)),
                   "sha256": {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in artifacts.iterdir()},
                   "artifacts": {path.name: path.stat().st_size for path in artifacts.iterdir()},
-                  "checks": ["crate all-target check", "external Rust application", "wheel built from sdist",
+                  "checks": ["source README cover", "crate all-target check", "external Rust application", "wheel built from sdist",
                              "fresh Python installation", "installed SDK without OpenAI", "real HTTP conformance/native call"]}
         print(json.dumps(report, indent=2))
         if args.output:
