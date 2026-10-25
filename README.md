@@ -1,5 +1,7 @@
 # AI Protocol
 
+![AI Protocol: cooperative agent access to HTTP services](docs/assets/readme-cover-v2.png)
+
 [![Unix checks](https://github.com/Xenox-developer/ai-protocol/actions/workflows/checks.yml/badge.svg)](https://github.com/Xenox-developer/ai-protocol/actions/workflows/checks.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 
